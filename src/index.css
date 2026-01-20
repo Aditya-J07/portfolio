@@ -1,0 +1,97 @@
+@import './styles/catppuccin.css';
+@import './styles/colors.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --current-accent-color: var(--color-peach);
+    /* Default to mocha (dark) theme variables if not specified */
+    --color-base: var(--catppuccin-mocha-base);
+    --color-mantle: var(--catppuccin-mocha-mantle);
+    --color-crust: var(--catppuccin-mocha-crust);
+    --color-surface0: var(--catppuccin-mocha-surface0);
+    --color-surface1: var(--catppuccin-mocha-surface1);
+    --color-surface2: var(--catppuccin-mocha-surface2);
+    --color-overlay0: var(--catppuccin-mocha-overlay0);
+    --color-overlay1: var(--catppuccin-mocha-overlay1);
+    --color-overlay2: var(--catppuccin-mocha-overlay2);
+    --color-subtext0: var(--catppuccin-mocha-subtext0);
+    --color-subtext1: var(--catppuccin-mocha-subtext1);
+    --color-text: var(--catppuccin-mocha-text);
+    --color-lavender: var(--catppuccin-mocha-lavender);
+    --color-blue: var(--catppuccin-mocha-blue);
+    --color-sapphire: var(--catppuccin-mocha-sapphire);
+    --color-sky: var(--catppuccin-mocha-sky);
+    --color-teal: var(--catppuccin-mocha-teal);
+    --color-green: var(--catppuccin-mocha-green);
+    --color-yellow: var(--catppuccin-mocha-yellow);
+    --color-peach: var(--catppuccin-mocha-peach);
+    --color-maroon: var(--catppuccin-mocha-maroon);
+    --color-red: var(--catppuccin-mocha-red);
+    --color-mauve: var(--catppuccin-mocha-mauve);
+    --color-pink: var(--catppuccin-mocha-pink);
+    --color-flamingo: var(--catppuccin-mocha-flamingo);
+    --color-rosewater: var(--catppuccin-mocha-rosewater);
+    --color-accent: var(--current-accent-color);
+  }
+
+  body {
+    @apply bg-base text-text font-sans min-h-screen overflow-x-hidden;
+  }
+
+  ::selection {
+    background-color: var(--color-surface2);
+    color: var(--color-text);
+  }
+}
+
+@layer utilities {
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-accent) transparent;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    background-color: var(--color-accent);
+    border-radius: 100vh;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb:hover {
+    background-color: color-mix(in srgb, currentColor, var(--color-mantle));
+  }
+
+  .link {
+    @apply text-accent hover:bg-accent hover:text-mantle decoration-dashed underline-offset-4 duration-200 decoration-1 underline;
+  }
+
+  .link:hover {
+    text-decoration-style: solid;
+  }
+}
+
+/* Glassmorphism utility - adapted to use new vars */
+.glass {
+  background: color-mix(in srgb, var(--color-base) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid color-mix(in srgb, var(--color-blue) 10%, transparent);
+}
+
+.card {
+  @apply border border-surface0 bg-base rounded-xl p-4 shadow-lg transition-all duration-300;
+}
+
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-mauve) 50%, var(--color-red) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}

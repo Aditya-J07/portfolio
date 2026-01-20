@@ -1,0 +1,120 @@
+@layer base {
+
+    /* Default to Mocha (Dark) */
+    :root {
+        --color-rosewater: var(--catppuccin-mocha-rosewater);
+        --color-flamingo: var(--catppuccin-mocha-flamingo);
+        --color-pink: var(--catppuccin-mocha-pink);
+        --color-mauve: var(--catppuccin-mocha-mauve);
+        --color-red: var(--catppuccin-mocha-red);
+        --color-maroon: var(--catppuccin-mocha-maroon);
+        --color-peach: var(--catppuccin-mocha-peach);
+        --color-yellow: var(--catppuccin-mocha-yellow);
+        --color-green: var(--catppuccin-mocha-green);
+        --color-teal: var(--catppuccin-mocha-teal);
+        --color-sky: var(--catppuccin-mocha-sky);
+        --color-sapphire: var(--catppuccin-mocha-sapphire);
+        --color-blue: var(--catppuccin-mocha-blue);
+        --color-lavender: var(--catppuccin-mocha-lavender);
+        --color-text: var(--catppuccin-mocha-text);
+        --color-subtext1: var(--catppuccin-mocha-subtext1);
+        --color-subtext0: var(--catppuccin-mocha-subtext0);
+        --color-overlay2: var(--catppuccin-mocha-overlay2);
+        --color-overlay1: var(--catppuccin-mocha-overlay1);
+        --color-overlay0: var(--catppuccin-mocha-overlay0);
+        --color-surface2: var(--catppuccin-mocha-surface2);
+        --color-surface1: var(--catppuccin-mocha-surface1);
+        --color-surface0: var(--catppuccin-mocha-surface0);
+        --color-base: var(--catppuccin-mocha-base);
+        --color-mantle: var(--catppuccin-mocha-mantle);
+        --color-crust: var(--catppuccin-mocha-crust);
+    }
+
+    /* Theme Overrides */
+    :root[data-theme="latte"] {
+        --color-rosewater: var(--catppuccin-latte-rosewater);
+        --color-flamingo: var(--catppuccin-latte-flamingo);
+        --color-pink: var(--catppuccin-latte-pink);
+        --color-mauve: var(--catppuccin-latte-mauve);
+        --color-red: var(--catppuccin-latte-red);
+        --color-maroon: var(--catppuccin-latte-maroon);
+        --color-peach: var(--catppuccin-latte-peach);
+        --color-yellow: var(--catppuccin-latte-yellow);
+        --color-green: var(--catppuccin-latte-green);
+        --color-teal: var(--catppuccin-latte-teal);
+        --color-sky: var(--catppuccin-latte-sky);
+        --color-sapphire: var(--catppuccin-latte-sapphire);
+        --color-blue: var(--catppuccin-latte-blue);
+        --color-lavender: var(--catppuccin-latte-lavender);
+        --color-text: var(--catppuccin-latte-text);
+        --color-subtext1: var(--catppuccin-latte-subtext1);
+        --color-subtext0: var(--catppuccin-latte-subtext0);
+        --color-overlay2: var(--catppuccin-latte-overlay2);
+        --color-overlay1: var(--catppuccin-latte-overlay1);
+        --color-overlay0: var(--catppuccin-latte-overlay0);
+        --color-surface2: var(--catppuccin-latte-surface2);
+        --color-surface1: var(--catppuccin-latte-surface1);
+        --color-surface0: var(--catppuccin-latte-surface0);
+        --color-base: var(--catppuccin-latte-base);
+        --color-mantle: var(--catppuccin-latte-mantle);
+        --color-crust: var(--catppuccin-latte-crust);
+    }
+
+    :root[data-theme="frappe"] {
+        --color-rosewater: var(--catppuccin-frappe-rosewater);
+        --color-flamingo: var(--catppuccin-frappe-flamingo);
+        --color-pink: var(--catppuccin-frappe-pink);
+        --color-mauve: var(--catppuccin-frappe-mauve);
+        --color-red: var(--catppuccin-frappe-red);
+        --color-maroon: var(--catppuccin-frappe-maroon);
+        --color-peach: var(--catppuccin-frappe-peach);
+        --color-yellow: var(--catppuccin-frappe-yellow);
+        --color-green: var(--catppuccin-frappe-green);
+        --color-teal: var(--catppuccin-frappe-teal);
+        --color-sky: var(--catppuccin-frappe-sky);
+        --color-sapphire: var(--catppuccin-frappe-sapphire);
+        --color-blue: var(--catppuccin-frappe-blue);
+        --color-lavender: var(--catppuccin-frappe-lavender);
+        --color-text: var(--catppuccin-frappe-text);
+        --color-subtext1: var(--catppuccin-frappe-subtext1);
+        --color-subtext0: var(--catppuccin-frappe-subtext0);
+        --color-overlay2: var(--catppuccin-frappe-overlay2);
+        --color-overlay1: var(--catppuccin-frappe-overlay1);
+        --color-overlay0: var(--catppuccin-frappe-overlay0);
+        --color-surface2: var(--catppuccin-frappe-surface2);
+        --color-surface1: var(--catppuccin-frappe-surface1);
+        --color-surface0: var(--catppuccin-frappe-surface0);
+        --color-base: var(--catppuccin-frappe-base);
+        --color-mantle: var(--catppuccin-frappe-mantle);
+        --color-crust: var(--catppuccin-frappe-crust);
+    }
+
+    :root[data-theme="macchiato"] {
+        --color-rosewater: var(--catppuccin-macchiato-rosewater);
+        --color-flamingo: var(--catppuccin-macchiato-flamingo);
+        --color-pink: var(--catppuccin-macchiato-pink);
+        --color-mauve: var(--catppuccin-macchiato-mauve);
+        --color-red: var(--catppuccin-macchiato-red);
+        --color-maroon: var(--catppuccin-macchiato-maroon);
+        --color-peach: var(--catppuccin-macchiato-peach);
+        --color-yellow: var(--catppuccin-macchiato-yellow);
+        --color-green: var(--catppuccin-macchiato-green);
+        --color-teal: var(--catppuccin-macchiato-teal);
+        --color-sky: var(--catppuccin-macchiato-sky);
+        --color-sapphire: var(--catppuccin-macchiato-sapphire);
+        --color-blue: var(--catppuccin-macchiato-blue);
+        --color-lavender: var(--catppuccin-macchiato-lavender);
+        --color-text: var(--catppuccin-macchiato-text);
+        --color-subtext1: var(--catppuccin-macchiato-subtext1);
+        --color-subtext0: var(--catppuccin-macchiato-subtext0);
+        --color-overlay2: var(--catppuccin-macchiato-overlay2);
+        --color-overlay1: var(--catppuccin-macchiato-overlay1);
+        --color-overlay0: var(--catppuccin-macchiato-overlay0);
+        --color-surface2: var(--catppuccin-macchiato-surface2);
+        --color-surface1: var(--catppuccin-macchiato-surface1);
+        --color-surface0: var(--catppuccin-macchiato-surface0);
+        --color-base: var(--catppuccin-macchiato-base);
+        --color-mantle: var(--catppuccin-macchiato-mantle);
+        --color-crust: var(--catppuccin-macchiato-crust);
+    }
+}
