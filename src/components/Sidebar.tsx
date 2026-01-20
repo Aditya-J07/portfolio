@@ -136,7 +136,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                                 onClick={onClose}
                                 className="block py-2 font-mono text-subtext0 hover:text-accent hover:pl-2 transition-all"
                             >
-                                Snake Game 🐍
+                                Snake Game
                             </Link>
                         </div>
 
