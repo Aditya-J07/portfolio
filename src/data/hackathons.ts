@@ -8,6 +8,11 @@ export interface Hackathon {
 
 export const hackathons: Hackathon[] = [
     {
+        name: 'Vibe Hack 2.0',
+        date: 'January 2026',
+        organizer: 'Hack with India & Lovable (Online)',
+    },
+    {
         name: 'Brewathon',
         date: 'December 2025',
         organizer: 'AI Brewery',
