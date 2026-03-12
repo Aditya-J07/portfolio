@@ -18,12 +18,12 @@ export const skillCategories: SkillCategory[] = [
     {
         name: 'Web Development',
         icon: 'globe',
-        skills: ['React', 'Node.js', 'MySQL', 'HTML5', 'CSS3', 'Responsive Design'],
+        skills: ['React', 'Node.js', 'FastAPI', 'MySQL', 'HTML5', 'CSS3', 'Responsive Design'],
     },
     {
         name: 'Tools & Others',
         icon: 'wrench',
-        skills: ['Git/GitHub', 'VS Code', 'Adobe Photoshop', 'Blender (Basic)'],
+        skills: ['Git/GitHub', 'VS Code', 'Cybersecurity', 'Adobe Photoshop', 'Blender (Basic)'],
     },
     {
         name: 'Data Structures',
@@ -33,6 +33,7 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const achievements = [
+    { icon: '🛡️', title: 'Sandbox v2.0 – Secure the Day', subtitle: 'DSCE Bengaluru, March 2026' },
     { icon: '🏆', title: '5th Place - Hackademia', subtitle: 'HackWithIndia & Algo GenZ, August 2025' },
     { icon: '🥇', title: 'Code Conqueror Winner', subtitle: 'DeCoders SIT, December 2024' },
     { icon: '🥇', title: 'Reverse Coding Winner', subtitle: 'DeCoders SIT, December 2024' },

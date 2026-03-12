@@ -8,6 +8,11 @@ export interface Hackathon {
 
 export const hackathons: Hackathon[] = [
     {
+        name: 'Sandbox v2.0',
+        date: 'March 2026',
+        organizer: 'Dayananda Sagar College of Engineering, Bengaluru',
+    },
+    {
         name: 'Vibe Hack 2.0',
         date: 'January 2026',
         organizer: 'Hack with India & Lovable (Online)',

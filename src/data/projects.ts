@@ -13,6 +13,15 @@ export interface Project {
 
 export const projects: Project[] = [
     {
+        id: 'ai-soc-analyst',
+        name: 'AI SOC Analyst',
+        description: 'AI-powered Security Operations Center analyst for insider threat detection. Monitors endpoint activity, analyzes behavioral patterns, and auto-responds to threats in real time. Built at Sandbox v2.0 hackathon (24 hrs).',
+        tech: ['Python', 'FastAPI', 'React', 'Vite', 'watchdog'],
+        githubUrl: 'https://github.com/Aditya-J07/exabeam-ANALYTICS',
+        category: 'tool',
+        featured: true,
+    },
+    {
         id: 'neura-beats',
         name: 'Neura-Beats',
         description: 'AI-powered music therapy app for neurological rehabilitation (Parkinson\'s & stroke patients). Won 5th place at Hackademia hackathon.',
