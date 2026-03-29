@@ -43,6 +43,15 @@ export const projects: Project[] = [
         featured: true,
     },
     {
+        id: 'leetcode-friend-list',
+        name: 'LeetCode Friend List',
+        description: 'Chrome extension that adds a friend management system to LeetCode. Features include one-click adding, drag-and-drop reordering, real-time stats, a competitive leaderboard, and smart streak reminders with desktop notifications.',
+        tech: ['JavaScript', 'Chrome Extension API', 'GraphQL', 'CSS'],
+        githubUrl: 'https://github.com/Aditya-J07/leetcode-friend-list',
+        category: 'tool',
+        featured: true,
+    },
+    {
         id: 'youtube-clone',
         name: 'YouTube Clone',
         description: 'Responsive frontend clone of YouTube built to practice HTML/CSS skills and responsive design.',
