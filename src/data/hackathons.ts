@@ -11,7 +11,7 @@ export interface Hackathon {
 
 export const hackathons: Hackathon[] = [
     {
-        name: 'HyperThon',
+        name: 'Hyperthon',
         date: '07 April 2026',
         organizer: 'CSE Department, Siddaganga Institute of Technology, Tumkur',
         achievement: '🏆 1st Place',

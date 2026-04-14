@@ -33,7 +33,7 @@ export const skillCategories: SkillCategory[] = [
 ];
 
 export const achievements = [
-    { icon: '🏆', title: '1st Place - HyperThon', subtitle: 'Siddaganga Institute of Technology, April 2026' },
+    { icon: '🏆', title: '1st Place - Hyperthon', subtitle: 'Siddaganga Institute of Technology, April 2026' },
     { icon: '🛡️', title: 'Sandbox v2.0 – Secure the Day', subtitle: 'DSCE Bengaluru, March 2026' },
     { icon: '🏆', title: '5th Place - Hackademia', subtitle: 'HackWithIndia & Algo GenZ, August 2025' },
     { icon: '🥇', title: 'Code Conqueror Winner', subtitle: 'DeCoders SIT, December 2024' },
