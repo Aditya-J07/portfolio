@@ -23,7 +23,7 @@ export default function Footer() {
                             All Systems Nominal
                         </span>
                         <span className="text-surface2 hidden sm:inline">|</span>
-                        <span className="text-subtext0 hidden sm:inline">Last updated: Mar 12, 2026</span>
+                        <span className="text-subtext0 hidden sm:inline">Last updated: Apr 14, 2026</span>
                     </div>
 
                     {/* Social Links */}

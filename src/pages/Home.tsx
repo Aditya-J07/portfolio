@@ -193,10 +193,23 @@ export default function Home() {
                                 <div key={h.name} className="bg-surface0/50 rounded p-3">
                                     <div className="flex justify-between items-start">
                                         <div className="font-bold text-text text-sm">{h.name}</div>
-                                        {h.isWin && <span className="text-yellow text-xs">🏆</span>}
+                                        {h.isWin && <span className="text-yellow text-xs" title={h.achievement}>🏆</span>}
                                     </div>
                                     <div className="text-xs text-subtext1 mt-1">{h.organizer}</div>
-                                    <div className="text-xs text-surface2 mt-2 font-mono">{h.date}</div>
+                                    {h.event && <div className="text-xs text-accent mt-1">{h.event} {h.type ? `(${h.type})` : ''}</div>}
+                                    <div className="flex justify-between items-center mt-2">
+                                        <div className="text-xs text-surface2 font-mono">{h.date}</div>
+                                        {h.certificateLink && (
+                                            <a 
+                                                href={h.certificateLink} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer" 
+                                                className="text-xs px-2 py-1 bg-surface1 text-text hover:bg-surface2 rounded transition-colors border border-surface2 flex items-center gap-1"
+                                            >
+                                                Certificate
+                                            </a>
+                                        )}
+                                    </div>
                                 </div>
                             ))}
                         </div>
