@@ -78,7 +78,11 @@ input[type="button"]:not(:disabled),
 [data-cursor="pointer"],
 [data-cursor="pointer"] *,
 .cursor-pointer,
-.cursor-pointer * {
+.cursor-pointer *,
+[data-cursor="help"],
+[data-cursor="help"] *,
+.cursor-help,
+.cursor-help * {
   cursor: url('/cursors/pointer.png') 15 1, pointer;
   cursor: image-set(url('/cursors/pointer.png') 1x, url('/cursors/pointer@2x.png') 2x) 15 1, pointer;
 }

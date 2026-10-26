@@ -62,9 +62,11 @@ export default function Home() {
                 <span className="sr-only">Aditya</span>
                 <span aria-hidden="true">A</span>
                 <span
-                  className="underline decoration-dashed decoration-2 cursor-help"
+                  className="underline decoration-dashed decoration-2 cursor-pointer select-none"
                   onMouseEnter={() => setIsNameHovered(true)}
                   onMouseLeave={() => setIsNameHovered(false)}
+                  onClick={() => setIsNameHovered((prev) => !prev)}
+                  title="Click or hover to reveal alias"
                 >
                   di
                 </span>
