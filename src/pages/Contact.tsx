@@ -9,6 +9,10 @@ import {
   ArrowRight,
   Terminal,
   Send,
+  ExternalLink,
+  Copy,
+  Check,
+  ShieldCheck,
 } from 'lucide-react';
 
 const contactLinks = [
@@ -47,18 +51,54 @@ const contactLinks = [
 ];
 
 export default function Contact() {
-  const [formSent, setFormSent] = useState(false);
-  const [msgInput, setMsgInput] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [subject, setSubject] = useState('');
+  const [message, setMessage] = useState('');
+  const [statusMsg, setStatusMsg] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
 
-  const handleSendTerminal = (e: React.FormEvent) => {
+  const buildBody = () => {
+    return `Hi Aditya,\n\n${message.trim()}\n\n---\nFrom: ${name.trim() || 'Visitor'}\nSender Contact: ${
+      email.trim() || 'Not specified'
+    }\nSent from Aditya Jha Portfolio (Contact Dispatcher)`;
+  };
+
+  const getSubject = () => {
+    return subject.trim() || `Portfolio Message from ${name.trim() || 'Visitor'}`;
+  };
+
+  const handleSendMailto = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!msgInput.trim()) return;
-    const mailtoUrl = `mailto:adityajha.vats02@gmail.com?subject=Portfolio%20Message&body=${encodeURIComponent(
-      msgInput
-    )}`;
-    window.open(mailtoUrl, '_blank');
-    setFormSent(true);
-    setTimeout(() => setFormSent(false), 4000);
+    if (!message.trim()) return;
+
+    const mailtoUrl = `mailto:adityajha.vats02@gmail.com?subject=${encodeURIComponent(
+      getSubject()
+    )}&body=${encodeURIComponent(buildBody())}`;
+
+    // Direct navigation triggers OS default mail client without empty tab popup issues
+    window.location.href = mailtoUrl;
+
+    setStatusMsg('✓ Message pre-loaded! Check your email client and press Send to deliver.');
+    setTimeout(() => setStatusMsg(null), 6000);
+  };
+
+  const handleOpenGmail = () => {
+    if (!message.trim()) return;
+
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=adityajha.vats02@gmail.com&su=${encodeURIComponent(
+      getSubject()
+    )}&body=${encodeURIComponent(buildBody())}`;
+
+    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+    setStatusMsg('✓ Opened Gmail Web composer in a new tab! Press Send in Gmail to deliver.');
+    setTimeout(() => setStatusMsg(null), 6000);
+  };
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('adityajha.vats02@gmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2500);
   };
 
   return (
@@ -114,58 +154,142 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* Multiplayer Terminal Form */}
+        {/* Spam-Free Direct Message Composer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
           className="bg-surface-deep text-text-on-deep border-4 border-border p-6 sm:p-8 shadow-brutal"
         >
-          <div className="flex items-center justify-between pb-4 border-b-2 border-border-on-deep/30 mb-6">
-            <div className="flex items-center gap-2">
+          {/* Header */}
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b-2 border-border-on-deep/30 mb-6">
+            <div className="flex items-center gap-2.5">
               <Terminal className="w-5 h-5 text-accent-yellow" />
-              <span className="font-heading text-lg text-accent-yellow uppercase">
+              <span className="font-heading text-lg sm:text-xl text-accent-yellow uppercase tracking-tight">
                 Send a Message
               </span>
             </div>
-            <span className="font-pixel text-[9px] text-accent-green">Quick Email</span>
+            <div className="flex items-center gap-2">
+              <span className="font-pixel text-[8px] bg-accent-green text-accent-ink px-2 py-0.5 border border-border font-bold flex items-center gap-1">
+                <ShieldCheck size={11} />
+                SPAM-FREE
+              </span>
+              <button
+                type="button"
+                onClick={handleCopyEmail}
+                className="font-pixel text-[8px] uppercase px-2 py-0.5 bg-surface-1 text-ink border border-border flex items-center gap-1 hover:bg-accent-yellow transition-colors select-none cursor-pointer"
+                title="Copy Aditya's email address"
+              >
+                {copied ? <Check size={10} className="text-accent-green" /> : <Copy size={10} />}
+                <span>{copied ? 'Copied!' : 'Copy Email'}</span>
+              </button>
+            </div>
           </div>
 
-          <form onSubmit={handleSendTerminal} aria-busy={formSent ? 'true' : undefined} className="space-y-4">
-            <div className="font-mono text-sm text-text-on-deep/80">
-              <span className="text-accent-green mr-2">&gt;</span>
-              <span>Type your message below to compose in your email client:</span>
+          <form onSubmit={handleSendMailto} className="space-y-4">
+            <p className="font-mono text-xs sm:text-sm text-text-on-deep/80 leading-relaxed">
+              <span className="text-accent-green font-bold mr-2">&gt;</span>
+              Fill in your thoughts below. Clicking send will open your email with everything pre-filled so you can deliver directly from your own inbox without spam bots or middlemen!
+            </p>
+
+            {/* Name & Contact Grid */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
+              <div>
+                <label className="block font-pixel text-[9px] text-accent-yellow uppercase mb-1">
+                  Your Name / Handle
+                </label>
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Alex Hunter"
+                  className="w-full px-3.5 py-2.5 bg-surface-1 text-ink font-mono text-sm border-3 border-border placeholder:text-ink/40 focus:outline-none focus:border-focus shadow-[2px_2px_0px_#000]"
+                />
+              </div>
+
+              <div>
+                <label className="block font-pixel text-[9px] text-accent-yellow uppercase mb-1">
+                  Your Email / Contact (Optional)
+                </label>
+                <input
+                  type="text"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="e.g. alex@example.com"
+                  className="w-full px-3.5 py-2.5 bg-surface-1 text-ink font-mono text-sm border-3 border-border placeholder:text-ink/40 focus:outline-none focus:border-focus shadow-[2px_2px_0px_#000]"
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* Subject */}
+            <div>
+              <label className="block font-pixel text-[9px] text-accent-yellow uppercase mb-1">
+                Topic / Subject
+              </label>
               <input
                 type="text"
-                value={msgInput}
-                onChange={(e) => setMsgInput(e.target.value)}
-                placeholder="Hello Aditya, let's collaborate on a game or web app..."
-                className="flex-1 px-4 py-3 bg-surface-1 text-ink font-mono text-sm border-3 border-border placeholder:text-ink/50 focus:outline-none focus:border-focus shadow-[3px_3px_0px_#000]"
+                value={subject}
+                onChange={(e) => setSubject(e.target.value)}
+                placeholder="e.g. Collaboration on Godot game or AI tool"
+                className="w-full px-3.5 py-2.5 bg-surface-1 text-ink font-mono text-sm border-3 border-border placeholder:text-ink/40 focus:outline-none focus:border-focus shadow-[2px_2px_0px_#000]"
               />
+            </div>
+
+            {/* Message Area */}
+            <div>
+              <label className="block font-pixel text-[9px] text-accent-yellow uppercase mb-1">
+                Message Body <span className="text-accent-red">*</span>
+              </label>
+              <textarea
+                rows={4}
+                required
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                placeholder="Hi Aditya, I was checking out your portfolio and loved your work on Knightfall and Neura-Beats! Would love to chat about..."
+                className="w-full px-3.5 py-2.5 bg-surface-1 text-ink font-mono text-sm border-3 border-border placeholder:text-ink/40 focus:outline-none focus:border-focus shadow-[2px_2px_0px_#000] resize-y"
+              />
+            </div>
+
+            {/* Actions Toolbar */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
               <button
                 type="submit"
-                disabled={!msgInput.trim() || formSent}
-                aria-busy={formSent ? 'true' : undefined}
-                className={`px-6 py-3 min-h-[48px] font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 transition-all shadow-[3px_3px_0px_#000] ${
-                  !msgInput.trim()
+                disabled={!message.trim()}
+                className={`flex-1 min-w-[200px] min-h-[46px] px-5 py-3 font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 transition-all shadow-[3px_3px_0px_#000] select-none ${
+                  !message.trim()
                     ? 'bg-surface-1/60 text-ink/40 cursor-not-allowed opacity-75'
-                    : formSent
-                    ? 'bg-accent-green text-accent-ink cursor-progress'
-                    : 'bg-accent-yellow text-accent-ink hover:bg-accent-green cursor-pointer'
+                    : 'bg-accent-yellow text-accent-ink hover:bg-accent-green cursor-pointer hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5'
                 }`}
               >
                 <Send size={14} />
-                <span>{formSent ? 'Opening Mail...' : 'Send Message'}</span>
+                <span>Open in Mail App</span>
+              </button>
+
+              <button
+                type="button"
+                onClick={handleOpenGmail}
+                disabled={!message.trim()}
+                className={`min-h-[46px] px-5 py-3 font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 transition-all shadow-[3px_3px_0px_#000] select-none ${
+                  !message.trim()
+                    ? 'bg-surface-1/60 text-ink/40 cursor-not-allowed opacity-75'
+                    : 'bg-surface-1 text-ink hover:bg-accent-yellow hover:text-accent-ink cursor-pointer hover:-translate-y-0.5 active:translate-x-0.5 active:translate-y-0.5'
+                }`}
+                title="Open directly in Google Chrome / Gmail webmail"
+              >
+                <ExternalLink size={14} />
+                <span>Open in Gmail (Web)</span>
               </button>
             </div>
 
-            {formSent && (
-              <div className="p-3 bg-accent-green text-accent-ink font-pixel text-xs border-2 border-border font-bold">
-                ✓ Message ready! Opening default email client...
-              </div>
+            {/* Status Feedback Alert */}
+            {statusMsg && (
+              <motion.div
+                initial={{ opacity: 0, y: 5 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="p-3 bg-accent-green text-accent-ink font-pixel text-xs border-3 border-border font-bold shadow-[2px_2px_0px_#000]"
+              >
+                {statusMsg}
+              </motion.div>
             )}
           </form>
         </motion.div>

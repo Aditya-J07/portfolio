@@ -8,12 +8,15 @@ import {
   Globe,
   Wrench,
   BookOpen,
+  Terminal,
+  ExternalLink,
 } from 'lucide-react';
 import SkillBadge from '../components/SkillBadge';
 import PixelHearts from '../components/common/PixelHearts';
 import SectionLabel from '../components/common/SectionLabel';
 import { skillCategories, achievements } from '../data/skills';
 import { experiences } from '../data/hackathons';
+import { codingProfiles } from '../data/codingProfiles';
 
 const iconMap: Record<string, typeof Code> = {
   code: Code,
@@ -181,6 +184,89 @@ export default function About() {
                   </ul>
                 </div>
               </div>
+            ))}
+          </div>
+        </motion.section>
+
+        {/* ====================================================================
+            CODING PROFILES / COMPETITIVE PROGRAMMING
+            ==================================================================== */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.25 }}
+          className="bg-surface-1 border-4 border-border p-6 shadow-brutal"
+        >
+          <div className="flex flex-wrap items-center justify-between gap-3 pb-4 mb-6 border-b-3 border-border/30">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 bg-accent-yellow text-accent-ink border-2 border-border flex items-center justify-center font-bold">
+                <Terminal className="w-6 h-6" />
+              </div>
+              <div>
+                <h2 className="font-heading text-xl text-ink uppercase">Coding Profiles</h2>
+                <span className="font-pixel text-[8px] text-ink/70">
+                  PROBLEM SOLVING & COMPETITIVE PLATFORMS
+                </span>
+              </div>
+            </div>
+            <span className="font-pixel text-[9px] bg-accent-green text-accent-ink px-2.5 py-1 border-2 border-border font-bold">
+              {codingProfiles.length} PLATFORMS
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {codingProfiles.map((cp, idx) => (
+              <motion.a
+                key={cp.platform}
+                href={cp.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className="flex flex-col justify-between p-4 bg-surface-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)] hover:bg-surface-1 hover:border-focus hover:-translate-y-1 transition-all group select-none"
+              >
+                <div>
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-border/20">
+                    <div className="flex items-center gap-2">
+                      <span className="text-xl shrink-0" aria-hidden="true">
+                        {cp.icon}
+                      </span>
+                      <span className="font-heading text-sm text-ink group-hover:text-focus transition-colors">
+                        {cp.platform}
+                      </span>
+                    </div>
+                    <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border">
+                      {cp.badge}
+                    </span>
+                  </div>
+
+                  {/* Handle */}
+                  <div className="bg-surface-1 px-2.5 py-1.5 border-2 border-border mb-2.5 flex items-center justify-between">
+                    <span className="font-mono text-xs text-ink font-bold truncate">
+                      @{cp.handle}
+                    </span>
+                    <span className="font-pixel text-[7px] text-ink/60 uppercase">
+                      ID
+                    </span>
+                  </div>
+
+                  {/* Category & Description */}
+                  <div className="font-pixel text-[8px] text-focus uppercase font-bold mb-1.5">
+                    {cp.category}
+                  </div>
+                  <p className="font-body text-xs text-ink/80 leading-relaxed mb-4">
+                    {cp.description}
+                  </p>
+                </div>
+
+                {/* Card Action Link */}
+                <div className="pt-2 border-t border-border/20 flex items-center justify-between font-pixel text-[9px] text-ink group-hover:text-focus font-bold">
+                  <span>Visit Profile</span>
+                  <ExternalLink size={12} className="group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-transform" />
+                </div>
+              </motion.a>
             ))}
           </div>
         </motion.section>
