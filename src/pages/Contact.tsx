@@ -12,15 +12,14 @@ import {
   ExternalLink,
   Copy,
   Check,
-  ShieldCheck,
 } from 'lucide-react';
 
 const contactLinks = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'adityajha.vats02@gmail.com',
-    href: 'mailto:adityajha.vats02@gmail.com',
+    value: 'aditya.jha.contact@gmail.com',
+    href: 'mailto:aditya.jha.contact@gmail.com',
     color: 'text-accent-red',
     tag: 'DIRECT',
   },
@@ -72,7 +71,7 @@ export default function Contact() {
     e.preventDefault();
     if (!message.trim()) return;
 
-    const mailtoUrl = `mailto:adityajha.vats02@gmail.com?subject=${encodeURIComponent(
+    const mailtoUrl = `mailto:aditya.jha.contact@gmail.com?subject=${encodeURIComponent(
       getSubject()
     )}&body=${encodeURIComponent(buildBody())}`;
 
@@ -86,7 +85,7 @@ export default function Contact() {
   const handleOpenGmail = () => {
     if (!message.trim()) return;
 
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=adityajha.vats02@gmail.com&su=${encodeURIComponent(
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=aditya.jha.contact@gmail.com&su=${encodeURIComponent(
       getSubject()
     )}&body=${encodeURIComponent(buildBody())}`;
 
@@ -96,7 +95,7 @@ export default function Contact() {
   };
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('adityajha.vats02@gmail.com');
+    navigator.clipboard.writeText('aditya.jha.contact@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
@@ -154,7 +153,7 @@ export default function Contact() {
           ))}
         </div>
 
-        {/* Spam-Free Direct Message Composer */}
+        {/* Direct Message Composer */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -170,17 +169,13 @@ export default function Contact() {
               </span>
             </div>
             <div className="flex items-center gap-2">
-              <span className="font-pixel text-[8px] bg-accent-green text-accent-ink px-2 py-0.5 border border-border font-bold flex items-center gap-1">
-                <ShieldCheck size={11} />
-                SPAM-FREE
-              </span>
               <button
                 type="button"
                 onClick={handleCopyEmail}
-                className="font-pixel text-[8px] uppercase px-2 py-0.5 bg-surface-1 text-ink border border-border flex items-center gap-1 hover:bg-accent-yellow transition-colors select-none cursor-pointer"
+                className="font-pixel text-[8px] uppercase px-2.5 py-1 bg-surface-1 text-ink border border-border flex items-center gap-1.5 hover:bg-accent-yellow transition-colors select-none cursor-pointer font-bold shadow-[2px_2px_0px_#000]"
                 title="Copy Aditya's email address"
               >
-                {copied ? <Check size={10} className="text-accent-green" /> : <Copy size={10} />}
+                {copied ? <Check size={11} className="text-accent-green" /> : <Copy size={11} />}
                 <span>{copied ? 'Copied!' : 'Copy Email'}</span>
               </button>
             </div>
@@ -189,7 +184,7 @@ export default function Contact() {
           <form onSubmit={handleSendMailto} className="space-y-4">
             <p className="font-mono text-xs sm:text-sm text-text-on-deep/80 leading-relaxed">
               <span className="text-accent-green font-bold mr-2">&gt;</span>
-              Fill in your thoughts below. Clicking send will open your email with everything pre-filled so you can deliver directly from your own inbox without spam bots or middlemen!
+              Fill in your thoughts below. Clicking send will open your email with everything pre-filled so you can deliver directly from your own inbox!
             </p>
 
             {/* Name & Contact Grid */}

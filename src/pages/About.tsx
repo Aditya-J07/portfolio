@@ -116,19 +116,51 @@ export default function About() {
             </div>
           </div>
 
-          <div className="flex flex-col md:flex-row justify-between gap-4 p-4 bg-surface-2 border-3 border-border">
-            <div>
-              <h3 className="font-heading text-lg text-ink">Siddaganga Institute of Technology</h3>
-              <p className="font-body text-ink text-sm font-semibold">
-                B.E. in Computer Science & Engineering (AI & ML)
-              </p>
-              <p className="font-pixel text-[9px] text-focus mt-1">2nd Year • 2024 - 2028</p>
+          <div className="space-y-4">
+            {/* College */}
+            <div className="flex flex-col md:flex-row justify-between gap-4 p-4 bg-surface-2 border-3 border-border shadow-[2px_2px_0px_var(--shadow)]">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-pixel text-[8px] bg-accent-yellow text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                    UNDERGRADUATE
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg text-ink">Siddaganga Institute of Technology</h3>
+                <p className="font-body text-ink text-sm font-semibold">
+                  B.E. in Computer Science & Engineering (AI & ML)
+                </p>
+                <p className="font-pixel text-[9px] text-focus mt-1">2nd Year • 2024 - 2028</p>
+              </div>
+              <div className="flex items-center gap-2 md:self-start bg-surface-1 px-3 py-1.5 border-2 border-border self-start">
+                <MapPin className="w-4 h-4 text-accent-red" />
+                <span className="font-mono text-xs text-ink font-bold">
+                  Tumkur, Karnataka, India
+                </span>
+              </div>
             </div>
-            <div className="flex items-center gap-2 md:self-start bg-surface-1 px-3 py-1.5 border-2 border-border self-start">
-              <MapPin className="w-4 h-4 text-accent-red" />
-              <span className="font-mono text-xs text-ink font-bold">
-                Tumkur, Karnataka, India
-              </span>
+
+            {/* Schooling */}
+            <div className="flex flex-col md:flex-row justify-between gap-4 p-4 bg-surface-2 border-3 border-border shadow-[2px_2px_0px_var(--shadow)]">
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="font-pixel text-[8px] bg-accent-green text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                    PRIMARY & HIGHER SECONDARY
+                  </span>
+                </div>
+                <h3 className="font-heading text-lg text-ink">Kendriya Vidyalaya</h3>
+                <p className="font-body text-ink text-sm font-semibold">
+                  Pre-University Education (1st - 12th Standard) • PCM
+                </p>
+                <p className="font-body text-xs text-ink/80 mt-1 leading-relaxed">
+                  Completed entire schooling from 1st to 12th standard with a core specialization in Physics, Chemistry, and Mathematics (PCM).
+                </p>
+              </div>
+              <div className="flex items-center gap-2 md:self-start bg-surface-1 px-3 py-1.5 border-2 border-border self-start">
+                <MapPin className="w-4 h-4 text-accent-red" />
+                <span className="font-mono text-xs text-ink font-bold">
+                  India
+                </span>
+              </div>
             </div>
           </div>
         </motion.section>
@@ -227,17 +259,15 @@ export default function About() {
                 className="flex flex-col justify-between p-4 bg-surface-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)] hover:bg-surface-1 hover:border-focus hover:-translate-y-1 transition-all group select-none"
               >
                 <div>
-                  {/* Card Header */}
+                  {/* Card Header (Clean No Emoji) */}
                   <div className="flex items-center justify-between gap-2 mb-2 pb-2 border-b border-border/20">
                     <div className="flex items-center gap-2">
-                      <span className="text-xl shrink-0" aria-hidden="true">
-                        {cp.icon}
-                      </span>
+                      <span className="font-pixel text-[9px] text-accent-yellow font-bold">&gt;_</span>
                       <span className="font-heading text-sm text-ink group-hover:text-focus transition-colors">
                         {cp.platform}
                       </span>
                     </div>
-                    <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border">
+                    <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border font-bold">
                       {cp.badge}
                     </span>
                   </div>

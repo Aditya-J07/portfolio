@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail, Gamepad2, Heart, CheckCircle, ArrowUp } from 'l
 const socialLinks = [
   { icon: Github, href: 'https://github.com/Aditya-J07', label: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', label: 'LinkedIn' },
-  { icon: Mail, href: 'mailto:adityajha.vats02@gmail.com', label: 'Email' },
+  { icon: Mail, href: 'mailto:aditya.jha.contact@gmail.com', label: 'Email' },
   { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', label: 'itch.io' },
 ];
 

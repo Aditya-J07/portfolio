@@ -1,12 +1,27 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { MousePointer, MousePointerClick } from 'lucide-react';
 
 const STORAGE_KEY = 'portfolio-global-clicks';
 
+interface ClickParticle {
+  id: number;
+  x: number;
+  y: number;
+  dx: number;
+  dy: number;
+  size: number;
+  color: string;
+  rotate: number;
+  text?: string;
+}
+
+const PARTICLE_COLORS = ['#FFD93D', '#6BCB77', '#FF6B6B', '#4D96FF', '#FFA116', '#9D4EDD'];
+
 export default function ClickCounter() {
   const [clicks, setClicks] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [particles, setParticles] = useState<ClickParticle[]>([]);
 
   useEffect(() => {
     try {
@@ -19,7 +34,7 @@ export default function ClickCounter() {
     }
   }, []);
 
-  const handleClick = () => {
+  const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     const newClicks = clicks + 1;
     setClicks(newClicks);
     try {
@@ -29,6 +44,51 @@ export default function ClickCounter() {
     }
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 150);
+
+    // Spawn burst particles
+    const rect = e.currentTarget.getBoundingClientRect();
+    const parent = e.currentTarget.parentElement?.getBoundingClientRect();
+    const originX = parent ? e.clientX - parent.left : rect.width / 2;
+    const originY = parent ? e.clientY - parent.top : rect.height / 2;
+
+    const newBatch: ClickParticle[] = [];
+    const timestamp = Date.now();
+
+    // Floating '+1' particle
+    newBatch.push({
+      id: timestamp + Math.random(),
+      x: originX,
+      y: originY - 12,
+      dx: (Math.random() - 0.5) * 16,
+      dy: -42 - Math.random() * 18,
+      size: 14,
+      color: '#6BCB77',
+      rotate: (Math.random() - 0.5) * 20,
+      text: '+1',
+    });
+
+    // 10 colorful pixel spark particles
+    const count = 10;
+    for (let i = 0; i < count; i++) {
+      const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
+      const distance = 28 + Math.random() * 42;
+      newBatch.push({
+        id: timestamp + i + Math.random(),
+        x: originX,
+        y: originY,
+        dx: Math.cos(angle) * distance,
+        dy: Math.sin(angle) * distance + 6,
+        size: 5 + Math.floor(Math.random() * 5),
+        color: PARTICLE_COLORS[i % PARTICLE_COLORS.length],
+        rotate: Math.random() * 360,
+      });
+    }
+
+    setParticles((prev) => [...prev.slice(-20), ...newBatch]);
+
+    setTimeout(() => {
+      setParticles((prev) => prev.filter((p) => !newBatch.some((nb) => nb.id === p.id)));
+    }, 700);
   };
 
   return (
@@ -48,7 +108,58 @@ export default function ClickCounter() {
         </p>
       </div>
 
-      <div className="my-auto py-3">
+      <div className="my-auto py-3 relative overflow-visible">
+        {/* Particle Overlay */}
+        <AnimatePresence>
+          {particles.map((p) => (
+            <motion.div
+              key={p.id}
+              initial={{
+                x: p.x,
+                y: p.y,
+                opacity: 1,
+                scale: p.text ? 1.2 : 1,
+                rotate: 0,
+              }}
+              animate={{
+                x: p.x + p.dx,
+                y: p.y + p.dy,
+                opacity: 0,
+                scale: p.text ? 1.4 : 0.2,
+                rotate: p.rotate,
+              }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.65, ease: 'easeOut' }}
+              className="pointer-events-none absolute select-none z-30"
+              style={{
+                left: 0,
+                top: 0,
+              }}
+            >
+              {p.text ? (
+                <span
+                  className="font-pixel font-bold text-xs px-1 border border-border shadow-[1px_1px_0px_#000]"
+                  style={{
+                    backgroundColor: p.color,
+                    color: '#000',
+                  }}
+                >
+                  {p.text}
+                </span>
+              ) : (
+                <div
+                  style={{
+                    width: `${p.size}px`,
+                    height: `${p.size}px`,
+                    backgroundColor: p.color,
+                  }}
+                  className="border border-border/80 shadow-[1px_1px_0px_#000]"
+                />
+              )}
+            </motion.div>
+          ))}
+        </AnimatePresence>
+
         <button
           type="button"
           onClick={handleClick}
@@ -81,4 +192,5 @@ export default function ClickCounter() {
     </div>
   );
 }
+
 
