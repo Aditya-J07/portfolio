@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MousePointer, MousePointerClick } from 'lucide-react';
+import { MousePointer, MousePointerClick, Globe2 } from 'lucide-react';
 
 const STORAGE_KEY = 'portfolio-global-clicks';
 
@@ -19,33 +19,122 @@ interface ClickParticle {
 const PARTICLE_COLORS = ['#FFD93D', '#6BCB77', '#FF6B6B', '#4D96FF', '#FFA116', '#9D4EDD'];
 
 export default function ClickCounter() {
-  const [clicks, setClicks] = useState(0);
-  const [isAnimating, setIsAnimating] = useState(false);
-  const [particles, setParticles] = useState<ClickParticle[]>([]);
-
-  useEffect(() => {
+  const [clicks, setClicks] = useState<number>(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
-      if (stored) {
-        setClicks(parseInt(stored, 10));
+      return stored ? parseInt(stored, 10) || 0 : 0;
+    } catch {
+      return 0;
+    }
+  });
+
+  const [isAnimating, setIsAnimating] = useState(false);
+  const [particles, setParticles] = useState<ClickParticle[]>([]);
+  const [isLive, setIsLive] = useState(false);
+
+  // Track clicks waiting to be flushed to Upstash/Redis
+  const pendingClicksRef = useRef<number>(0);
+  const flushTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Function to sync pending clicks to the cloud
+  const flushPendingClicks = async () => {
+    const toSend = pendingClicksRef.current;
+    if (toSend <= 0) return;
+
+    // Reset pending counter before async operation to avoid race conditions
+    pendingClicksRef.current = 0;
+
+    try {
+      const res = await fetch('/api/clicks', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: toSend }),
+      });
+
+      if (res.ok) {
+        const data = await res.json();
+        if (typeof data.clicks === 'number' && data.clicks > 0) {
+          setClicks(data.clicks);
+          setIsLive(true);
+          try {
+            localStorage.setItem(STORAGE_KEY, data.clicks.toString());
+          } catch {
+            // ignore
+          }
+        }
       }
     } catch {
-      // ignore
+      // Re-queue pending count if network request failed
+      pendingClicksRef.current += toSend;
     }
+  };
+
+  // Fetch initial global clicks from cloud & setup periodic refresh
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchGlobalClicks = async () => {
+      try {
+        const res = await fetch('/api/clicks');
+        if (res.ok) {
+          const data = await res.json();
+          if (isMounted && typeof data.clicks === 'number' && data.clicks > 0) {
+            setClicks(data.clicks);
+            setIsLive(true);
+            try {
+              localStorage.setItem(STORAGE_KEY, data.clicks.toString());
+            } catch {
+              // ignore
+            }
+          }
+        }
+      } catch {
+        // Dev fallback or offline
+      }
+    };
+
+    fetchGlobalClicks();
+
+    // Poll every 15 seconds to receive clicks from other visitors worldwide
+    const interval = setInterval(fetchGlobalClicks, 15000);
+
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+      if (flushTimerRef.current) {
+        clearTimeout(flushTimerRef.current);
+      }
+    };
   }, []);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    const newClicks = clicks + 1;
-    setClicks(newClicks);
-    try {
-      localStorage.setItem(STORAGE_KEY, newClicks.toString());
-    } catch {
-      // ignore
+    // 1. Optimistic instant increment
+    setClicks((prev) => {
+      const next = prev + 1;
+      try {
+        localStorage.setItem(STORAGE_KEY, next.toString());
+      } catch {
+        // ignore
+      }
+      return next;
+    });
+
+    // 2. Queue for batched cloud sync
+    pendingClicksRef.current += 1;
+
+    // Debounced flush: send accumulated batch after 1 second of inactivity
+    if (flushTimerRef.current) {
+      clearTimeout(flushTimerRef.current);
     }
+    flushTimerRef.current = setTimeout(() => {
+      flushPendingClicks();
+    }, 1200);
+
+    // 3. Tactile button animation
     setIsAnimating(true);
     setTimeout(() => setIsAnimating(false), 150);
 
-    // Spawn burst particles
+    // 4. Spawn vibrant pixel burst particles
     const rect = e.currentTarget.getBoundingClientRect();
     const parent = e.currentTarget.parentElement?.getBoundingClientRect();
     const originX = parent ? e.clientX - parent.left : rect.width / 2;
@@ -54,7 +143,7 @@ export default function ClickCounter() {
     const newBatch: ClickParticle[] = [];
     const timestamp = Date.now();
 
-    // Floating '+1' particle
+    // Floating '+1' XP indicator
     newBatch.push({
       id: timestamp + Math.random(),
       x: originX,
@@ -67,7 +156,7 @@ export default function ClickCounter() {
       text: '+1',
     });
 
-    // 10 colorful pixel spark particles
+    // 10 colorful pixel sparks
     const count = 10;
     for (let i = 0; i < count; i++) {
       const angle = (i / count) * Math.PI * 2 + (Math.random() - 0.5) * 0.5;
@@ -99,12 +188,17 @@ export default function ClickCounter() {
             <MousePointerClick size={20} className="text-accent-red" />
             <span>Click Counter</span>
           </div>
-          <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border">
-            INTERACTIVE
+          <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border flex items-center gap-1.5">
+            <span
+              className={`w-1.5 h-1.5 inline-block ${
+                isLive ? 'bg-accent-green animate-pulse' : 'bg-accent-yellow'
+              }`}
+            />
+            GLOBAL
           </span>
         </div>
         <p className="font-body text-xs text-ink/80 mb-3 leading-relaxed">
-          Smash the arcade button to rack up interactive activations.
+          Smash the arcade button to contribute to the worldwide click pool.
         </p>
       </div>
 
@@ -181,8 +275,9 @@ export default function ClickCounter() {
           animate={{ scale: 1 }}
           className="bg-surface-2 border-2 border-border p-2.5 shadow-[2px_2px_0px_var(--shadow)] flex items-center justify-between"
         >
-          <span className="font-pixel text-[8px] uppercase text-ink/70">
-            Total Activations
+          <span className="font-pixel text-[8px] uppercase text-ink/70 flex items-center gap-1.5">
+            <Globe2 className="w-3 h-3 text-accent-green" />
+            Global Activations
           </span>
           <span className="font-pixel text-sm text-accent-ink font-bold">
             {clicks.toLocaleString()}
@@ -192,5 +287,3 @@ export default function ClickCounter() {
     </div>
   );
 }
-
-
