@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Terminal, MoreHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
+import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -51,6 +52,11 @@ export default function Navbar() {
                 );
               })}
 
+              {/* Quick Compact Theme Toggle in Navbar */}
+              <div className="ml-1">
+                <ThemeToggle compact={true} />
+              </div>
+
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen(true)}
@@ -62,6 +68,7 @@ export default function Navbar() {
 
             {/* Mobile Actions */}
             <div className="md:hidden flex items-center gap-2">
+              <ThemeToggle compact={true} />
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen(true)}

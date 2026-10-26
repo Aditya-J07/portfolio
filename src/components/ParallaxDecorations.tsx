@@ -156,9 +156,9 @@ export default function ParallaxDecorations() {
             </div>
           </div>
 
-          {/* Voxel Grass Cube (Tier Near) */}
+          {/* Voxel Grass Cube (Tier Near) - positioned safely above buddy & speech bubble */}
           <div
-            className="parallax-tier-near absolute top-3/4 right-16 w-12 h-12 ambient-floating-cube hidden md:block"
+            className="parallax-tier-near absolute top-[48%] right-14 w-12 h-12 ambient-floating-cube hidden md:block"
             style={{ willChange: 'transform' }}
           >
             <div className="w-10 h-10 bg-accent-green border-3 border-border shadow-[4px_4px_0px_var(--shadow)] flex items-center justify-center font-pixel text-[8px] text-accent-ink font-bold">
