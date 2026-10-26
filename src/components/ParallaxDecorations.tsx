@@ -162,7 +162,7 @@ export default function ParallaxDecorations() {
             style={{ willChange: 'transform' }}
           >
             <div className="w-10 h-10 bg-accent-green border-3 border-border shadow-[4px_4px_0px_var(--shadow)] flex items-center justify-center font-pixel text-[8px] text-accent-ink font-bold">
-              GRS
+              13
             </div>
           </div>
         </>
