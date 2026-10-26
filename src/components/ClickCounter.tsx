@@ -36,10 +36,10 @@ export default function ClickCounter() {
       <div className="flex items-center justify-between mb-4 border-b-2 border-border/30 pb-2">
         <span className="font-pixel text-[9px] uppercase text-ink flex items-center gap-1.5 font-bold">
           <MousePointerClick className="text-accent-red w-4 h-4" />
-          Clicker Quest
+          Click Counter
         </span>
         <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border">
-          EASTER EGG
+          INTERACTIVE
         </span>
       </div>
 
@@ -53,7 +53,7 @@ export default function ClickCounter() {
         }`}
       >
         <MousePointer className="w-4 h-4" />
-        CLICK PRESSURE PLATE
+        CLICK ME!
       </button>
 
       <motion.div

@@ -288,10 +288,10 @@ export default function CursorBuddy() {
 
             // Achievement Toasts
             if (petCount.current === 5) {
-              setToastMessage('🏆 ADVANCEMENT: Buddy Apprentice (5 Pets)');
+              setToastMessage('🏆 ACHIEVEMENT: Buddy Apprentice (5 Pets)');
               setTimeout(() => setToastMessage(null), 3500);
             } else if (petCount.current === 15) {
-              setToastMessage('🏆 ADVANCEMENT: Best Friends Forever (15 Pets)');
+              setToastMessage('🏆 ACHIEVEMENT: Best Friends Forever (15 Pets)');
               setTimeout(() => setToastMessage(null), 3500);
             }
           }

@@ -15,10 +15,10 @@ export default function Footer() {
   };
 
   return (
-    <footer className="mt-24 border-t-4 border-border bg-surface-deep text-text-on-deep">
+    <footer className="relative z-30 mt-24 border-t-4 border-border bg-surface-deep text-text-on-deep">
       {/* Voxel Grass Ground Strip */}
-      <div className="w-full h-4 bg-ground-top border-b-2 border-border" />
-      <div className="w-full h-2 bg-ground-bottom" />
+      <div className="w-full h-3 bg-ground-top border-b-2 border-border" />
+      <div className="w-full h-1.5 bg-ground-bottom" />
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b-2 border-border/40">
@@ -26,14 +26,14 @@ export default function Footer() {
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 bg-surface-1 border-3 border-border-on-deep flex items-center justify-center shadow-[3px_3px_0px_#000]">
               <span className="font-pixel text-xl select-none" aria-hidden="true">
-                ⛏️
+                💻
               </span>
             </div>
             <div>
               <div className="font-heading text-lg text-accent-yellow">ADITYA JHA</div>
               <div className="font-pixel text-[9px] text-accent-green flex items-center gap-2 mt-0.5">
                 <CheckCircle className="w-3.5 h-3.5" />
-                <span>SERVER ONLINE • 20 TPS</span>
+                <span>AVAILABLE FOR WORK • OPEN TO OPPORTUNITIES</span>
               </div>
             </div>
           </div>
@@ -53,14 +53,14 @@ export default function Footer() {
               </a>
             ))}
 
-            {/* Back to Spawn Button */}
+            {/* Back to Top Button */}
             <button
               type="button"
               onClick={scrollToTop}
               className="px-4 py-2.5 min-h-[48px] bg-accent-yellow text-accent-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:-translate-y-1 transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
             >
               <ArrowUp className="w-4 h-4" />
-              <span>Back to Spawn ↑</span>
+              <span>Back to Top ↑</span>
             </button>
           </div>
         </div>

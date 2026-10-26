@@ -38,13 +38,13 @@ export default function About() {
           <div className="flex flex-wrap items-center justify-between gap-4 mb-6 pb-4 border-b-3 border-border/30">
             <SectionLabel
               slot="[02/05]"
-              title="Character Sheet"
-              subtitle="Player Dossier & Lore"
+              title="About Me"
+              subtitle="Background & Journey"
               className="mb-0"
             />
             <div className="flex items-center gap-3">
               <span className="font-pixel text-[10px] bg-accent-yellow text-accent-ink px-2.5 py-1 border-2 border-border font-bold">
-                LVL 20 BUILDER
+                STUDENT & DEVELOPER
               </span>
               <PixelHearts total={10} count={10} size="sm" />
             </div>
@@ -62,7 +62,7 @@ export default function About() {
               </div>
               <div className="mt-3 text-center">
                 <span className="font-pixel text-[8px] bg-accent-green text-accent-ink px-2 py-0.5 border border-border font-bold">
-                  ALIVE & CRAFTING
+                  ACTIVE & CODING
                 </span>
               </div>
             </div>
@@ -108,8 +108,8 @@ export default function About() {
               <GraduationCap className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-heading text-xl text-ink uppercase">Education Dossier</h2>
-              <span className="font-pixel text-[8px] text-ink/70">ACADEMIC GUILD LOG</span>
+              <h2 className="font-heading text-xl text-ink uppercase">Education</h2>
+              <span className="font-pixel text-[8px] text-ink/70">ACADEMIC BACKGROUND</span>
             </div>
           </div>
 
@@ -144,8 +144,8 @@ export default function About() {
               <Briefcase className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-heading text-xl text-ink uppercase">Experience Questline</h2>
-              <span className="font-pixel text-[8px] text-ink/70">ACTIVE & PAST GUILD ROLES</span>
+              <h2 className="font-heading text-xl text-ink uppercase">Experience</h2>
+              <span className="font-pixel text-[8px] text-ink/70">ROLES & INVOLVEMENTS</span>
             </div>
           </div>
 
@@ -199,7 +199,7 @@ export default function About() {
               <Code className="w-6 h-6" />
             </div>
             <div>
-              <h2 className="font-heading text-xl text-ink uppercase">Crafting Inventory</h2>
+              <h2 className="font-heading text-xl text-ink uppercase">Skills & Technologies</h2>
               <span className="font-pixel text-[8px] text-ink/70">
                 TOOLKIT, ENGINES & TECHNOLOGIES
               </span>
@@ -246,8 +246,8 @@ export default function About() {
               🏆
             </div>
             <div>
-              <h2 className="font-heading text-xl text-ink uppercase">Advancements Unlocked</h2>
-              <span className="font-pixel text-[8px] text-ink/70">COMPLETED ACHIEVEMENTS</span>
+              <h2 className="font-heading text-xl text-ink uppercase">Achievements</h2>
+              <span className="font-pixel text-[8px] text-ink/70">HONORS & MILESTONES</span>
             </div>
           </div>
 

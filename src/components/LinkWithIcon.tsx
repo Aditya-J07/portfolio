@@ -22,7 +22,7 @@ export default function LinkWithIcon({
       rel={external ? 'noopener noreferrer' : undefined}
       className={`text-ink hover:text-focus inline-flex items-center gap-1.5 font-bold transition-all hover:translate-x-0.5 ${className}`}
     >
-      {Icon && <Icon size={16} strokeWidth={2.2} className="shrink-0 text-accent-yellow" />}
+      {Icon && <Icon size={16} strokeWidth={2.2} className="shrink-0 text-ink" />}
       <span>{text}</span>
     </a>
   );

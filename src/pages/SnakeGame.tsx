@@ -237,7 +237,7 @@ export default function SnakeGame() {
           className="inline-flex items-center gap-2 px-3 py-2 bg-surface-1 text-ink border-3 border-border font-pixel text-[10px] uppercase hover:bg-accent-yellow hover:text-accent-ink transition-all shadow-brutal-sm"
         >
           <ArrowLeft size={16} />
-          <span>Back to Spawn</span>
+          <span>Back to Home</span>
         </Link>
 
         {/* Arcade Cabinet Frame */}

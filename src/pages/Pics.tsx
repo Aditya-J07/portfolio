@@ -31,7 +31,7 @@ export default function Pics() {
             <SectionLabel
               slot="[04/05]"
               title="Field Photography"
-              subtitle="Expedition Frames & Lens Studies"
+              subtitle="Moments & Visual Studies"
               className="mb-2"
             />
             <p className="font-body text-ink text-base sm:text-lg max-w-2xl leading-relaxed">
@@ -43,11 +43,11 @@ export default function Pics() {
           <div className="bg-surface-deep text-text-on-deep border-3 border-border-on-deep p-4 shadow-brutal-sm font-pixel text-[9px] space-y-1.5 shrink-0 self-stretch md:self-auto">
             <div className="text-accent-yellow flex items-center gap-2">
               <Camera className="w-4 h-4" />
-              <span>OPTICS RIG: 35MM / 50MM</span>
+              <span>OPTICS: 35MM / 50MM</span>
             </div>
             <div className="text-white flex items-center gap-2">
               <Compass className="w-4 h-4 text-accent-green" />
-              <span>FIELD ROLL: 12 EXPOSURES</span>
+              <span>GALLERY: 12 PHOTOS</span>
             </div>
           </div>
         </motion.div>
@@ -67,7 +67,6 @@ export default function Pics() {
                   src={photo.src}
                   alt={photo.alt}
                   className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-                  loading="lazy"
                 />
 
                 {/* EXIF Frame Overlay */}

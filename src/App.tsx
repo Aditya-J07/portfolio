@@ -3,7 +3,6 @@ import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import XPBar from './components/XPBar';
-import Hotbar from './components/Hotbar';
 import ParallaxDecorations from './components/ParallaxDecorations';
 import SmoothScroll from './components/SmoothScroll';
 import CursorBuddy from './components/CursorBuddy';
@@ -57,12 +56,9 @@ function AppContent() {
       <Navbar />
 
       {/* Main Content Area */}
-      <main className="relative z-10 pt-20 sm:pt-24 pb-24">
+      <main className="relative z-10 pt-20 sm:pt-24 pb-12">
         <AnimatedRoutes />
       </main>
-
-      {/* Bottom Floating Hotbar Dock */}
-      <Hotbar />
 
       {/* CursorBuddy Interactive Companion Mascot */}
       <CursorBuddy />

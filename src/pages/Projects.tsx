@@ -36,7 +36,7 @@ export default function Projects() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-surface-1 border-4 border-border p-6 sm:p-8 shadow-brutal"
         >
-          <SectionLabel slot="[03/05]" title="The Chest" subtitle="Crafted Repositories & Software" />
+          <SectionLabel slot="[03/05]" title="Projects" subtitle="Web Applications, Tools & Games" />
           <p className="font-body text-ink text-base sm:text-lg max-w-3xl leading-relaxed">
             A collection of my work including web applications, tools, games, and club websites. Each
             project represents a learning experience and a step forward in my development journey.
@@ -123,13 +123,13 @@ export default function Projects() {
           className="bg-surface-deep text-text-on-deep border-4 border-border p-6 shadow-brutal text-center"
         >
           <p className="font-pixel text-xs sm:text-sm tracking-wider uppercase">
-            Total Inventory:{' '}
+            Portfolio Summary:{' '}
             <span className="text-accent-yellow font-bold">{projects.length} Projects</span>
             {' + '}
             <span className="text-accent-purple font-bold">{games.length} Games</span>
             {' = '}
             <span className="text-accent-green font-bold">
-              {projects.length + games.length} Creations Found
+              {projects.length + games.length} Completed Works
             </span>
           </p>
         </motion.div>

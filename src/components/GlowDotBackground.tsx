@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react';
+import { useTheme } from '../context/ThemeContext';
 
 export default function GlowDotBackground() {
+  const { backgroundEffect } = useTheme();
   const glowLayerRef = useRef<HTMLDivElement>(null);
   const targetPos = useRef({ x: -1000, y: -1000 });
   const currentPos = useRef({ x: -1000, y: -1000 });
@@ -8,6 +10,7 @@ export default function GlowDotBackground() {
   const rafId = useRef<number | null>(null);
 
   useEffect(() => {
+    if (!backgroundEffect) return;
     // Only enable on fine pointer / hover devices, and not reduced motion
     const hasFineHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
     const isReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -71,7 +74,11 @@ export default function GlowDotBackground() {
       document.removeEventListener('pointerenter', handlePointerEnter);
       if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, []);
+  }, [backgroundEffect]);
+
+  if (!backgroundEffect) {
+    return null;
+  }
 
   return (
     <div

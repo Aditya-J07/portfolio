@@ -10,7 +10,6 @@ import {
   Terminal,
   Send,
 } from 'lucide-react';
-import SectionLabel from '../components/common/SectionLabel';
 
 const contactLinks = [
   {
@@ -19,7 +18,7 @@ const contactLinks = [
     value: 'adityajha.vats02@gmail.com',
     href: 'mailto:adityajha.vats02@gmail.com',
     color: 'text-accent-red',
-    tag: 'COMMS CHANNEL 01',
+    tag: 'DIRECT',
   },
   {
     icon: Github,
@@ -27,7 +26,7 @@ const contactLinks = [
     value: 'Aditya-J07',
     href: 'https://github.com/Aditya-J07',
     color: 'text-ink',
-    tag: 'COMMS CHANNEL 02',
+    tag: 'CODE',
   },
   {
     icon: Linkedin,
@@ -35,7 +34,7 @@ const contactLinks = [
     value: 'aditya-jha-sit',
     href: 'https://www.linkedin.com/in/aditya-jha-sit',
     color: 'text-focus',
-    tag: 'COMMS CHANNEL 03',
+    tag: 'NETWORK',
   },
   {
     icon: Gamepad2,
@@ -43,7 +42,7 @@ const contactLinks = [
     value: 'prolly-adi',
     href: 'https://prolly-adi.itch.io/',
     color: 'text-accent-purple',
-    tag: 'COMMS CHANNEL 04',
+    tag: 'GAMES',
   },
 ];
 
@@ -67,18 +66,16 @@ export default function Contact() {
       <div className="max-w-5xl mx-auto space-y-12">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-surface-1 border-4 border-border p-6 sm:p-8 shadow-brutal"
+          className="space-y-2"
         >
-          <SectionLabel
-            slot="[05/05]"
-            title="Join Server"
-            subtitle="Direct Comms & Multiplayer Hub"
-          />
+          <h1 className="font-heading text-3xl sm:text-4xl text-ink uppercase tracking-tight">
+            Contact
+          </h1>
           <p className="font-body text-ink text-base sm:text-lg max-w-2xl leading-relaxed">
-            I'm always open to discussing new projects, creative ideas, or opportunities to be part
-            of your visions. Broadcast a packet or link up on any channel below.
+            I'm always open to discussing new projects, creative ideas, or opportunities to collaborate.
+            Feel free to reach out through any channel below.
           </p>
         </motion.div>
 
@@ -128,16 +125,16 @@ export default function Contact() {
             <div className="flex items-center gap-2">
               <Terminal className="w-5 h-5 text-accent-yellow" />
               <span className="font-heading text-lg text-accent-yellow uppercase">
-                Terminal Broadcast
+                Send a Message
               </span>
             </div>
-            <span className="font-pixel text-[9px] text-accent-green">/msg aditya</span>
+            <span className="font-pixel text-[9px] text-accent-green">Quick Email</span>
           </div>
 
           <form onSubmit={handleSendTerminal} className="space-y-4">
             <div className="font-mono text-sm text-text-on-deep/80">
               <span className="text-accent-green mr-2">&gt;</span>
-              <span>Type your transmission below to open direct email client:</span>
+              <span>Type your message below to compose in your email client:</span>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3">
@@ -153,13 +150,13 @@ export default function Contact() {
                 className="px-6 py-3 min-h-[48px] bg-accent-yellow text-accent-ink font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 hover:bg-accent-green transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
               >
                 <Send size={14} />
-                <span>Send Packet</span>
+                <span>Send Message</span>
               </button>
             </div>
 
             {formSent && (
               <div className="p-3 bg-accent-green text-accent-ink font-pixel text-xs border-2 border-border font-bold">
-                ✓ PACKET ROUTED TO DEFAULT COMMS PROTOCOL!
+                ✓ Message ready! Opening default email client...
               </div>
             )}
           </form>
@@ -177,8 +174,8 @@ export default function Contact() {
               <MapPin className="w-6 h-6" />
             </div>
             <div>
-              <div className="font-pixel text-[9px] text-ink/70 uppercase">Spawn Point</div>
-              <h3 className="font-heading text-lg text-ink">Located in</h3>
+              <div className="font-pixel text-[9px] text-ink/70 uppercase">Location</div>
+              <h3 className="font-heading text-lg text-ink">Based in</h3>
               <p className="font-mono text-sm text-ink font-bold">Tumkur, Karnataka, India</p>
             </div>
           </div>
@@ -188,8 +185,8 @@ export default function Contact() {
               <span className="w-4 h-4 bg-accent-green border-2 border-border rounded-full animate-ping" />
             </div>
             <div>
-              <div className="font-pixel text-[9px] text-ink/70 uppercase">Player Status</div>
-              <h3 className="font-heading text-lg text-ink">Online & Ready</h3>
+              <div className="font-pixel text-[9px] text-ink/70 uppercase">Status</div>
+              <h3 className="font-heading text-lg text-ink">Online & Active</h3>
               <p className="font-mono text-sm text-ink font-bold">Available for opportunities</p>
             </div>
           </div>

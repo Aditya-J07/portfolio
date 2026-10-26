@@ -49,7 +49,7 @@ export default function Home() {
               <div className="flex items-center gap-2">
                 <span className="w-3 h-3 bg-accent-green border-2 border-border inline-block animate-pulse" />
                 <span className="font-pixel text-[9px] uppercase text-ink font-bold">
-                  SERVER STATUS: ACTIVE (TUMKUR, IN)
+                  LOCATION: TUMKUR, KARNATAKA, INDIA
                 </span>
               </div>
               <PixelHearts total={10} count={10} size="sm" />
@@ -141,9 +141,9 @@ export default function Home() {
         <div className="lg:col-span-4 bg-surface-deep text-text-on-deep border-4 border-border p-6 shadow-brutal flex flex-col justify-between">
           <div>
             <div className="flex items-center justify-between pb-3 border-b-2 border-border-on-deep/30 mb-4">
-              <span className="font-pixel text-[9px] text-accent-yellow">PLAYER_PROFILE.DAT</span>
+              <span className="font-pixel text-[9px] text-accent-yellow">PROFILE.DAT</span>
               <span className="font-pixel text-[9px] bg-accent-green text-accent-ink px-1.5 py-0.5 font-bold">
-                LVL 20
+                DEV PROFILE
               </span>
             </div>
 
@@ -153,10 +153,6 @@ export default function Home() {
                   src="/profile.png"
                   alt="Aditya Jha"
                   className="w-full h-full object-cover"
-                  onError={(e) => {
-                    // fallback to pixel avatar emoji if image is loading
-                    (e.target as HTMLElement).style.display = 'none';
-                  }}
                 />
               </div>
               <h2 className="font-heading text-xl text-accent-yellow">ADITYA JHA</h2>
@@ -165,18 +161,18 @@ export default function Home() {
               </p>
             </div>
 
-            {/* RPG Stats Sheet */}
+            {/* Profile Info Sheet */}
             <div className="space-y-2.5 font-pixel text-[9px] pt-3 border-t-2 border-border-on-deep/30">
               <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
-                <span className="text-accent-yellow">CLASS:</span>
-                <span className="text-white">AI/ML ENGINEER</span>
+                <span className="text-accent-yellow">ROLE:</span>
+                <span className="text-white">AI/ML & FULL-STACK</span>
               </div>
               <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
                 <span className="text-accent-green">LOCATION:</span>
                 <span className="text-white">TUMKUR, INDIA</span>
               </div>
               <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
-                <span className="text-accent-teal">GUILD:</span>
+                <span className="text-accent-teal">CLUBS:</span>
                 <span className="text-white">PATHFINDER / DECODERS</span>
               </div>
             </div>
@@ -187,7 +183,7 @@ export default function Home() {
               to="/contact"
               className="w-full min-h-[44px] py-2.5 bg-accent-yellow text-accent-ink border-3 border-border-on-deep font-pixel text-[10px] uppercase flex items-center justify-center gap-2 hover:bg-accent-green transition-all shadow-[2px_2px_0px_#000]"
             >
-              <span>Connect / Msg ↗</span>
+              <span>Get in Touch ↗</span>
             </Link>
           </div>
         </div>
@@ -206,13 +202,13 @@ export default function Home() {
           <SectionLabel
             slot="[01/05]"
             title="Featured Projects"
-            subtitle="The Rare & Legendary Chest Items"
+            subtitle="Featured Creations & Experiments"
           />
           <Link
             to="/projects"
             className="px-4 py-2 bg-surface-1 text-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-brutal-sm self-start sm:self-auto"
           >
-            <span>View All Chests ({projects.length})</span>
+            <span>View All Projects ({projects.length})</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
@@ -228,7 +224,7 @@ export default function Home() {
           DASHBOARD BENTO GRID (CLICKER, THEME, GAMES, ACHIEVEMENTS, HACKATHONS)
           ==================================================================== */}
       <section>
-        <SectionLabel slot="[02/05]" title="Dashboard" subtitle="Active Quests & World Config" />
+        <SectionLabel slot="[02/05]" title="Dashboard" subtitle="Highlights & Interactive Showcase" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Box 1: Stats Clicker */}
@@ -293,7 +289,7 @@ export default function Home() {
             <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-4">
               <div className="flex items-center gap-2 font-heading text-lg text-ink">
                 <Activity size={20} className="text-accent-green" />
-                <span>Recent Advancements</span>
+                <span>Recent Achievements</span>
               </div>
               <span className="font-pixel text-[9px] bg-accent-yellow text-accent-ink px-2 py-0.5 border border-border font-bold">
                 TOP 4
@@ -323,7 +319,7 @@ export default function Home() {
             <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-4">
               <div className="flex items-center gap-2 font-heading text-lg text-ink">
                 <Trophy size={20} className="text-accent-yellow" />
-                <span>Hackathons & Raids</span>
+                <span>Hackathons & Competitions</span>
               </div>
               <span className="font-pixel text-[9px] bg-surface-deep text-accent-green px-2 py-0.5 border border-border">
                 {hackathons.length} LOGS
