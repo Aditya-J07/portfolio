@@ -26,7 +26,7 @@ import { hackathons } from '../data/hackathons';
 const socialLinks = [
   { icon: Github, href: 'https://github.com/Aditya-J07', text: 'GitHub' },
   { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', text: 'LinkedIn' },
-  { icon: Mail, href: 'mailto:aditya.jha.contact@gmail.com', text: 'Email' },
+  { icon: Mail, href: 'mailto:adityajha.contact@gmail.com', text: 'Email' },
   { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', text: 'itch.io' },
 ];
 

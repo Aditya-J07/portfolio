@@ -18,8 +18,8 @@ const contactLinks = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'aditya.jha.contact@gmail.com',
-    href: 'mailto:aditya.jha.contact@gmail.com',
+    value: 'adityajha.contact@gmail.com',
+    href: 'mailto:adityajha.contact@gmail.com',
     color: 'text-accent-red',
     tag: 'DIRECT',
   },
@@ -71,7 +71,7 @@ export default function Contact() {
     e.preventDefault();
     if (!message.trim()) return;
 
-    const mailtoUrl = `mailto:aditya.jha.contact@gmail.com?subject=${encodeURIComponent(
+    const mailtoUrl = `mailto:adityajha.contact@gmail.com?subject=${encodeURIComponent(
       getSubject()
     )}&body=${encodeURIComponent(buildBody())}`;
 
@@ -85,7 +85,7 @@ export default function Contact() {
   const handleOpenGmail = () => {
     if (!message.trim()) return;
 
-    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=aditya.jha.contact@gmail.com&su=${encodeURIComponent(
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=adityajha.contact@gmail.com&su=${encodeURIComponent(
       getSubject()
     )}&body=${encodeURIComponent(buildBody())}`;
 
@@ -95,7 +95,7 @@ export default function Contact() {
   };
 
   const handleCopyEmail = () => {
-    navigator.clipboard.writeText('aditya.jha.contact@gmail.com');
+    navigator.clipboard.writeText('adityajha.contact@gmail.com');
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
   };
