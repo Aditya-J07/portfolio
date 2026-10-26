@@ -1,8 +1,10 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
 import ThemeToggle from './ThemeToggle';
+import { isSoundEnabled, setSoundEnabled } from '../lib/soundEffects';
 
 interface SidebarProps {
   isOpen: boolean;
@@ -11,6 +13,7 @@ interface SidebarProps {
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { backgroundEffect, setBackgroundEffect } = useTheme();
+  const [sfxOn, setSfxOn] = useState(isSoundEnabled);
 
   const navItems = [
     { name: 'Home', path: '/' },
@@ -81,6 +84,26 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                     className="font-pixel text-[9px] text-ink uppercase cursor-pointer select-none"
                   >
                     Dot Grid: {backgroundEffect ? 'ON' : 'OFF'}
+                  </label>
+                </div>
+
+                {/* Sound Effects Toggle */}
+                <div className="pt-2.5 border-t-2 border-border/20 flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="sfx-toggle"
+                    checked={sfxOn}
+                    onChange={(e) => {
+                      setSoundEnabled(e.target.checked);
+                      setSfxOn(e.target.checked);
+                    }}
+                    className="w-4 h-4 border-2 border-border text-accent-yellow focus:ring-0 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="sfx-toggle"
+                    className="font-pixel text-[9px] text-ink uppercase cursor-pointer select-none"
+                  >
+                    Button Sound: {sfxOn ? 'ON' : 'OFF'}
                   </label>
                 </div>
               </div>

@@ -16,6 +16,7 @@ import SnakeGame from './pages/SnakeGame';
 import Pics from './pages/Pics';
 import { ThemeProvider } from './context/ThemeContext';
 import { initCursorStates, setCursorLoading } from './lib/cursorStates';
+import { initButtonSounds } from './lib/soundEffects';
 
 function AnimatedRoutes() {
   const location = useLocation();
@@ -59,7 +60,14 @@ function AnimatedRoutes() {
 }
 
 function AppContent() {
-  useEffect(() => initCursorStates(), []);
+  useEffect(() => {
+    const cleanupCursors = initCursorStates();
+    const cleanupSounds = initButtonSounds();
+    return () => {
+      cleanupCursors();
+      cleanupSounds();
+    };
+  }, []);
 
   return (
     <div className="relative min-h-screen bg-bg text-ink transition-colors duration-200 overflow-x-hidden">
