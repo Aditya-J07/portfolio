@@ -53,11 +53,16 @@ export default function CursorBuddy() {
     })()
   );
 
-  // Pool of 8 heart DOM element refs (never create or destroy nodes per event)
+  // Pool of 6 heart DOM element refs (never create or destroy nodes per event)
   const heartPoolRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // Pool of 4 star DOM element refs
+  const starPoolRefs = useRef<(HTMLDivElement | null)[]>([]);
+  // +1 float particle ref
+  const plus1Ref = useRef<HTMLDivElement>(null);
+  // Sweat particle ref
+  const sweatRef = useRef<HTMLDivElement>(null);
 
   const spawnPooledHearts = useCallback(() => {
-    // Fire 5 pooled hearts with staggered timing
     const count = 5;
     for (let i = 0; i < count; i++) {
       const el = heartPoolRefs.current[i];
@@ -68,15 +73,60 @@ export default function CursorBuddy() {
 
       window.setTimeout(() => {
         el.classList.remove('is-active');
-        // Force reflow to re-trigger CSS keyframe animation
         void el.offsetWidth;
         el.classList.add('is-active');
 
         window.setTimeout(() => {
           el.classList.remove('is-active');
-        }, 1250);
+        }, 1300);
       }, i * 110);
     }
+  }, []);
+
+  const triggerPlus1 = useCallback(() => {
+    if (!plus1Ref.current) return;
+    plus1Ref.current.classList.remove('is-active');
+    void plus1Ref.current.offsetWidth;
+    plus1Ref.current.classList.add('is-active');
+    window.setTimeout(() => {
+      plus1Ref.current?.classList.remove('is-active');
+    }, 1250);
+  }, []);
+
+  const spawnPooledStars = useCallback(() => {
+    const offsets = [
+      { x: -22, y: -26 },
+      { x: 24, y: -28 },
+      { x: -26, y: 14 },
+      { x: 26, y: 16 },
+    ];
+    for (let i = 0; i < 4; i++) {
+      const el = starPoolRefs.current[i];
+      if (!el) continue;
+      const off = offsets[i];
+      el.style.setProperty('--sx', `${off.x}px`);
+      el.style.setProperty('--sy', `${off.y}px`);
+
+      window.setTimeout(() => {
+        el.classList.remove('is-active');
+        void el.offsetWidth;
+        el.classList.add('is-active');
+
+        window.setTimeout(() => {
+          el.classList.remove('is-active');
+        }, 900);
+      }, i * 70);
+    }
+  }, []);
+
+  const triggerSweat = useCallback(() => {
+    if (!sweatRef.current) return;
+    sweatRef.current.classList.remove('is-active');
+    void sweatRef.current.offsetWidth;
+    sweatRef.current.classList.add('is-active');
+    window.setTimeout(() => {
+      sweatRef.current?.classList.remove('is-active');
+    }, 950);
   }, []);
 
   // Set Emote handler
@@ -123,21 +173,23 @@ export default function CursorBuddy() {
           setSpeechText(speech);
         }
 
-        emoteTimeout.current = window.setTimeout(() => {
-          currentEmote.current = null;
-          setSpeechText(null);
-          setIsSleepingState(false);
-          isSleeping.current = false;
+        if (emote !== 'SLEEPING') {
+          emoteTimeout.current = window.setTimeout(() => {
+            currentEmote.current = null;
+            setSpeechText(null);
+            setIsSleepingState(false);
+            isSleeping.current = false;
 
-          if (btnRef.current) {
-            btnRef.current.classList.remove('cursor-sleeping');
-          }
-          if (spriteRef.current) {
-            spriteRef.current.style.backgroundImage = 'url(/buddy/directions.png)';
-            spriteRef.current.style.backgroundSize = '300% 300%';
-            spriteRef.current.style.backgroundPosition = DIR_POSITIONS['CENTER'];
-          }
-        }, duration);
+            if (btnRef.current) {
+              btnRef.current.classList.remove('cursor-sleeping');
+            }
+            if (spriteRef.current) {
+              spriteRef.current.style.backgroundImage = 'url(/buddy/directions.png)';
+              spriteRef.current.style.backgroundSize = '300% 300%';
+              spriteRef.current.style.backgroundPosition = DIR_POSITIONS['CENTER'];
+            }
+          }, duration);
+        }
       }
     },
     [isEnabled, spawnPooledHearts]
@@ -148,15 +200,16 @@ export default function CursorBuddy() {
     if (isSleeping.current) {
       isSleeping.current = false;
       setIsSleepingState(false);
-      setEmote('SURPRISED', 600, false, true);
+      spawnPooledStars();
+      setEmote('SURPRISED', 1500, false, true, '*yawn* Morning!');
     }
     if (idleTimeout.current) clearTimeout(idleTimeout.current);
     idleTimeout.current = window.setTimeout(() => {
       if (!currentEmote.current && isEnabled) {
-        setEmote('SLEEPING', 12000, false, false, 'Zzz...');
+        setEmote('SLEEPING', 0, false, false, 'Zzz...');
       }
     }, 12000);
-  }, [isEnabled, setEmote]);
+  }, [isEnabled, setEmote, spawnPooledStars]);
 
   // Handle petting / rub achieved
   const handlePet = useCallback(() => {
@@ -169,16 +222,28 @@ export default function CursorBuddy() {
       // ignore
     }
 
-    setEmote('HAPPY', 1500, true, false, '❤ Purr...');
+    const petPhrases = [
+      '❤ Purr...',
+      'Hehe, thanks!',
+      '*happy hops*',
+      'Good buddy!',
+      "You're the best!",
+      '+1 Love!',
+    ];
+    const phrase = petPhrases[(petCount.current - 1) % petPhrases.length];
+    setEmote('HAPPY', 1500, true, false, phrase);
+    triggerPlus1();
 
     // Achievement reward triggers
     if (petCount.current >= 5 && !achievementsAwarded.current.has(5)) {
       achievementsAwarded.current.add(5);
       setToastMessage('🏆 ACHIEVEMENT UNLOCKED: Good Buddy');
+      spawnPooledStars();
       window.setTimeout(() => setToastMessage(null), 3500);
     } else if (petCount.current >= 15 && !achievementsAwarded.current.has(15)) {
       achievementsAwarded.current.add(15);
       setToastMessage('🏆 ACHIEVEMENT UNLOCKED: Best Friends');
+      spawnPooledStars();
       setShowXpOrb(true);
 
       // Pulse top XP bar
@@ -193,7 +258,7 @@ export default function CursorBuddy() {
         setToastMessage(null);
       }, 3500);
     }
-  }, [isEnabled, setEmote]);
+  }, [isEnabled, setEmote, triggerPlus1, spawnPooledStars]);
 
   // Hook 1: High performance rAF Look-At Loop
   useBuddyLookAt({
@@ -220,10 +285,10 @@ export default function CursorBuddy() {
 
     resetIdle();
 
-    // First visit speech bubble auto-dismiss after 4s
+    // First visit speech bubble auto-dismiss after 8s
     const firstVisitTimer = window.setTimeout(() => {
       setSpeechText((prev) => (prev === 'Psst... try petting me!' ? null : prev));
-    }, 4000);
+    }, 8000);
 
     // Fast scroll detection (dizzy emote)
     let lastScrollY = window.scrollY;
@@ -235,7 +300,8 @@ export default function CursorBuddy() {
         const dy = Math.abs(window.scrollY - lastScrollY);
         const speed = dy / dt;
         if (speed > 3.5 && !currentEmote.current) {
-          setEmote('DIZZY', 1000, false, true, 'Whoa, dizzy!');
+          triggerSweat();
+          setEmote('DIZZY', 1500, false, true, 'Whoaaa dizzy!');
         }
         lastScrollY = window.scrollY;
         lastScrollTime = now;
@@ -249,7 +315,7 @@ export default function CursorBuddy() {
       const target = (e.target as HTMLElement)?.closest('.enchanted-card, a[href*="projects"], #contact, [href*="contact"]');
       if (target) {
         thumbsUpShown.current = true;
-        setEmote('THUMBS_UP', 1200, false, false);
+        setEmote('THUMBS_UP', 1800, false, false, 'Check this out!');
       }
     };
     document.addEventListener('mouseover', handleHoverCheck, { passive: true });
@@ -270,7 +336,7 @@ export default function CursorBuddy() {
       if (idleTimeout.current) clearTimeout(idleTimeout.current);
       if (emoteTimeout.current) clearTimeout(emoteTimeout.current);
     };
-  }, [isEnabled, resetIdle, setEmote]);
+  }, [isEnabled, resetIdle, setEmote, triggerSweat]);
 
   // Click & Double Click reactions
   const clickTimer = useRef<number | null>(null);
@@ -280,13 +346,15 @@ export default function CursorBuddy() {
       // Double click detected: WAVING
       clearTimeout(clickTimer.current);
       clickTimer.current = null;
-      setEmote('WAVING', 1500, false, false, "Hi, I'm Aditya!");
+      spawnPooledStars();
+      setEmote('WAVING', 2200, false, false, "Hi, I'm Aditya!");
     } else {
       // Single click delay to distinguish double-click
       clickTimer.current = window.setTimeout(() => {
         clickTimer.current = null;
-        setEmote('SURPRISED', 600, false, true);
-      }, 250);
+        triggerSweat();
+        setEmote('SURPRISED', 1800, false, true, 'Hey!');
+      }, 220);
     }
   };
 
@@ -349,49 +417,77 @@ export default function CursorBuddy() {
           </div>
         )}
 
-        {/* 8 Pre-allocated Pooled Hearts (0 DOM creations/deletions during runtime) */}
+        {/* 6 Pre-allocated Pooled Hearts (Sprite: particles.png 0% 0%) */}
         <div className="absolute inset-0 pointer-events-none overflow-visible z-50">
-          {Array.from({ length: 8 }).map((_, i) => (
+          {Array.from({ length: 6 }).map((_, i) => (
             <div
               key={i}
               ref={(el) => {
                 heartPoolRefs.current[i] = el;
               }}
-              className="buddy-heart"
+              className="buddy-sprite-particle particle-heart buddy-heart"
               style={{
-                left: `${25 + (i * 11) % 45}px`,
-                top: `${20 + (i * 7) % 20}px`,
+                left: `${18 + (i * 12) % 46}px`,
+                top: `${16 + (i * 8) % 24}px`,
               }}
-            >
-              ❤
-            </div>
+            />
           ))}
         </div>
 
-        {/* Floating Z particles for sleep emote */}
-        <div className="absolute -top-3 left-4 pointer-events-none z-50">
-          <span
-            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
-            style={{ animationDelay: '0s' }}
-          >
-            Z
-          </span>
-          <span
-            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
-            style={{ animationDelay: '0.7s', left: '12px' }}
-          >
-            z
-          </span>
-          <span
-            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
-            style={{ animationDelay: '1.4s', left: '22px' }}
-          >
-            z
-          </span>
+        {/* 4 Pre-allocated Pooled Stars (Sprite: particles.png 50% 0%) */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible z-50">
+          {Array.from({ length: 4 }).map((_, i) => (
+            <div
+              key={i}
+              ref={(el) => {
+                starPoolRefs.current[i] = el;
+              }}
+              className="buddy-sprite-particle particle-star buddy-star"
+              style={{
+                left: '42px',
+                top: '40px',
+              }}
+            />
+          ))}
         </div>
 
-        {/* Popping XP Orb reward */}
-        {showXpOrb && <div className="buddy-xp-orb" style={{ top: '30px', left: '40px' }} />}
+        {/* +1 Float Particle (Sprite: particles.png 100% 100%) */}
+        <div
+          ref={plus1Ref}
+          className="buddy-sprite-particle particle-plus1 buddy-plus1"
+          style={{ top: '6px', right: '-8px' }}
+        />
+
+        {/* Sweat Drop Particle (Sprite: particles.png 0% 100%) */}
+        <div
+          ref={sweatRef}
+          className="buddy-sprite-particle particle-sweat buddy-sweat"
+          style={{ top: '16px', right: '12px' }}
+        />
+
+        {/* Floating Z particles for sleep emote (Sprite: particles.png 100% 0%) */}
+        <div className="absolute -top-4 left-3 pointer-events-none z-50">
+          <div
+            className={`buddy-sprite-particle particle-z buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '0s' }}
+          />
+          <div
+            className={`buddy-sprite-particle particle-z buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '0.7s', left: '16px', transform: 'scale(0.85)' }}
+          />
+          <div
+            className={`buddy-sprite-particle particle-z buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '1.4s', left: '32px', transform: 'scale(1.15)' }}
+          />
+        </div>
+
+        {/* Popping XP Orb reward (Sprite: particles.png 50% 100%) */}
+        {showXpOrb && (
+          <div
+            className="buddy-sprite-particle particle-orb buddy-xp-orb"
+            style={{ top: '24px', left: '36px' }}
+          />
+        )}
 
         {/* Mascot Interactive Button (Keyboard accessible) */}
         <button
