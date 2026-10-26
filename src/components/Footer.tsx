@@ -1,55 +1,84 @@
-import { Github, Linkedin, Mail, Gamepad2, Heart, CheckCircle } from 'lucide-react';
+import { Github, Linkedin, Mail, Gamepad2, Heart, CheckCircle, ArrowUp } from 'lucide-react';
 
 const socialLinks = [
-    { icon: Github, href: 'https://github.com/Aditya-J07', label: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', label: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:adityajha.vats02@gmail.com', label: 'Email' },
-    { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', label: 'itch.io' },
+  { icon: Github, href: 'https://github.com/Aditya-J07', label: 'GitHub' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', label: 'LinkedIn' },
+  { icon: Mail, href: 'mailto:adityajha.vats02@gmail.com', label: 'Email' },
+  { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', label: 'itch.io' },
 ];
 
 export default function Footer() {
-    const currentYear = new Date().getFullYear();
+  const currentYear = new Date().getFullYear();
 
-    return (
-        <footer className="mt-20 border-t border-surface0 bg-base/50 backdrop-blur-sm">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                    {/* Copyright */}
-                    <div className="flex items-center gap-2 text-subtext0 font-mono text-sm">
-                        <span>© {currentYear} Aditya Jha</span>
-                        <span className="text-surface2">|</span>
-                        <span className="flex items-center gap-1 text-green">
-                            <CheckCircle className="w-3 h-3" />
-                            All Systems Nominal
-                        </span>
-                        <span className="text-surface2 hidden sm:inline">|</span>
-                        <span className="text-subtext0 hidden sm:inline">Last updated: Apr 14, 2026</span>
-                    </div>
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
-                    {/* Social Links */}
-                    <div className="flex items-center gap-4">
-                        {socialLinks.map((link) => (
-                            <a
-                                key={link.label}
-                                href={link.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-subtext0 hover:text-accent transition-colors duration-300"
-                                aria-label={link.label}
-                            >
-                                <link.icon className="w-5 h-5" />
-                            </a>
-                        ))}
-                    </div>
-                </div>
+  return (
+    <footer className="mt-24 border-t-4 border-border bg-surface-deep text-text-on-deep">
+      {/* Voxel Grass Ground Strip */}
+      <div className="w-full h-4 bg-ground-top border-b-2 border-border" />
+      <div className="w-full h-2 bg-ground-bottom" />
 
-                {/* Built With */}
-                <div className="mt-6 pt-6 border-t border-surface0 text-center">
-                    <p className="text-subtext0 text-sm font-mono flex items-center justify-center gap-2">
-                        Built with <Heart className="w-4 h-4 text-red fill-current" /> using React, TypeScript & TailwindCSS
-                    </p>
-                </div>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b-2 border-border/40">
+          {/* Voxel Character / Badge */}
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-12 bg-surface-1 border-3 border-border-on-deep flex items-center justify-center shadow-[3px_3px_0px_#000]">
+              <span className="font-pixel text-xl select-none" aria-hidden="true">
+                ⛏️
+              </span>
             </div>
-        </footer>
-    );
+            <div>
+              <div className="font-heading text-lg text-accent-yellow">ADITYA JHA</div>
+              <div className="font-pixel text-[9px] text-accent-green flex items-center gap-2 mt-0.5">
+                <CheckCircle className="w-3.5 h-3.5" />
+                <span>SERVER ONLINE • 20 TPS</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Social Links as Inventory Slots */}
+          <div className="flex items-center gap-3">
+            {socialLinks.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-12 h-12 bg-surface-1 text-ink border-3 border-border flex items-center justify-center hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-1 transition-all shadow-[3px_3px_0px_#000]"
+                aria-label={link.label}
+              >
+                <link.icon className="w-5 h-5" />
+              </a>
+            ))}
+
+            {/* Back to Spawn Button */}
+            <button
+              type="button"
+              onClick={scrollToTop}
+              className="px-4 py-2.5 min-h-[48px] bg-accent-yellow text-accent-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:-translate-y-1 transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
+            >
+              <ArrowUp className="w-4 h-4" />
+              <span>Back to Spawn ↑</span>
+            </button>
+          </div>
+        </div>
+
+        {/* Copyright & Meta */}
+        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-text-on-deep/80">
+          <div className="flex items-center gap-2">
+            <span>© {currentYear} Aditya Jha</span>
+            <span>|</span>
+            <span className="text-accent-yellow">Last updated: Apr 14, 2026</span>
+          </div>
+
+          <p className="flex items-center gap-1.5 font-pixel text-[9px]">
+            BUILT WITH <Heart className="w-3.5 h-3.5 text-accent-red fill-current" /> USING REACT, TS &
+            TAILWIND
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
 }
