@@ -24,10 +24,12 @@ export default function Footer() {
         <div className="flex flex-col md:flex-row items-center justify-between gap-6 pb-8 border-b-2 border-border/40">
           {/* Voxel Character / Badge */}
           <div className="flex items-center gap-4">
-            <div className="w-12 h-12 bg-surface-1 border-3 border-border-on-deep flex items-center justify-center shadow-[3px_3px_0px_#000]">
-              <span className="font-pixel text-xl select-none" aria-hidden="true">
-                💻
-              </span>
+            <div className="w-12 h-12 bg-surface-1 border-3 border-border-on-deep flex items-center justify-center shadow-[3px_3px_0px_#000] overflow-hidden p-0.5">
+              <img
+                src="/favicon.png"
+                alt="Aditya Jha"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div>
               <div className="font-heading text-lg text-accent-yellow">ADITYA JHA</div>
