@@ -46,7 +46,7 @@ export default function ClickCounter() {
       <button
         type="button"
         onClick={handleClick}
-        className={`w-full py-4 min-h-[52px] font-pixel text-xs sm:text-sm uppercase font-bold border-4 border-border transition-all select-none cursor-pointer flex items-center justify-center gap-2 ${
+        className={`w-full py-4 min-h-[52px] font-pixel text-xs sm:text-sm uppercase font-bold border-4 border-border transition-all select-none cursor-crosshair flex items-center justify-center gap-2 ${
           isAnimating
             ? 'bg-accent-green text-accent-ink translate-x-1 translate-y-1 shadow-none'
             : 'bg-accent-yellow text-accent-ink shadow-brutal hover:-translate-y-0.5'

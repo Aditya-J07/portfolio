@@ -156,7 +156,7 @@ export default function About() {
                 className="relative pl-6 pb-6 border-l-4 border-border last:border-l-0 last:pb-0"
               >
                 {/* Pixel Node on Timeline */}
-                <div className="absolute -left-[14px] top-0 w-6 h-6 bg-accent-yellow border-3 border-border flex items-center justify-center text-[10px] font-pixel shadow-[1px_1px_0px_var(--shadow)]">
+                <div className="absolute -left-[14px] top-0 w-6 h-6 bg-accent-yellow border-3 border-border flex items-center justify-center text-[10px] font-pixel shadow-[1px_1px_0px_var(--shadow)] scroll-indicator-ns select-none">
                   {index + 1}
                 </div>
 

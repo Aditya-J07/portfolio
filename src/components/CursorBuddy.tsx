@@ -104,6 +104,12 @@ export default function CursorBuddy() {
       spriteRef.current.style.backgroundSize = '300% 200%';
       spriteRef.current.style.backgroundPosition = EMOTE_POSITIONS[emote];
 
+      if (emote === 'SLEEPING') {
+        btnRef.current.classList.add('cursor-sleeping');
+      } else {
+        btnRef.current.classList.remove('cursor-sleeping');
+      }
+
       if (withHop) {
         btnRef.current.classList.add('anim-hop');
         setTimeout(() => btnRef.current?.classList.remove('anim-hop'), 600);
@@ -124,6 +130,9 @@ export default function CursorBuddy() {
       emoteTimeout.current = window.setTimeout(() => {
         currentEmote.current = null;
         setSpeechText(null);
+        if (btnRef.current) {
+          btnRef.current.classList.remove('cursor-sleeping');
+        }
         if (spriteRef.current) {
           spriteRef.current.style.backgroundImage = 'url(/buddy/directions.png)';
           spriteRef.current.style.backgroundSize = '300% 300%';
@@ -344,7 +353,7 @@ export default function CursorBuddy() {
 
       {/* Floating Mascot Button */}
       <div
-        className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 select-none hidden xs:block cursor-pointer"
+        className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 select-none hidden xs:block cursor-buddy-interactive"
         style={{ width: '104px', height: '104px' }}
       >
         {/* Speech Bubble */}
@@ -379,7 +388,7 @@ export default function CursorBuddy() {
               setEmote('HAPPY', 1500, true, false, '❤ Purr...');
             }
           }}
-          className="w-full h-full relative focus:outline-none focus:ring-4 focus:ring-focus pixelated block transition-transform duration-75 p-0 bg-transparent border-0 cursor-pointer"
+          className="w-full h-full relative focus:outline-none focus:ring-4 focus:ring-focus pixelated block transition-transform duration-75 p-0 bg-transparent border-0 cursor-buddy-interactive"
         >
           <div
             ref={spriteRef}

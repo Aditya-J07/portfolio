@@ -57,7 +57,7 @@ export default function Footer() {
             <button
               type="button"
               onClick={scrollToTop}
-              className="px-4 py-2.5 min-h-[48px] bg-accent-yellow text-accent-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:-translate-y-1 transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
+              className="px-4 py-2.5 min-h-[48px] bg-accent-yellow text-accent-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:-translate-y-1 transition-all shadow-[3px_3px_0px_#000] back-to-top cursor-ns"
             >
               <ArrowUp className="w-4 h-4" />
               <span>Back to Top ↑</span>

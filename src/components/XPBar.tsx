@@ -29,7 +29,7 @@ export default function XPBar() {
 
   return (
     <div
-      className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-surface-deep/50 border-b border-border/40 select-none pointer-events-none"
+      className="fixed top-0 left-0 right-0 z-50 h-1.5 bg-surface-deep/50 border-b border-border/40 select-none pointer-events-auto cursor-ns"
       role="progressbar"
       aria-label="Scroll Progress"
     >

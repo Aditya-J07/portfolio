@@ -152,7 +152,7 @@ export default function ParallaxDecorations() {
             style={{ willChange: 'transform' }}
           >
             <div className="w-8 h-8 bg-accent-yellow border-3 border-border shadow-[3px_3px_0px_var(--shadow)] flex items-center justify-center font-pixel text-[8px] text-accent-ink font-bold">
-              AU
+              AC
             </div>
           </div>
 

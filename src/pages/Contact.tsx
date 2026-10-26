@@ -147,11 +147,18 @@ export default function Contact() {
               />
               <button
                 type="submit"
+                disabled={!msgInput.trim() || formSent}
                 aria-busy={formSent ? 'true' : undefined}
-                className="px-6 py-3 min-h-[48px] bg-accent-yellow text-accent-ink font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 hover:bg-accent-green transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
+                className={`px-6 py-3 min-h-[48px] font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 transition-all shadow-[3px_3px_0px_#000] ${
+                  !msgInput.trim()
+                    ? 'bg-surface-1/60 text-ink/40 cursor-not-allowed opacity-75'
+                    : formSent
+                    ? 'bg-accent-green text-accent-ink cursor-progress'
+                    : 'bg-accent-yellow text-accent-ink hover:bg-accent-green cursor-pointer'
+                }`}
               >
                 <Send size={14} />
-                <span>Send Message</span>
+                <span>{formSent ? 'Opening Mail...' : 'Send Message'}</span>
               </button>
             </div>
 

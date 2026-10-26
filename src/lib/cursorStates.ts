@@ -1,4 +1,4 @@
-// cursorStates.ts : toggles the "loading" and "sleeping" cursors.
+// cursorStates.ts : toggles the "loading", "sleeping", and "is-text-selecting" cursors.
 // Cheap by design: passive listeners, one timer, no React state, no per-move work.
 
 const IDLE_MS = 30_000;          // sleep after 30s of no activity
@@ -32,10 +32,52 @@ export function initCursorStates(): () => void {
   events.forEach((e) => window.addEventListener(e, resetIdle, { passive: true }));
   resetIdle();
 
+  // Active text selection tracking
+  let isMouseDown = false;
+
+  const updateSelectionState = () => {
+    const sel = window.getSelection();
+    const hasSelection = Boolean(sel && sel.toString().trim().length > 0);
+    if (hasSelection) {
+      root.classList.add('is-text-selecting');
+    } else if (!isMouseDown) {
+      root.classList.remove('is-text-selecting');
+    }
+  };
+
+  const handleMouseDown = (e: MouseEvent) => {
+    isMouseDown = true;
+    const target = e.target as HTMLElement | null;
+    if (
+      target &&
+      !target.closest('a, button, select, [role="button"], input[type="submit"], canvas, [draggable="true"]')
+    ) {
+      // User may be initiating text selection drag
+    }
+  };
+
+  const handleMouseUp = () => {
+    isMouseDown = false;
+    setTimeout(() => {
+      const sel = window.getSelection();
+      if (!sel || sel.toString().trim().length === 0) {
+        root.classList.remove('is-text-selecting');
+      }
+    }, 40);
+  };
+
+  document.addEventListener('selectionchange', updateSelectionState, { passive: true });
+  document.addEventListener('mousedown', handleMouseDown, { passive: true });
+  document.addEventListener('mouseup', handleMouseUp, { passive: true });
+
   return () => {
     events.forEach((e) => window.removeEventListener(e, resetIdle));
+    document.removeEventListener('selectionchange', updateSelectionState);
+    document.removeEventListener('mousedown', handleMouseDown);
+    document.removeEventListener('mouseup', handleMouseUp);
     window.clearTimeout(idleTimer);
     root.classList.remove('is-idle');
+    root.classList.remove('is-text-selecting');
   };
 }
 
@@ -43,3 +85,4 @@ export function initCursorStates(): () => void {
 export function setCursorLoading(on: boolean) {
   root.classList.toggle('is-loading', on);
 }
+

@@ -60,9 +60,9 @@ export default function Pics() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
-              className="bg-surface-1 border-4 border-border p-3 shadow-brutal transition-transform hover:-translate-y-1 group"
+              className="bg-surface-1 border-4 border-border p-3 shadow-brutal transition-transform hover:-translate-y-1 group photo-viewfinder"
             >
-              <div className="relative aspect-[4/5] overflow-hidden border-2 border-border bg-surface-deep">
+              <div className="relative aspect-[4/5] overflow-hidden border-2 border-border bg-surface-deep photo-viewfinder">
                 <img
                   src={photo.src}
                   alt={photo.alt}
