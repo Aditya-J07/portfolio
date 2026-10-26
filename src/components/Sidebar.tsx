@@ -3,15 +3,16 @@ import { X, Check } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
 
+import ThemeToggle from './ThemeToggle';
+
 interface SidebarProps {
     isOpen: boolean;
     onClose: () => void;
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-    const { theme, setTheme, accent, setAccent, backgroundEffect, setBackgroundEffect } = useTheme();
+    const { accent, setAccent, backgroundEffect, setBackgroundEffect } = useTheme();
 
-    const themes = ['latte', 'frappe', 'mocha'] as const;
     const accents = [
         'rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
         'yellow', 'green', 'teal', 'sky', 'sapphire', 'blue', 'lavender'
@@ -60,21 +61,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
                                 <span>🎨 Theme</span>
                             </div>
 
-                            {/* Theme Toggles */}
-                            <div className="grid grid-cols-3 gap-1 bg-surface0 p-1 rounded-lg">
-                                {themes.map((t) => (
-                                    <button
-                                        key={t}
-                                        onClick={() => setTheme(t)}
-                                        className={`px-2 py-1.5 rounded-md text-xs font-medium capitalize transition-all ${theme === t
-                                            ? 'bg-surface2 text-text shadow-sm'
-                                            : 'text-subtext0 hover:text-text'
-                                            }`}
-                                    >
-                                        {t}
-                                    </button>
-                                ))}
-                            </div>
+                            <ThemeToggle />
 
                             {/* Accent Colors */}
                             <div className="grid grid-cols-7 gap-2">

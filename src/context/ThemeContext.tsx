@@ -1,85 +1,87 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
-type Theme = 'latte' | 'frappe' | 'macchiato' | 'mocha';
-type AccentColor =
-    | 'rosewater'
-    | 'flamingo'
-    | 'pink'
-    | 'mauve'
-    | 'red'
-    | 'maroon'
-    | 'peach'
-    | 'yellow'
-    | 'green'
-    | 'teal'
-    | 'sky'
-    | 'sapphire'
-    | 'blue'
-    | 'lavender';
+export type Theme = 'light' | 'middle' | 'dark';
+export type AccentColor =
+  | 'rosewater'
+  | 'flamingo'
+  | 'pink'
+  | 'mauve'
+  | 'red'
+  | 'maroon'
+  | 'peach'
+  | 'yellow'
+  | 'green'
+  | 'teal'
+  | 'sky'
+  | 'sapphire'
+  | 'blue'
+  | 'lavender';
 
 interface ThemeContextType {
-    theme: Theme;
-    setTheme: (theme: Theme) => void;
-    accent: AccentColor;
-    setAccent: (accent: AccentColor) => void;
-    backgroundEffect: boolean;
-    setBackgroundEffect: (enabled: boolean) => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
+  accent: AccentColor;
+  setAccent: (accent: AccentColor) => void;
+  backgroundEffect: boolean;
+  setBackgroundEffect: (enabled: boolean) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
-    const [theme, setThemeState] = useState<Theme>(() => {
-        const saved = localStorage.getItem('theme');
-        return (saved as Theme) || 'mocha';
-    });
+  const [theme, setThemeState] = useState<Theme>(() => {
+    try {
+      const saved = localStorage.getItem('portfolio_theme');
+      if (saved === 'light' || saved === 'middle' || saved === 'dark') {
+        return saved;
+      }
+      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+      return prefersDark ? 'dark' : 'middle';
+    } catch {
+      return 'middle';
+    }
+  });
 
-    const [accent, setAccentState] = useState<AccentColor>(() => {
-        const saved = localStorage.getItem('accent');
-        return (saved as AccentColor) || 'peach';
-    });
+  const [accent, setAccentState] = useState<AccentColor>('peach');
+  const [backgroundEffect, setBackgroundEffect] = useState(true);
 
-    const [backgroundEffect, setBackgroundEffect] = useState(true);
+  useEffect(() => {
+    try {
+      document.documentElement.setAttribute('data-theme', theme);
+      localStorage.setItem('portfolio_theme', theme);
+    } catch (e) {
+      console.warn('Failed to persist theme:', e);
+    }
+  }, [theme]);
 
-    useEffect(() => {
-        const root = document.documentElement;
-        root.setAttribute('data-theme', theme);
-        localStorage.setItem('theme', theme);
-    }, [theme]);
+  const setTheme = (newTheme: Theme) => {
+    setThemeState(newTheme);
+  };
 
-    useEffect(() => {
-        const root = document.documentElement;
-        // Update the CSS variable for the accent color
-        root.style.setProperty('--current-accent-color', `var(--color-${accent})`);
-        localStorage.setItem('accent', accent);
-    }, [accent]);
+  const setAccent = (newAccent: AccentColor) => {
+    setAccentState(newAccent);
+  };
 
-    const setTheme = (newTheme: Theme) => {
-        setThemeState(newTheme);
-    };
-
-    const setAccent = (newAccent: AccentColor) => {
-        setAccentState(newAccent);
-    };
-
-    return (
-        <ThemeContext.Provider value={{
-            theme,
-            setTheme,
-            accent,
-            setAccent,
-            backgroundEffect,
-            setBackgroundEffect
-        }}>
-            {children}
-        </ThemeContext.Provider>
-    );
+  return (
+    <ThemeContext.Provider
+      value={{
+        theme,
+        setTheme,
+        accent,
+        setAccent,
+        backgroundEffect,
+        setBackgroundEffect,
+      }}
+    >
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
-    const context = useContext(ThemeContext);
-    if (context === undefined) {
-        throw new Error('useTheme must be used within a ThemeProvider');
-    }
-    return context;
+  const context = useContext(ThemeContext);
+  if (context === undefined) {
+    throw new Error('useTheme must be used within a ThemeProvider');
+  }
+  return context;
 }

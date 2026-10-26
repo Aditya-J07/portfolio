@@ -1,0 +1,138 @@
+/* ==========================================================================
+   NEO-BRUTALIST VOXEL ANIMATIONS & MOTION SYSTEM
+   Strictly animating transform and opacity ONLY - CLS = 0.00
+   ========================================================================== */
+
+/* Flat Enchanted Striped Border on hover */
+.enchanted-card {
+  position: relative;
+  background-clip: padding-box;
+}
+
+.enchanted-card::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  z-index: -1;
+  background: repeating-linear-gradient(
+    45deg,
+    var(--ink, #14131A),
+    var(--ink, #14131A) 10px,
+    var(--accent-yellow, #FFD93D) 10px,
+    var(--accent-yellow, #FFD93D) 20px,
+    var(--accent-purple, #B79CFF) 20px,
+    var(--accent-purple, #B79CFF) 30px
+  );
+  background-size: 200% 200%;
+  transition: opacity 180ms ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.enchanted-card:hover::before {
+  opacity: 1;
+  animation: enchantedStripe 1.5s linear infinite;
+}
+
+@keyframes enchantedStripe {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+/* Two-Row Marquees */
+.marquee-track-left {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeLeft 28s linear infinite;
+}
+
+.marquee-track-right {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  animation: marqueeRight 28s linear infinite;
+}
+
+.marquee-track-left:hover,
+.marquee-track-right:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeLeft {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes marqueeRight {
+  0% { transform: translate3d(-50%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+/* Pause off-screen animations */
+.is-offscreen {
+  animation-play-state: paused !important;
+}
+
+/* Ambient Floating Voxel Cubes & Blinking Hearts */
+@keyframes ambientFloat {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, -8px, 0) rotate(2deg); }
+}
+
+@keyframes pixelBlink {
+  0%, 90%, 100% { opacity: 1; transform: scale(1); }
+  95% { opacity: 0.3; transform: scale(0.92); }
+}
+
+.ambient-floating-cube {
+  animation: ambientFloat 4.2s ease-in-out infinite;
+}
+
+.ambient-blinking-heart {
+  animation: pixelBlink 2.8s ease-in-out infinite;
+}
+
+/* Tactile Depress Classes */
+.neo-btn, .slot-depress {
+  position: relative;
+  border-radius: 0px !important;
+  transform: translate3d(0, 0, 0);
+  transition: transform 100ms ease, box-shadow 100ms ease;
+  backface-visibility: hidden;
+}
+
+.neo-btn:hover, .slot-depress:hover {
+  transform: translate3d(3px, 3px, 0);
+  box-shadow: 3px 3px 0px 0px var(--shadow, #14131A) !important;
+}
+
+.neo-btn:active, .slot-depress:active {
+  transform: translate3d(6px, 6px, 0);
+  box-shadow: 0px 0px 0px 0px var(--shadow, #14131A) !important;
+}
+
+/* Slide in from right for Toast */
+@keyframes slideInRight {
+  0% { transform: translate3d(100%, 0, 0); opacity: 0; }
+  100% { transform: translate3d(0, 0, 0); opacity: 1; }
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Prefers Reduced Motion Guard */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track-left, .marquee-track-right,
+  .ambient-floating-cube, .ambient-blinking-heart,
+  .enchanted-card:hover::before {
+    animation: none !important;
+  }
+}
