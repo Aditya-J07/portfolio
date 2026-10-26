@@ -35,8 +35,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       if (saved === 'light' || saved === 'middle' || saved === 'dark') {
         return saved;
       }
-      const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
-      return prefersDark ? 'dark' : 'middle';
+      return 'middle';
     } catch {
       return 'middle';
     }
