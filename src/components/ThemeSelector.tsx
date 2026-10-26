@@ -15,15 +15,18 @@ const THEMES: ThemeItem[] = [
 
 export default function ThemeSelector() {
   const { theme, setTheme } = useTheme();
+  const currentTheme = THEMES.find((t) => t.id === theme) || THEMES[1];
 
   return (
-    <div className="space-y-2 w-full">
+    <div className="space-y-2 w-full mt-auto">
       <div className="font-pixel text-[9px] text-ink/70 uppercase tracking-wider flex items-center justify-between pb-1 border-b border-border/20">
         <span>World Slots</span>
-        <span className="text-accent-yellow font-bold uppercase">{theme}</span>
+        <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border font-bold">
+          {currentTheme.name}
+        </span>
       </div>
 
-      <div className="space-y-2">
+      <div className="space-y-1.5">
         {THEMES.map((t) => {
           const isActive = theme === t.id;
           return (
@@ -52,11 +55,11 @@ export default function ThemeSelector() {
               </div>
 
               {isActive ? (
-                <span className="font-pixel text-[7px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border shrink-0 ml-1">
+                <span className="font-pixel text-[7px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border shrink-0 ml-1 font-bold">
                   ON
                 </span>
               ) : (
-                <span className="font-pixel text-[7px] text-ink/40 shrink-0 ml-1">
+                <span className="font-pixel text-[7px] text-ink/40 shrink-0 ml-1 font-bold">
                   SET
                 </span>
               )}

@@ -195,36 +195,10 @@ export default function Home() {
       <Marquee />
 
       {/* ====================================================================
-          FEATURED PROJECTS (THE CHEST)
-          ==================================================================== */}
-      <section>
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-          <SectionLabel
-            slot="[01/05]"
-            title="Featured Projects"
-            subtitle="Featured Creations & Experiments"
-          />
-          <Link
-            to="/projects"
-            className="px-4 py-2 bg-surface-1 text-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-brutal-sm self-start sm:self-auto"
-          >
-            <span>View All Projects ({projects.length})</span>
-            <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          {featuredProjects.map((project, index) => (
-            <ProjectCard key={project.id} project={project} index={index} />
-          ))}
-        </div>
-      </section>
-
-      {/* ====================================================================
           DASHBOARD BENTO GRID (CLICKER, THEME, GAMES, ACHIEVEMENTS, HACKATHONS)
           ==================================================================== */}
       <section>
-        <SectionLabel slot="[02/05]" title="Dashboard" subtitle="Highlights & Interactive Showcase" />
+        <SectionLabel slot="[01/05]" title="Dashboard" subtitle="Highlights & Interactive Showcase" />
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {/* Box 1: Stats Clicker */}
@@ -233,13 +207,18 @@ export default function Home() {
           </div>
 
           {/* Box 2: Theme Selector */}
-          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal lg:col-span-1 flex flex-col justify-between">
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal lg:col-span-1 flex flex-col justify-between h-full">
             <div>
-              <div className="flex items-center gap-2 font-heading text-lg text-ink mb-2">
-                <Palette size={20} className="text-accent-yellow" />
-                <span>World Theme</span>
+              <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-3">
+                <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                  <Palette size={20} className="text-accent-yellow" />
+                  <span>World Theme</span>
+                </div>
+                <span className="font-pixel text-[8px] bg-accent-yellow text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                  PALETTE
+                </span>
               </div>
-              <p className="font-body text-xs text-ink/80 mb-4">
+              <p className="font-body text-xs text-ink/80 mb-3 leading-relaxed">
                 Switch between Overworld Sky, Canon Stone & Bedrock Cave.
               </p>
             </div>
@@ -247,38 +226,64 @@ export default function Home() {
           </div>
 
           {/* Box 3: Games Highlight */}
-          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal sm:col-span-2 lg:col-span-2 flex flex-col justify-between">
-            <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-4">
-              <div className="flex items-center gap-2 font-heading text-lg text-ink">
-                <Gamepad2 size={20} className="text-accent-purple" />
-                <span>Published Games</span>
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal sm:col-span-2 lg:col-span-2 flex flex-col justify-between h-full">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-3">
+                <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                  <Gamepad2 size={20} className="text-accent-purple" />
+                  <span>Published Games</span>
+                </div>
+                <a
+                  href="https://prolly-adi.itch.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-pixel text-[9px] uppercase px-2.5 py-1 bg-surface-deep text-accent-yellow border-2 border-border shadow-[2px_2px_0px_var(--shadow)] hover:bg-accent-yellow hover:text-accent-ink transition-colors"
+                >
+                  [itch.io] ↗
+                </a>
               </div>
-              <a
-                href="https://prolly-adi.itch.io/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-pixel text-[9px] uppercase px-2 py-1 bg-surface-deep text-accent-yellow border-2 border-border shadow-[2px_2px_0px_var(--shadow)] hover:bg-accent-yellow hover:text-accent-ink transition-colors"
-              >
-                [itch.io] ↗
-              </a>
+              <p className="font-body text-xs text-ink/80 mb-4 leading-relaxed">
+                Original indie titles built with Godot Engine, playable in browser.
+              </p>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
               {games.slice(0, 2).map((game) => (
                 <a
                   key={game.id}
                   href={game.playUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="block p-3 bg-surface-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)] hover:bg-accent-yellow hover:text-accent-ink transition-all group"
+                  className="flex flex-col justify-between p-3.5 bg-surface-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)] hover:bg-surface-1 hover:border-focus hover:-translate-y-1 transition-all group"
                 >
-                  <div className="h-16 bg-surface-deep border-2 border-border mb-2 flex items-center justify-center text-2xl group-hover:scale-105 transition-transform">
-                    🎮
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-pixel text-[8px] bg-accent-purple text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                        GODOT 2D
+                      </span>
+                      <span className="font-pixel text-[8px] text-ink/60 group-hover:text-ink flex items-center gap-0.5 font-bold">
+                        PLAY ↗
+                      </span>
+                    </div>
+
+                    <div className="font-heading text-sm text-ink group-hover:text-focus transition-colors leading-tight mb-1.5">
+                      {game.name}
+                    </div>
+                    <p className="font-body text-xs text-ink/80 line-clamp-2 leading-relaxed mb-3">
+                      {game.description}
+                    </p>
                   </div>
-                  <div className="font-heading text-sm text-ink truncate group-hover:text-accent-ink">
-                    {game.name}
+
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20 mt-auto">
+                    {game.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="font-mono text-[9px] px-1.5 py-0.5 bg-surface-1 text-ink border border-border/60"
+                      >
+                        {t}
+                      </span>
+                    ))}
                   </div>
-                  <div className="font-body text-xs text-ink/80 truncate">{game.description}</div>
                 </a>
               ))}
             </div>
@@ -367,6 +372,32 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          FEATURED PROJECTS (THE CHEST)
+          ==================================================================== */}
+      <section>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <SectionLabel
+            slot="[02/05]"
+            title="Featured Projects"
+            subtitle="Featured Creations & Experiments"
+          />
+          <Link
+            to="/projects"
+            className="px-4 py-2 bg-surface-1 text-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-brutal-sm self-start sm:self-auto"
+          >
+            <span>View All Projects ({projects.length})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {featuredProjects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
         </div>
       </section>
     </div>
