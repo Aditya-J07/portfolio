@@ -1,0 +1,205 @@
+/* ==========================================================
+   cursors.css  |  Aditya pixel-character cursor set
+   Files live in /public/cursors (38px @1x, 76px @2x; text: 36px/72px).
+   Resized to 80% (text selector at 75%) with proportional hotspots.
+   Each rule has a plain url() fallback first, then image-set()
+   for sharp rendering on high-DPI screens.
+   Numbers after the url are the hotspot (the exact click pixel).
+   ========================================================== */
+
+/* 1. Default Page Cursor (Arrow with pixel character) */
+html, body {
+  cursor: url('/cursors/default.png') 7 2, auto;
+  cursor: image-set(url('/cursors/default.png') 1x, url('/cursors/default@2x.png') 2x) 7 2, auto;
+}
+
+/* 2. Text Entry & Active Text Selection & Selectable Typography */
+html.is-text-selecting,
+html.is-text-selecting * {
+  cursor: url('/cursors/text.png') 26 18, text !important;
+  cursor: image-set(url('/cursors/text.png') 1x, url('/cursors/text@2x.png') 2x) 26 18, text !important;
+}
+
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"]):not([type="color"]),
+textarea,
+[contenteditable="true"],
+p,
+p *:not(a):not(button):not(input):not([role="button"]),
+article,
+article *:not(a):not(button):not(input):not([role="button"]),
+blockquote,
+blockquote *:not(a):not(button):not(input):not([role="button"]),
+pre,
+pre *:not(a):not(button):not(input):not([role="button"]),
+code,
+code *:not(a):not(button):not(input):not([role="button"]),
+kbd,
+.font-body,
+.font-body *:not(a):not(button):not(input):not([role="button"]),
+.font-mono:not(a):not(button),
+h1:not(a):not(button),
+h1:not(a):not(button) *:not(a):not(button),
+h2:not(a):not(button),
+h2:not(a):not(button) *:not(a):not(button),
+h3:not(a):not(button),
+h3:not(a):not(button) *:not(a):not(button),
+h4:not(a):not(button),
+h4:not(a):not(button) *:not(a):not(button),
+h5:not(a):not(button),
+h5:not(a):not(button) *:not(a):not(button),
+h6:not(a):not(button),
+h6:not(a):not(button) *:not(a):not(button),
+li:not(a):not(button),
+dt, dd, figcaption,
+.selectable-text,
+.selectable-text *,
+[data-cursor="text"],
+[data-cursor="text"] *,
+.cursor-text,
+.cursor-text * {
+  cursor: url('/cursors/text.png') 26 18, text;
+  cursor: image-set(url('/cursors/text.png') 1x, url('/cursors/text@2x.png') 2x) 26 18, text;
+}
+
+/* 3. Clickable Elements (Pointer Hand with pixel character) */
+a[href],
+a[href] *,
+button:not(:disabled),
+button:not(:disabled) *,
+[role="button"]:not(:disabled),
+[role="button"]:not(:disabled) *,
+summary,
+label[for],
+select,
+input[type="checkbox"],
+input[type="radio"],
+input[type="submit"]:not(:disabled),
+input[type="button"]:not(:disabled),
+[data-cursor="pointer"],
+[data-cursor="pointer"] *,
+.cursor-pointer,
+.cursor-pointer * {
+  cursor: url('/cursors/pointer.png') 15 1, pointer;
+  cursor: image-set(url('/cursors/pointer.png') 1x, url('/cursors/pointer@2x.png') 2x) 15 1, pointer;
+}
+
+/* 4. External Links & Popouts (Diagonal Arrow NWSE with pixel character) */
+a[target="_blank"],
+a[target="_blank"] *,
+a[rel*="external"],
+a[rel*="external"] *,
+.cursor-nwse,
+.cursor-nwse *,
+[data-cursor="nwse-resize"],
+[data-cursor="nwse-resize"] * {
+  cursor: url('/cursors/nwse-resize.png') 18 19, nwse-resize;
+  cursor: image-set(url('/cursors/nwse-resize.png') 1x, url('/cursors/nwse-resize@2x.png') 2x) 18 19, nwse-resize;
+}
+
+/* 5. Disabled / Forbidden Elements (Not-Allowed with pixel character) */
+:disabled,
+:disabled *,
+[aria-disabled="true"],
+[aria-disabled="true"] *,
+[disabled],
+[disabled] *,
+[data-cursor="not-allowed"],
+[data-cursor="not-allowed"] *,
+.cursor-not-allowed,
+.cursor-not-allowed * {
+  cursor: url('/cursors/not-allowed.png') 19 19, not-allowed !important;
+  cursor: image-set(url('/cursors/not-allowed.png') 1x, url('/cursors/not-allowed@2x.png') 2x) 19 19, not-allowed !important;
+}
+
+/* 6. Background Progress / Submitting (Spinner with smiling character) */
+[aria-busy="true"],
+[aria-busy="true"] *,
+.cursor-progress,
+.cursor-progress *,
+[data-cursor="progress"],
+[data-cursor="progress"] * {
+  cursor: url('/cursors/progress.png') 19 18, progress !important;
+  cursor: image-set(url('/cursors/progress.png') 1x, url('/cursors/progress@2x.png') 2x) 19 18, progress !important;
+}
+
+/* 7. Draggable & Mascot Interaction (4-Directional Move character) */
+.cursor-move,
+.cursor-move *,
+[data-cursor="move"],
+[data-cursor="move"] *,
+[draggable="true"],
+[draggable="true"] *,
+.cursor-buddy-interactive,
+.cursor-buddy-interactive * {
+  cursor: url('/cursors/move.png') 19 19, move;
+  cursor: image-set(url('/cursors/move.png') 1x, url('/cursors/move@2x.png') 2x) 19 19, move;
+}
+
+/* 8. Precision Targeting, Gaming Canvas & Photography Viewfinder (Crosshair character) */
+.cursor-crosshair,
+.cursor-crosshair *,
+[data-cursor="crosshair"],
+[data-cursor="crosshair"] *,
+canvas,
+.photo-viewfinder,
+.photo-viewfinder * {
+  cursor: url('/cursors/crosshair.png') 16 19, crosshair;
+  cursor: image-set(url('/cursors/crosshair.png') 1x, url('/cursors/crosshair@2x.png') 2x) 16 19, crosshair;
+}
+
+/* 9. Horizontal Scrolling / Marquee Track (EW Resize character) */
+.cursor-ew,
+.cursor-ew *,
+[data-cursor="ew-resize"],
+[data-cursor="ew-resize"] *,
+.marquee-container,
+.marquee-container *,
+.marquee-track-left,
+.marquee-track-left *,
+.marquee-track-right,
+.marquee-track-right * {
+  cursor: url('/cursors/ew-resize.png') 19 19, ew-resize;
+  cursor: image-set(url('/cursors/ew-resize.png') 1x, url('/cursors/ew-resize@2x.png') 2x) 19 19, ew-resize;
+}
+
+/* 10. Vertical Scroll & Timelines (NS Resize character) */
+.cursor-ns,
+.cursor-ns *,
+[data-cursor="ns-resize"],
+[data-cursor="ns-resize"] *,
+.scroll-indicator-ns,
+.scroll-indicator-ns *,
+.timeline-track,
+.back-to-top,
+.back-to-top * {
+  cursor: url('/cursors/ns-resize.png') 19 19, ns-resize;
+  cursor: image-set(url('/cursors/ns-resize.png') 1x, url('/cursors/ns-resize@2x.png') 2x) 19 19, ns-resize;
+}
+
+/* 11. Sleeping State (Sleeping Zzz character) */
+.cursor-sleeping,
+.cursor-sleeping *,
+[data-cursor="sleeping"],
+[data-cursor="sleeping"] * {
+  cursor: url('/cursors/sleeping.png') 19 18, default;
+  cursor: image-set(url('/cursors/sleeping.png') 1x, url('/cursors/sleeping@2x.png') 2x) 19 18, default;
+}
+
+/* 12. Global Loading State (Hourglass Wait character) */
+html.is-loading,
+html.is-loading * {
+  cursor: url('/cursors/wait.png') 19 19, wait !important;
+  cursor: image-set(url('/cursors/wait.png') 1x, url('/cursors/wait@2x.png') 2x) 19 19, wait !important;
+}
+
+/* 13. Global Idle State (Sleeping Zzz character) */
+html.is-idle,
+html.is-idle * {
+  cursor: url('/cursors/sleeping.png') 19 18, default !important;
+  cursor: image-set(url('/cursors/sleeping.png') 1x, url('/cursors/sleeping@2x.png') 2x) 19 18, default !important;
+}
+
+/* Touch devices have no cursor */
+@media (hover: none), (pointer: coarse) {
+  html, body, * { cursor: auto !important; }
+}

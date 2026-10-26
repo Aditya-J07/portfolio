@@ -1,221 +1,405 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {
-    Github,
-    Linkedin,
-    Mail,
-    Gamepad2,
-    ArrowRight,
-    Trophy,
-    Activity,
-    Palette
+  Github,
+  Linkedin,
+  Mail,
+  Gamepad2,
+  ArrowRight,
+  Trophy,
+  Activity,
+  Palette,
+  ExternalLink,
 } from 'lucide-react';
 import ProjectCard from '../components/ProjectCard';
 import ClickCounter from '../components/ClickCounter';
 import LinkWithIcon from '../components/LinkWithIcon';
 import ThemeSelector from '../components/ThemeSelector';
+import PixelHearts from '../components/common/PixelHearts';
+import Marquee from '../components/common/Marquee';
+import SectionLabel from '../components/common/SectionLabel';
 import { projects } from '../data/projects';
 import { games } from '../data/games';
 import { achievements } from '../data/skills';
 import { hackathons } from '../data/hackathons';
 
 const socialLinks = [
-    { icon: Github, href: 'https://github.com/Aditya-J07', text: 'GitHub' },
-    { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', text: 'LinkedIn' },
-    { icon: Mail, href: 'mailto:adityajha.vats02@gmail.com', text: 'Email' },
-    { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', text: 'itch.io' },
+  { icon: Github, href: 'https://github.com/Aditya-J07', text: 'GitHub' },
+  { icon: Linkedin, href: 'https://www.linkedin.com/in/aditya-jha-sit', text: 'LinkedIn' },
+  { icon: Mail, href: 'mailto:aditya.jha.contact@gmail.com', text: 'Email' },
+  { icon: Gamepad2, href: 'https://prolly-adi.itch.io/', text: 'itch.io' },
 ];
 
-const featuredProjects = projects.filter(p => p.featured);
+const featuredProjects = projects.filter((p) => p.featured);
 
 export default function Home() {
-    const [isNameHovered, setIsNameHovered] = useState(false);
+  const [isNameHovered, setIsNameHovered] = useState(false);
 
-    return (
-        <div className="mx-auto max-w-6xl space-y-12 px-0 py-8 md:space-y-16 md:px-4 md:py-12">
-            {/* Section 1: Hero / Introduction */}
-            <section className="space-y-5 px-4 md:px-0">
-                <h1 className="text-3xl font-bold md:text-4xl font-mono">
-                    Hey! I'm{' '}
-                    <span className="text-accent relative inline-flex">
-                        <span className="sr-only">Aditya</span>
-                        <span aria-hidden="true">A</span>
-                        <span
-                            className="decoration-accent/30 underline decoration-dashed opacity-70 cursor-help"
-                            onMouseEnter={() => setIsNameHovered(true)}
-                            onMouseLeave={() => setIsNameHovered(false)}
-                        >
-                            di
-                        </span>
-                        <span aria-hidden="true">tya</span>
-                        <span
-                            className={`pointer-events-none inline-flex overflow-hidden align-baseline whitespace-nowrap transition-all duration-500 ease-out select-none font-sans text-sm items-center ml-1 ${isNameHovered ? 'max-w-[10ch] opacity-100' : 'max-w-0 opacity-0'
-                                }`}
-                        >
-                            (The Dev)
-                        </span>
-                    </span>
-                </h1>
+  return (
+    <div className="mx-auto max-w-6xl space-y-16 px-4 py-8 md:space-y-20 md:px-6 md:py-12">
+      {/* ====================================================================
+          HERO BENTO GRID: PLAYER CARD & INTRO
+          ==================================================================== */}
+      <section className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        {/* Main Hero Bento Tile */}
+        <div className="lg:col-span-8 bg-surface-1 border-4 border-border p-6 sm:p-8 shadow-brutal flex flex-col justify-between">
+          <div>
+            {/* Top HUD Status Row */}
+            <div className="flex flex-wrap items-center justify-between gap-3 mb-6 pb-4 border-b-3 border-border/30">
+              <div className="flex items-center gap-2">
+                <span className="w-3 h-3 bg-accent-green border-2 border-border inline-block animate-pulse" />
+                <span className="font-pixel text-[9px] uppercase text-ink font-bold">
+                  LOCATION: TUMKUR, KARNATAKA, INDIA
+                </span>
+              </div>
+              <PixelHearts total={10} count={10} size="sm" />
+            </div>
 
-                <div className="text-subtext0 max-w-prose text-lg leading-relaxed font-sans">
-                    <p>
-                        I'm a second-year Computer Science student passionate about <span className="text-text font-medium">building interactive experiences</span>—from 2D games to full-stack web applications. Currently studying AI & ML at <a className="link" href="http://www.sit.ac.in/" target="_blank" rel="noopener noreferrer">Siddaganga Institute of Technology, Tumkur</a>.
-                    </p>
-                    <p className="mt-4">
-                        I've built projects like <Link to="/projects" className="link">Neura-Beats</Link> and manage websites for tech clubs.
-                    </p>
-                </div>
+            {/* Headline */}
+            <h1 className="text-3xl sm:text-5xl lg:text-6xl font-heading text-ink leading-tight tracking-tight mb-4">
+              Hey! I'm{' '}
+              <span className="relative inline-flex items-center bg-accent-yellow text-accent-ink px-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)]">
+                <span className="sr-only">Aditya</span>
+                <span aria-hidden="true">A</span>
+                <span
+                  className="underline decoration-dashed decoration-2 cursor-help"
+                  onMouseEnter={() => setIsNameHovered(true)}
+                  onMouseLeave={() => setIsNameHovered(false)}
+                >
+                  di
+                </span>
+                <span aria-hidden="true">tya</span>
+                <span
+                  className={`pointer-events-none inline-flex overflow-hidden align-baseline whitespace-nowrap transition-all duration-300 ease-out select-none font-pixel text-xs ml-2 ${
+                    isNameHovered ? 'max-w-[12ch] opacity-100' : 'max-w-0 opacity-0'
+                  }`}
+                >
+                  (The Dev)
+                </span>
+              </span>
+            </h1>
 
-                <div className="flex flex-wrap items-center gap-x-4 gap-y-2 pt-2 font-mono text-sm">
-                    {socialLinks.map((link, i) => (
-                        <div key={link.href} className="flex items-center">
-                            <LinkWithIcon
-                                href={link.href}
-                                text={link.text}
-                                icon={link.icon}
-                                external={true}
-                            />
-                            {i < socialLinks.length - 1 && (
-                                <span className="text-surface1 text-xs ml-4">|</span>
-                            )}
-                        </div>
-                    ))}
-                    <span className="text-surface1 text-xs">|</span>
-                    <Link
-                        to="/about"
-                        className="group text-subtext1 hover:text-accent inline-flex items-center gap-1 transition-colors duration-200"
-                    >
-                        <span>More about me</span>
-                        <ArrowRight
-                            size={16}
-                            className="transition-transform duration-200 group-hover:translate-x-0.5"
-                        />
-                    </Link>
-                </div>
-            </section>
+            {/* Bio Paragraphs */}
+            <div className="font-body text-ink text-base sm:text-lg leading-relaxed space-y-4 mb-6">
+              <p>
+                I'm a second-year Computer Science student passionate about{' '}
+                <span className="font-bold underline decoration-accent-yellow decoration-4">
+                  building interactive experiences
+                </span>
+                —from 2D games to full-stack web applications. Currently studying AI & ML at{' '}
+                <a
+                  className="font-bold text-ink underline hover:text-focus transition-colors"
+                  href="http://www.sit.ac.in/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Siddaganga Institute of Technology, Tumkur
+                </a>
+                .
+              </p>
+              <p>
+                I've built projects like{' '}
+                <Link
+                  to="/projects"
+                  className="font-bold text-ink underline decoration-accent-green decoration-3 hover:text-focus"
+                >
+                  Neura-Beats
+                </Link>{' '}
+                and manage websites for tech clubs.
+              </p>
+            </div>
+          </div>
 
-            {/* Section: Featured Projects */}
-            <section className="px-4 md:px-0">
-                <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-2xl font-bold font-mono text-text">Featured Projects</h2>
-                    <Link to="/projects" className="text-subtext1 hover:text-accent font-mono text-sm flex items-center gap-1 transition-colors">
-                        View all <ArrowRight className="w-4 h-4" />
-                    </Link>
-                </div>
-                <div className="grid md:grid-cols-2 gap-6">
-                    {featuredProjects.map((project, index) => (
-                        <ProjectCard key={project.id} project={project} index={index} />
-                    ))}
-                </div>
-            </section>
+          {/* Social Links Row */}
+          <div className="flex flex-wrap items-center gap-3 pt-4 border-t-3 border-border/30">
+            {socialLinks.map((link) => (
+              <div
+                key={link.href}
+                className="px-3 py-2 bg-surface-2 text-ink border-2 border-border font-pixel text-[9px] uppercase hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-[2px_2px_0px_var(--shadow)]"
+              >
+                <LinkWithIcon
+                  href={link.href}
+                  text={link.text}
+                  icon={link.icon}
+                  external={true}
+                  className="font-pixel text-[9px]"
+                />
+              </div>
+            ))}
 
-            {/* Section: Bento Grid Container (Dashboard) */}
-            <section className="px-4 md:px-0">
-                <h2 className="sr-only">Dashboard / Highlights</h2>
-                <div className="grid grid-cols-1 justify-center gap-5 sm:grid-cols-2 md:gap-6 lg:grid-cols-4">
-
-                    {/* Box 1: Stats Clicker */}
-                    <div className="border border-surface0 bg-base rounded-xl p-4 shadow-lg sm:col-span-2 lg:col-span-1 flex flex-col justify-center">
-                        <ClickCounter />
-                    </div>
-
-                    {/* Box 2: Theme Selector */}
-                    <div className="border border-surface0 bg-base rounded-xl p-4 shadow-lg lg:col-span-1">
-                        <h3 className="text-text mb-3 flex items-center gap-2 text-sm font-semibold font-mono">
-                            <Palette size={16} className="text-accent" />
-                            Customize Theme
-                        </h3>
-                        <ThemeSelector />
-                    </div>
-
-                    {/* Box 3: Games Highlight */}
-                    <div className="border border-surface0 bg-base rounded-xl p-4 shadow-lg sm:col-span-2 md:col-span-2">
-                        <div className="text-text mb-3 flex items-center justify-between gap-2 text-sm">
-                            <h3 className="flex items-center gap-2 font-semibold font-mono">
-                                <Gamepad2 size={16} className="text-accent" />
-                                <span>Published Games</span>
-                            </h3>
-                            <a
-                                href="https://prolly-adi.itch.io/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="text-accent/80 hover:text-accent text-xs font-medium transition-colors"
-                            >
-                                [itch.io]
-                            </a>
-                        </div>
-                        <div className="grid grid-cols-2 gap-4">
-                            {games.slice(0, 2).map(game => (
-                                <a key={game.id} href={game.playUrl} target="_blank" className="block group">
-                                    <div className="h-24 bg-surface0 rounded-lg mb-2 relative overflow-hidden">
-                                        <div className="absolute inset-0 bg-mauve/10 group-hover:bg-mauve/20 transition-colors flex items-center justify-center">
-                                            <Gamepad2 className="text-mauve/50" />
-                                        </div>
-                                    </div>
-                                    <div className="text-sm font-bold text-text group-hover:text-accent truncate">{game.name}</div>
-                                    <div className="text-xs text-subtext1 truncate">{game.description}</div>
-                                </a>
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* Box 4: Latest Achievements (Commits equivalent) */}
-                    <div className="border border-surface0 bg-base rounded-xl p-4 shadow-lg md:col-span-2">
-                        <div className="text-text mb-3 flex items-center justify-between gap-2 text-sm">
-                            <h3 className="flex items-center gap-2 font-semibold font-mono">
-                                <Activity size={16} className="text-accent" />
-                                <span>Recent Achievements</span>
-                            </h3>
-                        </div>
-                        <ul className="space-y-2 text-sm">
-                            {achievements.slice(0, 4).map((achievement) => (
-                                <li key={achievement.title} className="flex items-center justify-between group">
-                                    <span className="flex items-center gap-2 text-subtext0 group-hover:text-text transition-colors">
-                                        <span>{achievement.icon}</span>
-                                        <span>{achievement.title}</span>
-                                    </span>
-                                    <span className="text-xs text-subtext1 font-mono">{achievement.subtitle}</span>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
-
-                    {/* Box 5: Hackathons */}
-                    <div className="border border-surface0 bg-base rounded-xl p-4 shadow-lg sm:col-span-2 lg:col-span-2">
-                        <div className="text-text mb-3 flex items-center justify-between gap-2 text-sm">
-                            <h3 className="flex items-center gap-2 font-semibold font-mono">
-                                <Trophy size={16} className="text-accent" />
-                                <span>Hackathons</span>
-                            </h3>
-                        </div>
-                        <div className="grid sm:grid-cols-2 gap-4">
-                            {hackathons.slice(0, 4).map(h => (
-                                <div key={h.name} className="bg-surface0/50 rounded p-3">
-                                    <div className="flex justify-between items-start">
-                                        <div className="font-bold text-text text-sm">{h.name}</div>
-                                        {h.isWin && <span className="text-yellow text-xs" title={h.achievement}>🏆</span>}
-                                    </div>
-                                    <div className="text-xs text-subtext1 mt-1">{h.organizer}</div>
-                                    {h.event && <div className="text-xs text-accent mt-1">{h.event} {h.type ? `(${h.type})` : ''}</div>}
-                                    <div className="flex justify-between items-center mt-2">
-                                        <div className="text-xs text-surface2 font-mono">{h.date}</div>
-                                        {h.certificateLink && (
-                                            <a 
-                                                href={h.certificateLink} 
-                                                target="_blank" 
-                                                rel="noopener noreferrer" 
-                                                className="text-xs px-2 py-1 bg-surface1 text-text hover:bg-surface2 rounded transition-colors border border-surface2 flex items-center gap-1"
-                                            >
-                                                Certificate
-                                            </a>
-                                        )}
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <Link
+              to="/about"
+              className="px-3 py-2 bg-surface-deep text-accent-yellow border-2 border-border font-pixel text-[9px] uppercase flex items-center gap-1.5 hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-[2px_2px_0px_var(--shadow)] ml-auto"
+            >
+              <span>More about me</span>
+              <ArrowRight size={12} />
+            </Link>
+          </div>
         </div>
-    );
+
+        {/* Player Profile Dossier Card */}
+        <div className="lg:col-span-4 bg-surface-deep text-text-on-deep border-4 border-border p-6 shadow-brutal flex flex-col justify-between">
+          <div>
+            <div className="flex items-center justify-between pb-3 border-b-2 border-border-on-deep/30 mb-4">
+              <span className="font-pixel text-[9px] text-accent-yellow">PROFILE.DAT</span>
+              <span className="font-pixel text-[9px] bg-accent-green text-accent-ink px-1.5 py-0.5 font-bold">
+                DEV PROFILE
+              </span>
+            </div>
+
+            <div className="text-center py-4">
+              <div className="w-24 h-24 mx-auto bg-surface-1 border-4 border-border-on-deep shadow-[4px_4px_0px_#000] flex items-center justify-center text-4xl mb-3 overflow-hidden">
+                <img
+                  src="/profile.png"
+                  alt="Aditya Jha"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <h2 className="font-heading text-xl text-accent-yellow">ADITYA JHA</h2>
+              <p className="font-pixel text-[9px] text-text-on-deep/80 mt-1">
+                GAME DEV & FULL-STACK ENG
+              </p>
+            </div>
+
+            {/* Profile Info Sheet */}
+            <div className="space-y-2.5 font-pixel text-[9px] pt-3 border-t-2 border-border-on-deep/30">
+              <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
+                <span className="text-accent-yellow">ROLE:</span>
+                <span className="text-white">AI/ML & FULL-STACK</span>
+              </div>
+              <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
+                <span className="text-accent-green">LOCATION:</span>
+                <span className="text-white">TUMKUR, INDIA</span>
+              </div>
+              <div className="flex justify-between items-center bg-surface-1/10 p-2 border border-border-on-deep/30">
+                <span className="text-accent-teal">CLUBS:</span>
+                <span className="text-white">PATHFINDER / DECODERS</span>
+              </div>
+            </div>
+          </div>
+
+          <div className="pt-4 mt-4 border-t-2 border-border-on-deep/30">
+            <Link
+              to="/contact"
+              className="w-full min-h-[44px] py-2.5 bg-accent-yellow text-accent-ink border-3 border-border-on-deep font-pixel text-[10px] uppercase flex items-center justify-center gap-2 hover:bg-accent-green transition-all shadow-[2px_2px_0px_#000]"
+            >
+              <span>Get in Touch ↗</span>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          TWO-ROW INFINITE SLATE MARQUEE
+          ==================================================================== */}
+      <Marquee />
+
+      {/* ====================================================================
+          DASHBOARD BENTO GRID (CLICKER, THEME, GAMES, ACHIEVEMENTS, HACKATHONS)
+          ==================================================================== */}
+      <section>
+        <SectionLabel slot="[01/05]" title="Dashboard" subtitle="Highlights & Interactive Showcase" />
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+          {/* Box 1: Stats Clicker */}
+          <div className="sm:col-span-2 lg:col-span-1">
+            <ClickCounter />
+          </div>
+
+          {/* Box 2: Theme Selector */}
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal lg:col-span-1 flex flex-col justify-between h-full">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-3">
+                <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                  <Palette size={20} className="text-accent-yellow" />
+                  <span>World Theme</span>
+                </div>
+                <span className="font-pixel text-[8px] bg-accent-yellow text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                  PALETTE
+                </span>
+              </div>
+              <p className="font-body text-xs text-ink/80 mb-3 leading-relaxed">
+                Switch between Overworld Sky, Canon Stone & Bedrock Cave.
+              </p>
+            </div>
+            <ThemeSelector />
+          </div>
+
+          {/* Box 3: Games Highlight */}
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal sm:col-span-2 lg:col-span-2 flex flex-col justify-between h-full">
+            <div>
+              <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-3">
+                <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                  <Gamepad2 size={20} className="text-accent-purple" />
+                  <span>Published Games</span>
+                </div>
+                <a
+                  href="https://prolly-adi.itch.io/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-pixel text-[9px] uppercase px-2.5 py-1 bg-surface-deep text-accent-yellow border-2 border-border shadow-[2px_2px_0px_var(--shadow)] hover:bg-accent-yellow hover:text-accent-ink transition-colors"
+                >
+                  [itch.io] ↗
+                </a>
+              </div>
+              <p className="font-body text-xs text-ink/80 mb-4 leading-relaxed">
+                Original indie titles built with Godot Engine, playable in browser.
+              </p>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 flex-1">
+              {games.slice(0, 2).map((game) => (
+                <a
+                  key={game.id}
+                  href={game.playUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex flex-col justify-between p-3.5 bg-surface-2 border-3 border-border shadow-[3px_3px_0px_var(--shadow)] hover:bg-surface-1 hover:border-focus hover:-translate-y-1 transition-all group"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-2">
+                      <span className="font-pixel text-[8px] bg-accent-purple text-accent-ink px-1.5 py-0.5 border border-border font-bold">
+                        GODOT 2D
+                      </span>
+                      <span className="font-pixel text-[8px] text-ink/60 group-hover:text-ink flex items-center gap-0.5 font-bold">
+                        PLAY ↗
+                      </span>
+                    </div>
+
+                    <div className="font-heading text-sm text-ink group-hover:text-focus transition-colors leading-tight mb-1.5">
+                      {game.name}
+                    </div>
+                    <p className="font-body text-xs text-ink/80 line-clamp-2 leading-relaxed mb-3">
+                      {game.description}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-1.5 pt-2 border-t border-border/20 mt-auto">
+                    {game.tech.map((t) => (
+                      <span
+                        key={t}
+                        className="font-mono text-[9px] px-1.5 py-0.5 bg-surface-1 text-ink border border-border/60"
+                      >
+                        {t}
+                      </span>
+                    ))}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Box 4: Latest Achievements */}
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal sm:col-span-2 lg:col-span-2">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-4">
+              <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                <Activity size={20} className="text-accent-green" />
+                <span>Recent Achievements</span>
+              </div>
+              <span className="font-pixel text-[9px] bg-accent-yellow text-accent-ink px-2 py-0.5 border border-border font-bold">
+                TOP 4
+              </span>
+            </div>
+
+            <ul className="space-y-3 font-mono text-sm">
+              {achievements.slice(0, 4).map((achievement) => (
+                <li
+                  key={achievement.title}
+                  className="flex items-center justify-between p-2.5 bg-surface-2 border-2 border-border shadow-[2px_2px_0px_var(--shadow)] hover:bg-surface-1 transition-colors"
+                >
+                  <span className="flex items-center gap-2.5 text-ink font-bold">
+                    <span className="text-lg">{achievement.icon}</span>
+                    <span>{achievement.title}</span>
+                  </span>
+                  <span className="font-pixel text-[8px] text-ink/70 uppercase">
+                    {achievement.subtitle}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Box 5: Hackathons Dossier */}
+          <div className="bg-surface-1 border-4 border-border p-5 shadow-brutal sm:col-span-2 lg:col-span-2">
+            <div className="flex items-center justify-between pb-3 border-b-2 border-border/30 mb-4">
+              <div className="flex items-center gap-2 font-heading text-lg text-ink">
+                <Trophy size={20} className="text-accent-yellow" />
+                <span>Hackathons & Competitions</span>
+              </div>
+              <span className="font-pixel text-[9px] bg-surface-deep text-accent-green px-2 py-0.5 border border-border">
+                {hackathons.length} LOGS
+              </span>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {hackathons.slice(0, 4).map((h) => (
+                <div
+                  key={h.name}
+                  className="bg-surface-2 border-3 border-border p-3 shadow-[2px_2px_0px_var(--shadow)] flex flex-col justify-between"
+                >
+                  <div>
+                    <div className="flex justify-between items-start gap-1">
+                      <div className="font-heading text-xs text-ink">{h.name}</div>
+                      {h.isWin && (
+                        <span className="text-sm select-none" title={h.achievement}>
+                          🏆
+                        </span>
+                      )}
+                    </div>
+                    <div className="font-body text-xs text-ink/80 mt-1">{h.organizer}</div>
+                    {h.event && (
+                      <div className="font-pixel text-[8px] text-accent-purple mt-1">
+                        {h.event} {h.type ? `(${h.type})` : ''}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex justify-between items-center mt-3 pt-2 border-t border-border/20">
+                    <span className="font-pixel text-[8px] text-ink/70">{h.date}</span>
+                    {h.certificateLink && (
+                      <a
+                        href={h.certificateLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-pixel text-[8px] uppercase px-2 py-1 bg-accent-yellow text-accent-ink border border-border shadow-[1px_1px_0px_var(--shadow)] flex items-center gap-1 hover:bg-accent-orange transition-colors"
+                      >
+                        <span>Proof</span>
+                        <ExternalLink size={10} />
+                      </a>
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ====================================================================
+          FEATURED PROJECTS (THE CHEST)
+          ==================================================================== */}
+      <section>
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+          <SectionLabel
+            slot="[02/05]"
+            title="Featured Projects"
+            subtitle="Featured Creations & Experiments"
+          />
+          <Link
+            to="/projects"
+            className="px-4 py-2 bg-surface-1 text-ink border-3 border-border font-pixel text-[10px] uppercase flex items-center gap-2 hover:bg-accent-yellow hover:text-accent-ink hover:-translate-y-0.5 transition-all shadow-brutal-sm self-start sm:self-auto"
+          >
+            <span>View All Projects ({projects.length})</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {featuredProjects.map((project, index) => (
+            <ProjectCard key={project.id} project={project} index={index} />
+          ))}
+        </div>
+      </section>
+    </div>
+  );
 }

@@ -3,7 +3,9 @@
 
 <head>
   <meta charset="UTF-8" />
-  <link rel="icon" type="image/png" href="/controller_icon.png" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="shortcut icon" href="/favicon.ico" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="description"
     content="Aditya Jha - Game Developer & Full-Stack Developer. Building interactive experiences from 2D games to full-stack applications." />
@@ -14,6 +16,27 @@
   <meta property="og:title" content="Aditya Jha - Portfolio" />
   <meta property="og:description" content="Game Developer & Full-Stack Developer building interactive experiences." />
   <meta property="og:type" content="website" />
+
+  <!-- Google Fonts: Archivo Black, Space Mono, Press Start 2P -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Press+Start+2P&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap"
+    rel="stylesheet" />
+
+  <!-- Anti-Flash Theme Initializer -->
+  <script>
+    (function() {
+      try {
+        var saved = localStorage.getItem('portfolio_theme');
+        var prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme = saved || (prefersDark ? 'dark' : 'middle');
+        document.documentElement.setAttribute('data-theme', theme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'middle');
+      }
+    })();
+  </script>
 
   <title>Aditya Jha | Portfolio</title>
 </head>

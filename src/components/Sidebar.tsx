@@ -1,148 +1,167 @@
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Check } from 'lucide-react';
+import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
 import { Link } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
+import { isSoundEnabled, setSoundEnabled } from '../lib/soundEffects';
 
 interface SidebarProps {
-    isOpen: boolean;
-    onClose: () => void;
+  isOpen: boolean;
+  onClose: () => void;
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
-    const { theme, setTheme, accent, setAccent, backgroundEffect, setBackgroundEffect } = useTheme();
+  const { backgroundEffect, setBackgroundEffect } = useTheme();
+  const [sfxOn, setSfxOn] = useState(isSoundEnabled);
 
-    const themes = ['latte', 'frappe', 'mocha'] as const;
-    const accents = [
-        'rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
-        'yellow', 'green', 'teal', 'sky', 'sapphire', 'blue', 'lavender'
-    ] as const;
+  // Toggle body class so CursorBuddy and other floating elements hide when sidebar is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('sidebar-open');
+    } else {
+      document.body.classList.remove('sidebar-open');
+    }
+    return () => {
+      document.body.classList.remove('sidebar-open');
+    };
+  }, [isOpen]);
 
-    const navItems = [
-        { name: 'About', path: '/about' },
-        { name: 'Projects', path: '/projects' },
-        { name: 'Pics', path: '/pics' }, // Placeholder for future
-    ];
+  const navItems = [
+    { name: 'Home', path: '/' },
+    { name: 'About', path: '/about' },
+    { name: 'Projects', path: '/projects' },
+    { name: 'Pics', path: '/pics' },
+    { name: 'Contact', path: '/contact' },
+  ];
 
-    return (
-        <AnimatePresence>
-            {isOpen && (
-                <>
-                    {/* Backdrop */}
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        onClick={onClose}
-                        className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50"
-                    />
+  return (
+    <AnimatePresence>
+      {isOpen && (
+        <>
+          {/* Backdrop (high z-index to sit on top of everything) */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={onClose}
+            className="fixed inset-0 bg-black/60 z-[9998] backdrop-blur-[2px]"
+          />
 
-                    {/* Sidebar Panel */}
-                    <motion.div
-                        initial={{ x: '100%' }}
-                        animate={{ x: 0 }}
-                        exit={{ x: '100%' }}
-                        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-                        className="fixed top-0 right-0 h-full w-80 bg-base border-l border-surface0 shadow-2xl z-50 overflow-y-auto p-6"
-                    >
-                        <div className="flex items-center justify-between mb-8">
-                            <h2 className="text-xl font-bold font-mono text-accent">Navigation</h2>
-                            <button
-                                onClick={onClose}
-                                className="p-2 text-subtext0 hover:text-accent transition-colors"
-                            >
-                                <X size={24} />
-                            </button>
-                        </div>
+          {/* Sidebar Drawer (highest z-index to cleanly overlay above all page elements) */}
+          <motion.div
+            initial={{ x: '100%' }}
+            animate={{ x: 0 }}
+            exit={{ x: '100%' }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+            className="fixed top-0 right-0 h-full w-80 max-w-full bg-surface-1 border-l-4 border-border shadow-[-8px_0px_0px_var(--shadow)] z-[9999] overflow-y-auto p-5 flex flex-col justify-between"
+          >
+            <div>
+              {/* Header */}
+              <div className="flex items-center justify-between pb-3 border-b-4 border-border mb-5">
+                <div className="flex items-center gap-2">
+                  <span className="font-pixel text-[10px] bg-surface-deep text-accent-yellow px-2 py-1 border-2 border-border">
+                    NAV
+                  </span>
+                  <h2 className="font-heading text-lg text-ink uppercase">Menu</h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="w-9 h-9 bg-surface-2 border-2 border-border text-ink hover:bg-accent-red hover:text-white transition-colors flex items-center justify-center shadow-[2px_2px_0px_var(--shadow)] cursor-pointer"
+                  aria-label="Close menu"
+                >
+                  <X size={18} />
+                </button>
+              </div>
 
-                        {/* Theme Section */}
-                        <div className="mb-8 space-y-4">
-                            <div className="flex items-center gap-2 text-text font-bold text-sm">
-                                <span>🎨 Theme</span>
-                            </div>
+              {/* Theme & Display Options */}
+              <div className="mb-5 space-y-3 bg-surface-2 p-3.5 border-3 border-border shadow-brutal-sm">
+                <div className="font-pixel text-[10px] text-ink uppercase flex items-center gap-2 font-bold">
+                  <span>Theme</span>
+                </div>
+                <ThemeToggle />
 
-                            {/* Theme Toggles */}
-                            <div className="grid grid-cols-3 gap-1 bg-surface0 p-1 rounded-lg">
-                                {themes.map((t) => (
-                                    <button
-                                        key={t}
-                                        onClick={() => setTheme(t)}
-                                        className={`px-2 py-1.5 rounded-md text-xs font-medium capitalize transition-all ${theme === t
-                                            ? 'bg-surface2 text-text shadow-sm'
-                                            : 'text-subtext0 hover:text-text'
-                                            }`}
-                                    >
-                                        {t}
-                                    </button>
-                                ))}
-                            </div>
+                {/* Background Effect Toggle */}
+                <div className="pt-2.5 border-t-2 border-border/20 flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="bg-effect"
+                    checked={backgroundEffect}
+                    onChange={(e) => setBackgroundEffect(e.target.checked)}
+                    className="w-4 h-4 border-2 border-border text-accent-yellow focus:ring-0 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="bg-effect"
+                    className="font-pixel text-[9px] text-ink uppercase cursor-pointer select-none"
+                  >
+                    Dot Grid: {backgroundEffect ? 'ON' : 'OFF'}
+                  </label>
+                </div>
 
-                            {/* Accent Colors */}
-                            <div className="grid grid-cols-7 gap-2">
-                                {accents.map((c) => (
-                                    <button
-                                        key={c}
-                                        onClick={() => setAccent(c)}
-                                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110`}
-                                        style={{ backgroundColor: `var(--color-${c})` }}
-                                        title={c}
-                                    >
-                                        {accent === c && <Check size={14} className="text-base font-bold" />}
-                                    </button>
-                                ))}
-                            </div>
+                {/* Sound Effects Toggle */}
+                <div className="pt-2.5 border-t-2 border-border/20 flex items-center gap-3">
+                  <input
+                    type="checkbox"
+                    id="sfx-toggle"
+                    checked={sfxOn}
+                    onChange={(e) => {
+                      setSoundEnabled(e.target.checked);
+                      setSfxOn(e.target.checked);
+                    }}
+                    className="w-4 h-4 border-2 border-border text-accent-yellow focus:ring-0 cursor-pointer"
+                  />
+                  <label
+                    htmlFor="sfx-toggle"
+                    className="font-pixel text-[9px] text-ink uppercase cursor-pointer select-none"
+                  >
+                    Button Sound: {sfxOn ? 'ON' : 'OFF'}
+                  </label>
+                </div>
+              </div>
 
-                            {/* Background Effect Toggle */}
-                            <div className="flex items-center gap-2">
-                                <input
-                                    type="checkbox"
-                                    id="bg-effect"
-                                    checked={backgroundEffect}
-                                    onChange={(e) => setBackgroundEffect(e.target.checked)}
-                                    className="rounded border-surface1 bg-surface0 text-accent focus:ring-accent"
-                                />
-                                <label htmlFor="bg-effect" className="text-sm text-subtext0">Background effect: {backgroundEffect ? 'on' : 'off'}</label>
-                            </div>
-                        </div>
+              {/* Navigation Links */}
+              <nav className="space-y-1.5 mb-5">
+                <div className="font-pixel text-[9px] text-ink/70 uppercase mb-1.5">
+                  // Navigation
+                </div>
+                {navItems.map((item) => (
+                  <Link
+                    key={item.path}
+                    to={item.path}
+                    onClick={onClose}
+                    className="block px-3.5 py-2.5 bg-surface-2 text-ink hover:bg-accent-yellow hover:text-accent-ink border-2 border-border font-pixel text-[10px] uppercase transition-all shadow-[2px_2px_0px_var(--shadow)] hover:translate-x-1"
+                  >
+                    {item.name}
+                  </Link>
+                ))}
+              </nav>
+            </div>
 
-                        {/* Navigation Links */}
-                        <nav className="space-y-2 mb-8 border-t border-surface0 pt-6">
-                            {navItems.map((item) => (
-                                <Link
-                                    key={item.path}
-                                    to={item.path}
-                                    onClick={onClose}
-                                    className="block py-2 text-lg font-mono text-subtext0 hover:text-accent hover:pl-2 transition-all"
-                                >
-                                    {item.name}
-                                </Link>
-                            ))}
-                        </nav>
+            {/* Extra Links at bottom of sidebar */}
+            <div className="space-y-2 border-t-3 border-border pt-4 mt-auto">
+              <div className="font-pixel text-[9px] text-ink/70 uppercase mb-1.5">// Links</div>
 
-                        {/* More Section */}
-                        <div className="space-y-4 border-t border-surface0 pt-6">
-                            <h3 className="text-xs font-bold text-subtext1 uppercase tracking-wider">More</h3>
+              <a
+                href="/resume/resume.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block px-3.5 py-2.5 bg-surface-deep text-accent-yellow hover:bg-accent-yellow hover:text-accent-ink border-2 border-border font-pixel text-[9px] uppercase transition-all shadow-[2px_2px_0px_var(--shadow)]"
+              >
+                📄 Resume (PDF) ↗
+              </a>
 
-                            <a
-                                href="/resume/resume.pdf"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="block py-2 font-mono text-subtext0 hover:text-accent hover:pl-2 transition-all"
-                            >
-                                Resume
-                            </a>
-
-                            <Link
-                                to="/snake"
-                                onClick={onClose}
-                                className="block py-2 font-mono text-subtext0 hover:text-accent hover:pl-2 transition-all"
-                            >
-                                Snake Game
-                            </Link>
-                        </div>
-
-                    </motion.div>
-                </>
-            )}
-        </AnimatePresence>
-    );
+              <Link
+                to="/snake"
+                onClick={onClose}
+                className="block px-3.5 py-2.5 bg-surface-deep text-accent-green hover:bg-accent-green hover:text-accent-ink border-2 border-border font-pixel text-[9px] uppercase transition-all shadow-[2px_2px_0px_var(--shadow)]"
+              >
+                🎮 Snake Game ↗
+              </Link>
+            </div>
+          </motion.div>
+        </>
+      )}
+    </AnimatePresence>
+  );
 }

@@ -1,45 +1,72 @@
-import { Check } from 'lucide-react';
-import { useTheme } from '../context/ThemeContext';
+import { useTheme, type Theme } from '../context/ThemeContext';
+
+interface ThemeItem {
+  id: Theme;
+  name: string;
+  desc: string;
+  icon: string;
+}
+
+const THEMES: ThemeItem[] = [
+  { id: 'light', name: 'LIGHT', desc: 'Overworld Sky', icon: '☀️' },
+  { id: 'middle', name: 'STONE', desc: 'Canon Parchment', icon: '🪨' },
+  { id: 'dark', name: 'DARK', desc: 'Bedrock Cave', icon: '🌙' },
+];
 
 export default function ThemeSelector() {
-    const { theme, setTheme, accent, setAccent } = useTheme();
+  const { theme, setTheme } = useTheme();
+  const currentTheme = THEMES.find((t) => t.id === theme) || THEMES[1];
 
-    const themes = ['latte', 'frappe', 'mocha'] as const;
-    const accents = [
-        'rosewater', 'flamingo', 'pink', 'mauve', 'red', 'maroon', 'peach',
-        'yellow', 'green', 'teal', 'sky', 'sapphire', 'blue', 'lavender'
-    ] as const;
+  return (
+    <div className="space-y-2 w-full mt-auto">
+      <div className="font-pixel text-[9px] text-ink/70 uppercase tracking-wider flex items-center justify-between pb-1 border-b border-border/20">
+        <span>World Slots</span>
+        <span className="font-pixel text-[8px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border font-bold">
+          {currentTheme.name}
+        </span>
+      </div>
 
-    return (
-        <div className="space-y-4">
-            <div className="grid grid-cols-3 gap-1 bg-surface0 p-1 rounded-lg">
-                {themes.map((t) => (
-                    <button
-                        key={t}
-                        onClick={() => setTheme(t)}
-                        className={`px-2 py-1.5 rounded-md text-xs font-medium capitalize transition-all ${theme === t
-                            ? 'bg-surface2 text-text shadow-sm'
-                            : 'text-subtext0 hover:text-text'
-                            }`}
-                    >
-                        {t}
-                    </button>
-                ))}
-            </div>
+      <div className="space-y-1.5">
+        {THEMES.map((t) => {
+          const isActive = theme === t.id;
+          return (
+            <button
+              key={t.id}
+              type="button"
+              onClick={() => setTheme(t.id)}
+              className={`w-full flex items-center justify-between px-3 py-2 border-2 transition-all cursor-pointer text-left select-none ${
+                isActive
+                  ? 'bg-accent-yellow text-accent-ink border-border font-bold shadow-[2px_2px_0px_var(--shadow)] -translate-y-0.5'
+                  : 'bg-surface-2 text-ink border-border/40 hover:border-border hover:bg-surface-1 hover:-translate-y-0.5'
+              }`}
+            >
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="text-base select-none shrink-0" aria-hidden="true">
+                  {t.icon}
+                </span>
+                <div className="truncate">
+                  <div className="font-pixel text-[9px] uppercase leading-none truncate font-bold">
+                    {t.name}
+                  </div>
+                  <div className="font-mono text-[8px] opacity-75 mt-0.5 truncate">
+                    {t.desc}
+                  </div>
+                </div>
+              </div>
 
-            <div className="grid grid-cols-7 gap-2">
-                {accents.map((c) => (
-                    <button
-                        key={c}
-                        onClick={() => setAccent(c)}
-                        className={`w-8 h-8 rounded-full flex items-center justify-center transition-transform hover:scale-110`}
-                        style={{ backgroundColor: `var(--color-${c})` }}
-                        title={c}
-                    >
-                        {accent === c && <Check size={14} className="text-base font-bold" />}
-                    </button>
-                ))}
-            </div>
-        </div>
-    );
+              {isActive ? (
+                <span className="font-pixel text-[7px] bg-surface-deep text-accent-yellow px-1.5 py-0.5 border border-border shrink-0 ml-1 font-bold">
+                  ON
+                </span>
+              ) : (
+                <span className="font-pixel text-[7px] text-ink/40 shrink-0 ml-1 font-bold">
+                  SET
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
 }

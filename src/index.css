@@ -1,97 +1,307 @@
 @import './styles/catppuccin.css';
 @import './styles/colors.css';
+@import './styles/animations.css';
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --current-accent-color: var(--color-peach);
-    /* Default to mocha (dark) theme variables if not specified */
-    --color-base: var(--catppuccin-mocha-base);
-    --color-mantle: var(--catppuccin-mocha-mantle);
-    --color-crust: var(--catppuccin-mocha-crust);
-    --color-surface0: var(--catppuccin-mocha-surface0);
-    --color-surface1: var(--catppuccin-mocha-surface1);
-    --color-surface2: var(--catppuccin-mocha-surface2);
-    --color-overlay0: var(--catppuccin-mocha-overlay0);
-    --color-overlay1: var(--catppuccin-mocha-overlay1);
-    --color-overlay2: var(--catppuccin-mocha-overlay2);
-    --color-subtext0: var(--catppuccin-mocha-subtext0);
-    --color-subtext1: var(--catppuccin-mocha-subtext1);
-    --color-text: var(--catppuccin-mocha-text);
-    --color-lavender: var(--catppuccin-mocha-lavender);
-    --color-blue: var(--catppuccin-mocha-blue);
-    --color-sapphire: var(--catppuccin-mocha-sapphire);
-    --color-sky: var(--catppuccin-mocha-sky);
-    --color-teal: var(--catppuccin-mocha-teal);
-    --color-green: var(--catppuccin-mocha-green);
-    --color-yellow: var(--catppuccin-mocha-yellow);
-    --color-peach: var(--catppuccin-mocha-peach);
-    --color-maroon: var(--catppuccin-mocha-maroon);
-    --color-red: var(--catppuccin-mocha-red);
-    --color-mauve: var(--catppuccin-mocha-mauve);
-    --color-pink: var(--catppuccin-mocha-pink);
-    --color-flamingo: var(--catppuccin-mocha-flamingo);
-    --color-rosewater: var(--catppuccin-mocha-rosewater);
-    --color-accent: var(--current-accent-color);
-  }
+/* ==========================================================================
+   NEO-BRUTALIST VOXEL FORGE DESIGN TOKENS
+   Extracts from Google Stitch export for Aditya Jha Portfolio
+   ========================================================================== */
 
+:root,
+:root[data-theme="middle"] {
+  --bg: #CFC8B4;
+  --bg-pattern: #C2BAA4;
+  --surface-1: #EDE6D3;
+  --surface-2: #B9B09A;
+  --surface-deep: #2B2A33;
+  --ground-top: #5DBB3A;
+  --ground-bottom: #8B5A3C;
+  --ink: #17161C;
+  --accent-ink: #17161C;
+  --text-on-deep: #FFFFFF;
+  --accent-on-deep: #F4B942;
+  --border: #17161C;
+  --border-on-deep: #FFFFFF;
+  --shadow: #17161C;
+  --focus: #3D5AFE;
+  --accent-green: #5DBB3A;
+  --accent-yellow: #F4B942;
+  --accent-red: #E5383B;
+  --accent-teal: #2FD1C5;
+  --accent-purple: #9B6BDB;
+  --accent-orange: #FF9F43;
+  --dot: #B9B09A;
+  --dot-glow: #F4B942;
+  --rarity-common: #B9B09A;
+  --rarity-rare: #3D5AFE;
+  --rarity-epic: #9B6BDB;
+  --rarity-legendary: #F4B942;
+
+  /* Backward compatibility aliases */
+  --color-base: var(--surface-1);
+  --color-mantle: var(--surface-2);
+  --color-crust: var(--bg);
+  --color-surface0: var(--surface-2);
+  --color-surface1: var(--surface-1);
+  --color-surface2: var(--surface-2);
+  --color-text: var(--ink);
+  --color-subtext0: var(--ink);
+  --color-subtext1: var(--ink);
+  --color-accent: var(--accent-yellow);
+  --color-peach: var(--accent-yellow);
+  --color-green: var(--accent-green);
+  --color-red: var(--accent-red);
+  --color-blue: var(--focus);
+  --color-mauve: var(--accent-purple);
+  --color-teal: var(--accent-teal);
+  --current-accent-color: var(--accent-yellow);
+}
+
+:root[data-theme="light"] {
+  --bg: #9AD1F5;
+  --bg-pattern: #8CC4EE;
+  --surface-1: #FFFBEF;
+  --surface-2: #FFFFFF;
+  --surface-deep: #1B2A4A;
+  --ground-top: #4CC25C;
+  --ground-bottom: #8B5A3C;
+  --ink: #14131A;
+  --accent-ink: #14131A;
+  --text-on-deep: #FFFFFF;
+  --accent-on-deep: #FFD93D;
+  --border: #14131A;
+  --border-on-deep: #FFFFFF;
+  --shadow: #14131A;
+  --focus: #3D5AFE;
+  --accent-green: #4CC25C;
+  --accent-yellow: #FFD93D;
+  --accent-red: #FF6B6B;
+  --accent-teal: #7BE0B5;
+  --accent-purple: #B79CFF;
+  --accent-orange: #FF9F43;
+  --dot: #80BCE4;
+  --dot-glow: #FFFFFF;
+  --rarity-common: #8CC4EE;
+  --rarity-rare: #3D5AFE;
+  --rarity-epic: #B79CFF;
+  --rarity-legendary: #FFD93D;
+
+  /* Backward compatibility aliases */
+  --color-base: var(--surface-1);
+  --color-mantle: var(--surface-2);
+  --color-crust: var(--bg);
+  --color-surface0: var(--surface-2);
+  --color-surface1: var(--surface-1);
+  --color-surface2: var(--surface-2);
+  --color-text: var(--ink);
+  --color-subtext0: var(--ink);
+  --color-subtext1: var(--ink);
+  --color-accent: var(--accent-yellow);
+  --color-peach: var(--accent-yellow);
+  --color-green: var(--accent-green);
+  --color-red: var(--accent-red);
+  --color-blue: var(--focus);
+  --color-mauve: var(--accent-purple);
+  --color-teal: var(--accent-teal);
+  --current-accent-color: var(--accent-yellow);
+}
+
+:root[data-theme="dark"] {
+  --bg: #1B2030;
+  --bg-pattern: #232A3D;
+  --surface-1: #262D42;
+  --surface-2: #323A54;
+  --surface-deep: #0F131D;
+  --ground-top: #3DDC84;
+  --ground-bottom: #5B3A29;
+  --ink: #F5F1E6;
+  --accent-ink: #0E1016;
+  --text-on-deep: #F5F1E6;
+  --accent-on-deep: #FFC83D;
+  --border: #F5F1E6;
+  --border-on-deep: #F5F1E6;
+  --shadow: #05070B;
+  --focus: #FFC83D;
+  --accent-green: #3DDC84;
+  --accent-yellow: #FFC83D;
+  --accent-red: #FF5A5F;
+  --accent-teal: #4DE8E0;
+  --accent-purple: #B388FF;
+  --accent-orange: #FF9F43;
+  --dot: #2A334B;
+  --dot-glow: #3DDC84;
+  --rarity-common: #323A54;
+  --rarity-rare: #4DE8E0;
+  --rarity-epic: #B388FF;
+  --rarity-legendary: #FFC83D;
+
+  /* Backward compatibility aliases */
+  --color-base: var(--surface-1);
+  --color-mantle: var(--surface-2);
+  --color-crust: var(--bg);
+  --color-surface0: var(--surface-2);
+  --color-surface1: var(--surface-1);
+  --color-surface2: var(--surface-2);
+  --color-text: var(--ink);
+  --color-subtext0: var(--ink);
+  --color-subtext1: var(--ink);
+  --color-accent: var(--accent-yellow);
+  --color-peach: var(--accent-yellow);
+  --color-green: var(--accent-green);
+  --color-red: var(--accent-red);
+  --color-blue: var(--focus);
+  --color-mauve: var(--accent-purple);
+  --color-teal: var(--accent-teal);
+  --current-accent-color: var(--accent-yellow);
+}
+
+/* ==========================================================================
+   GLOBAL RESET: 0px Border Radius, Heavy Borders, Hard Shadows
+   ========================================================================== */
+
+* {
+  border-radius: 0px !important;
+}
+
+@layer base {
   body {
-    @apply bg-base text-text font-sans min-h-screen overflow-x-hidden;
+    background-color: var(--bg);
+    color: var(--ink);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
   }
 
   ::selection {
-    background-color: var(--color-surface2);
-    color: var(--color-text);
+    background-color: var(--accent-yellow);
+    color: var(--accent-ink);
+  }
+
+  *:focus-visible {
+    outline: 4px solid var(--focus) !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Custom Pixel Scrollbar */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: var(--surface-deep);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-yellow);
+    border: 2px solid var(--border);
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-orange);
   }
 }
 
-@layer utilities {
-  .scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-accent) transparent;
-  }
+/* ==========================================================================
+   NEO-BRUTALIST UTILITIES
+   ========================================================================== */
 
-  .scrollbar::-webkit-scrollbar {
-    width: 6px;
-    height: 6px;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb {
-    background-color: var(--color-accent);
-    border-radius: 100vh;
-  }
-
-  .scrollbar::-webkit-scrollbar-thumb:hover {
-    background-color: color-mix(in srgb, currentColor, var(--color-mantle));
-  }
-
-  .link {
-    @apply text-accent hover:bg-accent hover:text-mantle decoration-dashed underline-offset-4 duration-200 decoration-1 underline;
-  }
-
-  .link:hover {
-    text-decoration-style: solid;
-  }
+.neo-box {
+  background-color: var(--surface-1);
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0px var(--shadow);
 }
 
-/* Glassmorphism utility - adapted to use new vars */
-.glass {
-  background: color-mix(in srgb, var(--color-base) 60%, transparent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid color-mix(in srgb, var(--color-blue) 10%, transparent);
+.neo-box-deep {
+  background-color: var(--surface-deep);
+  color: var(--text-on-deep);
+  border: 4px solid var(--border-on-deep);
+  box-shadow: 6px 6px 0px var(--shadow);
 }
 
-.card {
-  @apply border border-surface0 bg-base rounded-xl p-4 shadow-lg transition-all duration-300;
+.neo-box-subtle {
+  background-color: var(--surface-2);
+  border: 4px solid var(--border);
+  box-shadow: 4px 4px 0px var(--shadow);
 }
 
-.text-gradient {
-  background: linear-gradient(135deg, var(--color-blue) 0%, var(--color-mauve) 50%, var(--color-red) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.neo-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  padding: 12px 20px;
+  min-height: 48px;
+  border: 4px solid var(--border);
+  box-shadow: 6px 6px 0px var(--shadow);
+  transition: transform 100ms ease, box-shadow 100ms ease;
+  user-select: none;
+  cursor: pointer;
+}
+
+.neo-btn:hover {
+  transform: translate(3px, 3px);
+  box-shadow: 3px 3px 0px var(--shadow);
+}
+
+.neo-btn:active {
+  transform: translate(6px, 6px);
+  box-shadow: 0px 0px 0px var(--shadow);
+}
+
+.neo-btn-primary {
+  background-color: var(--accent-yellow);
+  color: var(--accent-ink);
+}
+
+.neo-btn-secondary {
+  background-color: var(--surface-1);
+  color: var(--ink);
+}
+
+.neo-btn-accent {
+  background-color: var(--accent-green);
+  color: var(--accent-ink);
+}
+
+.neo-btn-deep {
+  background-color: var(--surface-deep);
+  color: var(--text-on-deep);
+  border-color: var(--border-on-deep);
+}
+
+.neo-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  border: 3px solid var(--border);
+  background-color: var(--surface-1);
+  color: var(--ink);
+}
+
+.neo-chip-active {
+  background-color: var(--accent-yellow);
+  color: var(--accent-ink);
+  box-shadow: 3px 3px 0px var(--shadow);
+}
+
+/* Ground Strip in Footer */
+.ground-strip {
+  border-top: 6px solid var(--ground-top);
+  background-color: var(--ground-bottom);
+}
+
+/* Dotted grid pattern layer */
+.bg-dot-grid {
+  background-image: radial-gradient(circle, var(--dot) 2px, transparent 2px);
+  background-size: 24px 24px;
 }
