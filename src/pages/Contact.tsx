@@ -131,7 +131,7 @@ export default function Contact() {
             <span className="font-pixel text-[9px] text-accent-green">Quick Email</span>
           </div>
 
-          <form onSubmit={handleSendTerminal} className="space-y-4">
+          <form onSubmit={handleSendTerminal} aria-busy={formSent ? 'true' : undefined} className="space-y-4">
             <div className="font-mono text-sm text-text-on-deep/80">
               <span className="text-accent-green mr-2">&gt;</span>
               <span>Type your message below to compose in your email client:</span>
@@ -147,6 +147,7 @@ export default function Contact() {
               />
               <button
                 type="submit"
+                aria-busy={formSent ? 'true' : undefined}
                 className="px-6 py-3 min-h-[48px] bg-accent-yellow text-accent-ink font-pixel text-xs uppercase font-bold border-3 border-border flex items-center justify-center gap-2 hover:bg-accent-green transition-all shadow-[3px_3px_0px_#000] cursor-pointer"
               >
                 <Send size={14} />

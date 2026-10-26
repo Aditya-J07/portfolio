@@ -276,7 +276,7 @@ export default function SnakeGame() {
               ref={canvasRef}
               width={GRID_SIZE * CELL_SIZE}
               height={GRID_SIZE * CELL_SIZE}
-              className="block w-full h-full"
+              className="block w-full h-full cursor-crosshair"
             />
 
             {/* Play Button Overlay */}

@@ -1,0 +1,77 @@
+/* ==========================================================
+   cursors.css  |  Aditya pixel-character cursor set
+   Files live in /public/cursors (48px @1x, 96px @2x).
+   Each rule has a plain url() fallback first, then image-set()
+   for sharp rendering on high-DPI screens.
+   Numbers after the url are the hotspot (the exact click pixel).
+   ========================================================== */
+
+/* Default */
+html, body {
+  cursor: url('/cursors/default.png') 9 2, auto;
+  cursor: image-set(url('/cursors/default.png') 1x, url('/cursors/default@2x.png') 2x) 9 2, auto;
+}
+
+/* Clickable things */
+a[href], button:not(:disabled), [role="button"], summary, label[for], select,
+input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"],
+[data-cursor="pointer"], .cursor-pointer {
+  cursor: url('/cursors/pointer.png') 19 1, pointer;
+  cursor: image-set(url('/cursors/pointer.png') 1x, url('/cursors/pointer@2x.png') 2x) 19 1, pointer;
+}
+
+/* Text entry */
+input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="range"]),
+textarea, [contenteditable="true"], [data-cursor="text"], .cursor-text {
+  cursor: url('/cursors/text.png') 34 24, text;
+  cursor: image-set(url('/cursors/text.png') 1x, url('/cursors/text@2x.png') 2x) 34 24, text;
+}
+
+/* Disabled / blocked */
+:disabled, [aria-disabled="true"], [data-cursor="not-allowed"], .cursor-not-allowed {
+  cursor: url('/cursors/not-allowed.png') 24 24, not-allowed;
+  cursor: image-set(url('/cursors/not-allowed.png') 1x, url('/cursors/not-allowed@2x.png') 2x) 24 24, not-allowed;
+}
+
+/* Background work (e.g. a form is submitting) */
+[aria-busy="true"], .cursor-progress {
+  cursor: url('/cursors/progress.png') 24 23, progress;
+  cursor: image-set(url('/cursors/progress.png') 1x, url('/cursors/progress@2x.png') 2x) 24 23, progress;
+}
+
+/* Optional utilities: add the class or data-cursor attribute to any element */
+.cursor-move, [data-cursor="move"] {
+  cursor: url('/cursors/move.png') 24 24, move;
+  cursor: image-set(url('/cursors/move.png') 1x, url('/cursors/move@2x.png') 2x) 24 24, move;
+}
+.cursor-crosshair, [data-cursor="crosshair"] {
+  cursor: url('/cursors/crosshair.png') 20 24, crosshair;
+  cursor: image-set(url('/cursors/crosshair.png') 1x, url('/cursors/crosshair@2x.png') 2x) 20 24, crosshair;
+}
+.cursor-ew, [data-cursor="ew-resize"] {
+  cursor: url('/cursors/ew-resize.png') 24 24, ew-resize;
+  cursor: image-set(url('/cursors/ew-resize.png') 1x, url('/cursors/ew-resize@2x.png') 2x) 24 24, ew-resize;
+}
+.cursor-ns, [data-cursor="ns-resize"] {
+  cursor: url('/cursors/ns-resize.png') 24 24, ns-resize;
+  cursor: image-set(url('/cursors/ns-resize.png') 1x, url('/cursors/ns-resize@2x.png') 2x) 24 24, ns-resize;
+}
+.cursor-nwse, [data-cursor="nwse-resize"] {
+  cursor: url('/cursors/nwse-resize.png') 23 24, nwse-resize;
+  cursor: image-set(url('/cursors/nwse-resize.png') 1x, url('/cursors/nwse-resize@2x.png') 2x) 23 24, nwse-resize;
+}
+
+/* Global states (set by cursorStates.ts). !important so they win everywhere. */
+html.is-loading, html.is-loading * {
+  cursor: url('/cursors/wait.png') 24 24, wait !important;
+  cursor: image-set(url('/cursors/wait.png') 1x, url('/cursors/wait@2x.png') 2x) 24 24, wait !important;
+}
+html.is-idle, html.is-idle * {
+  cursor: url('/cursors/sleeping.png') 24 23, default !important;
+  cursor: image-set(url('/cursors/sleeping.png') 1x, url('/cursors/sleeping@2x.png') 2x) 24 23, default !important;
+}
+
+/* Touch devices have no cursor, nothing to do. Hide the helper classes' effect safely. */
+@media (hover: none), (pointer: coarse) {
+  html, body, * { cursor: auto !important; }
+}

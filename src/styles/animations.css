@@ -39,24 +39,17 @@
   100% { background-position: 40px 40px; }
 }
 
-/* Two-Row Marquees */
+/* Two-Row Marquees - Scroll-driven motion */
 .marquee-track-left {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marqueeLeft 28s linear infinite;
 }
 
 .marquee-track-right {
   display: flex;
   width: max-content;
   will-change: transform;
-  animation: marqueeRight 28s linear infinite;
-}
-
-.marquee-track-left:hover,
-.marquee-track-right:hover {
-  animation-play-state: paused;
 }
 
 @keyframes marqueeLeft {

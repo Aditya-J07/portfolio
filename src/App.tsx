@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
 import Navbar from './components/Navbar';
@@ -14,18 +15,35 @@ import Contact from './pages/Contact';
 import SnakeGame from './pages/SnakeGame';
 import Pics from './pages/Pics';
 import { ThemeProvider } from './context/ThemeContext';
+import { initCursorStates, setCursorLoading } from './lib/cursorStates';
 
 function AnimatedRoutes() {
   const location = useLocation();
 
+  useEffect(() => {
+    setCursorLoading(true);
+    const timer = setTimeout(() => {
+      setCursorLoading(false);
+    }, 220);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
+
   return (
-    <AnimatePresence mode="wait">
+    <AnimatePresence
+      mode="wait"
+      onExitComplete={() => {
+        setCursorLoading(false);
+      }}
+    >
       <motion.div
         key={location.pathname}
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0 }}
         transition={{ duration: 0.18, ease: 'easeOut' }}
+        onAnimationComplete={() => {
+          setCursorLoading(false);
+        }}
       >
         <Routes location={location}>
           <Route path="/" element={<Home />} />
@@ -41,8 +59,10 @@ function AnimatedRoutes() {
 }
 
 function AppContent() {
+  useEffect(() => initCursorStates(), []);
+
   return (
-    <div className="relative min-h-screen bg-bg text-ink transition-colors duration-200">
+    <div className="relative min-h-screen bg-bg text-ink transition-colors duration-200 overflow-x-hidden">
       {/* Interactive Glowing Dot Grid Background */}
       <GlowDotBackground />
 
