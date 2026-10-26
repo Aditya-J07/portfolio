@@ -1,9 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, Terminal, MoreHorizontal } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Sidebar from './Sidebar';
-import ThemeToggle from './ThemeToggle';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -17,6 +16,17 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const location = useLocation();
+
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('menu-open');
+    } else {
+      document.body.classList.remove('menu-open');
+    }
+    return () => {
+      document.body.classList.remove('menu-open');
+    };
+  }, [isOpen]);
 
   return (
     <>
@@ -52,11 +62,6 @@ export default function Navbar() {
                 );
               })}
 
-              {/* Quick Compact Theme Toggle in Navbar */}
-              <div className="ml-1">
-                <ThemeToggle compact={true} />
-              </div>
-
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen(true)}
@@ -68,7 +73,6 @@ export default function Navbar() {
 
             {/* Mobile Actions */}
             <div className="md:hidden flex items-center gap-2">
-              <ThemeToggle compact={true} />
               <button
                 type="button"
                 onClick={() => setIsSidebarOpen(true)}

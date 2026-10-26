@@ -305,6 +305,15 @@
   z-index: 2;
 }
 
+/* Completely hide CursorBuddy when right menu drawer or mobile menu is open */
+body.sidebar-open .cursor-buddy-wrapper,
+body.menu-open .cursor-buddy-wrapper {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  visibility: hidden !important;
+}
+
 /* Hide on ultra-small screens */
 @media (max-width: 359px) {
   .cursor-buddy-wrapper {

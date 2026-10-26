@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
 import { useTheme } from '../context/ThemeContext';
@@ -15,6 +15,18 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const { backgroundEffect, setBackgroundEffect } = useTheme();
   const [sfxOn, setSfxOn] = useState(isSoundEnabled);
 
+  // Toggle body class so CursorBuddy and other floating elements hide when sidebar is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add('sidebar-open');
+    } else {
+      document.body.classList.remove('sidebar-open');
+    }
+    return () => {
+      document.body.classList.remove('sidebar-open');
+    };
+  }, [isOpen]);
+
   const navItems = [
     { name: 'Home', path: '/' },
     { name: 'About', path: '/about' },
@@ -27,22 +39,22 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Backdrop */}
+          {/* Backdrop (high z-index to sit on top of everything) */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-black/60 z-50 backdrop-blur-[2px]"
+            className="fixed inset-0 bg-black/60 z-[9998] backdrop-blur-[2px]"
           />
 
-          {/* Sidebar Drawer */}
+          {/* Sidebar Drawer (highest z-index to cleanly overlay above all page elements) */}
           <motion.div
             initial={{ x: '100%' }}
             animate={{ x: 0 }}
             exit={{ x: '100%' }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="fixed top-0 right-0 h-full w-80 max-w-full bg-surface-1 border-l-4 border-border shadow-[-8px_0px_0px_var(--shadow)] z-50 overflow-y-auto p-5 flex flex-col justify-between"
+            className="fixed top-0 right-0 h-full w-80 max-w-full bg-surface-1 border-l-4 border-border shadow-[-8px_0px_0px_var(--shadow)] z-[9999] overflow-y-auto p-5 flex flex-col justify-between"
           >
             <div>
               {/* Header */}
