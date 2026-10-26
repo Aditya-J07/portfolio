@@ -309,7 +309,18 @@ export default function CursorBuddy() {
   };
 
   if (!isEnabled) {
-    return null;
+    return (
+      <div className="cursor-buddy-wrapper fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 select-none">
+        <button
+          type="button"
+          onClick={toggleBuddy}
+          className="px-2.5 py-1.5 bg-surface-deep text-accent-yellow border-2 border-border font-pixel text-[8px] uppercase shadow-brutal-sm hover:bg-accent-yellow hover:text-accent-ink transition-all cursor-pointer"
+          title="Turn CursorBuddy Companion On"
+        >
+          Companion: OFF
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -328,7 +339,7 @@ export default function CursorBuddy() {
       {/* Floating Mascot Container */}
       <div
         ref={containerRef}
-        className="cursor-buddy-wrapper fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 select-none hidden xs:block cursor-buddy-interactive"
+        className="cursor-buddy-wrapper fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-50 select-none block cursor-buddy-interactive"
         style={{ width: '112px', height: '112px' }}
       >
         {/* Speech Bubble (Design system: cream bg, 4px border, hard shadow, pixel font) */}

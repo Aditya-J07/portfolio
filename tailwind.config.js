@@ -70,6 +70,9 @@ export default {
       spacing: {
         18: '4.5rem',
       },
+      screens: {
+        xs: '360px',
+      },
     },
   },
   plugins: [

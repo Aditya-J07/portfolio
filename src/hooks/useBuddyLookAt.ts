@@ -102,6 +102,10 @@ export function useBuddyLookAt({
 
     // Animation frame loop
     const loop = () => {
+      if (!cachedRect.current && containerRef.current) {
+        cachedRect.current = containerRef.current.getBoundingClientRect();
+      }
+
       if (
         isEnabled &&
         !isEmoting &&
