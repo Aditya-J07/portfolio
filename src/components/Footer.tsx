@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Github, Linkedin, Mail, Gamepad2, Heart, CheckCircle, ArrowUp } from 'lucide-react';
 
 const socialLinks = [
@@ -9,6 +10,26 @@ const socialLinks = [
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const [buddyEnabled, setBuddyEnabled] = useState(() => {
+    try {
+      return localStorage.getItem('cursor_buddy_enabled') !== 'false';
+    } catch {
+      return true;
+    }
+  });
+
+  const toggleBuddy = () => {
+    const next = !buddyEnabled;
+    setBuddyEnabled(next);
+    try {
+      localStorage.setItem('cursor_buddy_enabled', String(next));
+      window.dispatchEvent(
+        new StorageEvent('storage', { key: 'cursor_buddy_enabled', newValue: String(next) })
+      );
+    } catch {
+      // ignore
+    }
+  };
 
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -69,10 +90,18 @@ export default function Footer() {
 
         {/* Copyright & Meta */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between gap-4 font-mono text-xs text-text-on-deep/80">
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span>© {currentYear} Aditya Jha</span>
             <span>|</span>
             <span className="text-accent-yellow">Last updated: Apr 14, 2026</span>
+            <span>|</span>
+            <button
+              type="button"
+              onClick={toggleBuddy}
+              className="text-accent-green hover:text-accent-yellow font-pixel text-[9px] uppercase cursor-pointer transition-colors"
+            >
+              Mascot: {buddyEnabled ? 'ON' : 'OFF'}
+            </button>
           </div>
 
           <p className="flex items-center gap-1.5 font-pixel text-[9px]">

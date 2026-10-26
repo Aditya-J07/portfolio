@@ -1,19 +1,9 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
+import { useBuddyLookAt, DIR_POSITIONS } from '../hooks/useBuddyLookAt';
+import { useRubDetection } from '../hooks/useRubDetection';
+import '../styles/buddy.css';
 
-type Direction = 'NW' | 'N' | 'NE' | 'W' | 'CENTER' | 'E' | 'SW' | 'S' | 'SE';
 type Emote = 'HAPPY' | 'SURPRISED' | 'SLEEPING' | 'WAVING' | 'DIZZY' | 'THUMBS_UP' | null;
-
-const DIR_POSITIONS: Record<Direction, string> = {
-  NW: '0% 0%',
-  N: '50% 0%',
-  NE: '100% 0%',
-  W: '0% 50%',
-  CENTER: '50% 50%',
-  E: '100% 50%',
-  SW: '0% 100%',
-  S: '50% 100%',
-  SE: '100% 100%',
-};
 
 const EMOTE_POSITIONS: Record<Exclude<Emote, null>, string> = {
   HAPPY: '0% 0%',
@@ -36,23 +26,23 @@ export default function CursorBuddy() {
 
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [speechText, setSpeechText] = useState<string | null>('Psst... try petting me!');
+  const [isSleepingState, setIsSleepingState] = useState(false);
+  const [showXpOrb, setShowXpOrb] = useState(false);
 
+  const containerRef = useRef<HTMLDivElement>(null);
   const btnRef = useRef<HTMLButtonElement>(null);
   const spriteRef = useRef<HTMLDivElement>(null);
 
-  const mousePos = useRef({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-  const currentDirection = useRef<Direction>('CENTER');
   const currentEmote = useRef<Emote>(null);
   const emoteTimeout = useRef<number | null>(null);
   const idleTimeout = useRef<number | null>(null);
   const isSleeping = useRef(false);
-  const isOffScreen = useRef(false);
-  const rafId = useRef<number | null>(null);
 
-  // Rubbing state
-  const reversals = useRef<number[]>([]);
-  const lastX = useRef<number | null>(null);
-  const lastDir = useRef<number>(0);
+  // Rewards session caps
+  const achievementsAwarded = useRef<Set<number>>(new Set());
+  const thumbsUpShown = useRef(false);
+
+  // Persistent pet count
   const petCount = useRef<number>(
     (() => {
       try {
@@ -63,139 +53,189 @@ export default function CursorBuddy() {
     })()
   );
 
-  // Floating hearts pool
-  const heartsPoolRef = useRef<HTMLDivElement>(null);
+  // Pool of 8 heart DOM element refs (never create or destroy nodes per event)
+  const heartPoolRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-  const spawnHearts = () => {
-    if (!heartsPoolRef.current) return;
-    const container = heartsPoolRef.current;
-    for (let i = 0; i < 5; i++) {
-      setTimeout(() => {
-        const heart = document.createElement('div');
-        heart.className =
-          'absolute pointer-events-none font-bold text-accent-red select-none text-xl';
-        heart.textContent = '❤';
-        heart.style.left = `${30 + Math.random() * 40}px`;
-        heart.style.top = '25px';
-        heart.style.setProperty('--tx', `${Math.random() * 40 - 20}px`);
-        heart.style.animation = 'heartFloatUp 1.2s ease-out forwards';
-        container.appendChild(heart);
-        setTimeout(() => {
-          heart.remove();
-        }, 1200);
-      }, i * 120);
+  const spawnPooledHearts = useCallback(() => {
+    // Fire 5 pooled hearts with staggered timing
+    const count = 5;
+    for (let i = 0; i < count; i++) {
+      const el = heartPoolRefs.current[i];
+      if (!el) continue;
+
+      const randomTx = (Math.random() * 40 - 20).toFixed(1);
+      el.style.setProperty('--tx', `${randomTx}px`);
+
+      window.setTimeout(() => {
+        el.classList.remove('is-active');
+        // Force reflow to re-trigger CSS keyframe animation
+        void el.offsetWidth;
+        el.classList.add('is-active');
+
+        window.setTimeout(() => {
+          el.classList.remove('is-active');
+        }, 1250);
+      }, i * 110);
     }
-  };
+  }, []);
 
-  const setEmote = (
-    emote: Emote,
-    duration = 1500,
-    withHearts = false,
-    withHop = false,
-    speech?: string
-  ) => {
-    if (!isEnabled || !spriteRef.current || !btnRef.current) return;
+  // Set Emote handler
+  const setEmote = useCallback(
+    (
+      emote: Emote,
+      duration = 1500,
+      withHearts = false,
+      withHop = false,
+      speech?: string
+    ) => {
+      if (!isEnabled || !spriteRef.current || !btnRef.current) return;
 
-    currentEmote.current = emote;
-    if (emoteTimeout.current) clearTimeout(emoteTimeout.current);
+      currentEmote.current = emote;
+      if (emoteTimeout.current) clearTimeout(emoteTimeout.current);
 
-    if (emote) {
-      spriteRef.current.style.backgroundImage = 'url(/buddy/emotes.png)';
-      spriteRef.current.style.backgroundSize = '300% 200%';
-      spriteRef.current.style.backgroundPosition = EMOTE_POSITIONS[emote];
+      if (emote) {
+        spriteRef.current.style.backgroundImage = 'url(/buddy/emotes.png)';
+        spriteRef.current.style.backgroundSize = '300% 200%';
+        spriteRef.current.style.backgroundPosition = EMOTE_POSITIONS[emote];
 
-      if (emote === 'SLEEPING') {
-        btnRef.current.classList.add('cursor-sleeping');
-      } else {
-        btnRef.current.classList.remove('cursor-sleeping');
-      }
-
-      if (withHop) {
-        btnRef.current.classList.add('anim-hop');
-        setTimeout(() => btnRef.current?.classList.remove('anim-hop'), 600);
-      }
-
-      if (withHearts) {
-        btnRef.current.classList.add('anim-squash');
-        setTimeout(() => btnRef.current?.classList.remove('anim-squash'), 500);
-        spawnHearts();
-      }
-
-      if (speech) {
-        setSpeechText(speech);
-      } else {
-        setSpeechText(null);
-      }
-
-      emoteTimeout.current = window.setTimeout(() => {
-        currentEmote.current = null;
-        setSpeechText(null);
-        if (btnRef.current) {
+        if (emote === 'SLEEPING') {
+          isSleeping.current = true;
+          setIsSleepingState(true);
+          btnRef.current.classList.add('cursor-sleeping');
+        } else {
+          isSleeping.current = false;
+          setIsSleepingState(false);
           btnRef.current.classList.remove('cursor-sleeping');
         }
-        if (spriteRef.current) {
-          spriteRef.current.style.backgroundImage = 'url(/buddy/directions.png)';
-          spriteRef.current.style.backgroundSize = '300% 300%';
-          spriteRef.current.style.backgroundPosition = DIR_POSITIONS[currentDirection.current];
-        }
-      }, duration);
-    }
-  };
 
-  // Reset idle timer
-  const resetIdle = () => {
+        if (withHop) {
+          btnRef.current.classList.add('anim-hop');
+          window.setTimeout(() => btnRef.current?.classList.remove('anim-hop'), 600);
+        }
+
+        if (withHearts) {
+          btnRef.current.classList.add('anim-squash');
+          window.setTimeout(() => btnRef.current?.classList.remove('anim-squash'), 500);
+          spawnPooledHearts();
+        }
+
+        if (speech !== undefined) {
+          setSpeechText(speech);
+        }
+
+        emoteTimeout.current = window.setTimeout(() => {
+          currentEmote.current = null;
+          setSpeechText(null);
+          setIsSleepingState(false);
+          isSleeping.current = false;
+
+          if (btnRef.current) {
+            btnRef.current.classList.remove('cursor-sleeping');
+          }
+          if (spriteRef.current) {
+            spriteRef.current.style.backgroundImage = 'url(/buddy/directions.png)';
+            spriteRef.current.style.backgroundSize = '300% 300%';
+            spriteRef.current.style.backgroundPosition = DIR_POSITIONS['CENTER'];
+          }
+        }, duration);
+      }
+    },
+    [isEnabled, spawnPooledHearts]
+  );
+
+  // Idle timer reset
+  const resetIdle = useCallback(() => {
     if (isSleeping.current) {
       isSleeping.current = false;
+      setIsSleepingState(false);
       setEmote('SURPRISED', 600, false, true);
     }
     if (idleTimeout.current) clearTimeout(idleTimeout.current);
     idleTimeout.current = window.setTimeout(() => {
       if (!currentEmote.current && isEnabled) {
-        isSleeping.current = true;
         setEmote('SLEEPING', 12000, false, false, 'Zzz...');
       }
     }, 12000);
-  };
+  }, [isEnabled, setEmote]);
 
+  // Handle petting / rub achieved
+  const handlePet = useCallback(() => {
+    if (!isEnabled) return;
+    petCount.current++;
+
+    try {
+      localStorage.setItem('cursor_buddy_pets', petCount.current.toString());
+    } catch {
+      // ignore
+    }
+
+    setEmote('HAPPY', 1500, true, false, '❤ Purr...');
+
+    // Achievement reward triggers
+    if (petCount.current >= 5 && !achievementsAwarded.current.has(5)) {
+      achievementsAwarded.current.add(5);
+      setToastMessage('🏆 ACHIEVEMENT UNLOCKED: Good Buddy');
+      window.setTimeout(() => setToastMessage(null), 3500);
+    } else if (petCount.current >= 15 && !achievementsAwarded.current.has(15)) {
+      achievementsAwarded.current.add(15);
+      setToastMessage('🏆 ACHIEVEMENT UNLOCKED: Best Friends');
+      setShowXpOrb(true);
+
+      // Pulse top XP bar
+      const xpBar = document.querySelector('[role="progressbar"]');
+      if (xpBar) {
+        xpBar.classList.add('animate-pulse');
+        window.setTimeout(() => xpBar.classList.remove('animate-pulse'), 1200);
+      }
+
+      window.setTimeout(() => {
+        setShowXpOrb(false);
+        setToastMessage(null);
+      }, 3500);
+    }
+  }, [isEnabled, setEmote]);
+
+  // Hook 1: High performance rAF Look-At Loop
+  useBuddyLookAt({
+    containerRef,
+    btnRef,
+    spriteRef,
+    isEnabled,
+    isEmoting: currentEmote.current !== null,
+    onActivity: resetIdle,
+    innerRadius: 60,
+  });
+
+  // Hook 2: Rubbing / Pet gesture detection
+  const { handlePointerMove: onBuddyPointerMove, resetRubbing } = useRubDetection({
+    onPet: handlePet,
+    reversalThreshold: 4,
+    timeWindowMs: 1200,
+    minMovementDelta: 5,
+  });
+
+  // Fast scroll & element hover listeners
   useEffect(() => {
     if (!isEnabled) return;
 
-    let cachedRect = btnRef.current?.getBoundingClientRect();
-    const updateRect = () => {
-      if (btnRef.current) cachedRect = btnRef.current.getBoundingClientRect();
-    };
-
-    window.addEventListener('resize', updateRect, { passive: true });
-    window.addEventListener('scroll', updateRect, { passive: true });
-
-    // Pointer move listener
-    const handlePointerMove = (e: PointerEvent) => {
-      mousePos.current.x = e.clientX;
-      mousePos.current.y = e.clientY;
-      resetIdle();
-    };
-
-    window.addEventListener('pointermove', handlePointerMove, { passive: true });
     resetIdle();
 
-    // First visit speech bubble auto-dismiss
-    const firstVisitTimer = setTimeout(() => {
-      if (speechText === 'Psst... try petting me!') {
-        setSpeechText(null);
-      }
-    }, 6000);
+    // First visit speech bubble auto-dismiss after 4s
+    const firstVisitTimer = window.setTimeout(() => {
+      setSpeechText((prev) => (prev === 'Psst... try petting me!' ? null : prev));
+    }, 4000);
 
-    // Fast scroll detection for dizzy emote
+    // Fast scroll detection (dizzy emote)
     let lastScrollY = window.scrollY;
     let lastScrollTime = performance.now();
     const handleScrollSpeed = () => {
       const now = performance.now();
       const dt = now - lastScrollTime;
-      if (dt > 50) {
+      if (dt > 40) {
         const dy = Math.abs(window.scrollY - lastScrollY);
         const speed = dy / dt;
-        if (speed > 4.5 && !currentEmote.current) {
-          setEmote('DIZZY', 1200, false, true, 'Whoa, dizzy!');
+        if (speed > 3.5 && !currentEmote.current) {
+          setEmote('DIZZY', 1000, false, true, 'Whoa, dizzy!');
         }
         lastScrollY = window.scrollY;
         lastScrollTime = now;
@@ -203,118 +243,59 @@ export default function CursorBuddy() {
     };
     window.addEventListener('scroll', handleScrollSpeed, { passive: true });
 
-    // Hover detection on projects / contact links
-    const handleElementHover = (e: MouseEvent) => {
-      const target = (e.target as HTMLElement)?.closest('a, button');
-      if (target && !currentEmote.current) {
-        const text = target.textContent?.toLowerCase() || '';
-        if (text.includes('live') || text.includes('source') || text.includes('connect')) {
-          setEmote('THUMBS_UP', 1000, false, false);
-        }
+    // Hover detection on project cards and contact section (thumbs up once per visit)
+    const handleHoverCheck = (e: MouseEvent) => {
+      if (thumbsUpShown.current || currentEmote.current) return;
+      const target = (e.target as HTMLElement)?.closest('.enchanted-card, a[href*="projects"], #contact, [href*="contact"]');
+      if (target) {
+        thumbsUpShown.current = true;
+        setEmote('THUMBS_UP', 1200, false, false);
       }
     };
-    document.addEventListener('mouseover', handleElementHover, { passive: true });
+    document.addEventListener('mouseover', handleHoverCheck, { passive: true });
 
-    // Look-at animation frame loop
-    const loop = () => {
-      if (isEnabled && !currentEmote.current && cachedRect && !document.hidden && !isOffScreen.current) {
-        const centerX = cachedRect.left + cachedRect.width / 2;
-        const centerY = cachedRect.top + cachedRect.height / 2;
-        const dx = mousePos.current.x - centerX;
-        const dy = mousePos.current.y - centerY;
-        const dist = Math.hypot(dx, dy);
-
-        let newDir: Direction = 'CENTER';
-
-        if (dist >= 60) {
-          let angle = (Math.atan2(dy, dx) * 180) / Math.PI;
-          if (angle < 0) angle += 360;
-
-          if (angle >= 337.5 || angle < 22.5) newDir = 'E';
-          else if (angle >= 22.5 && angle < 67.5) newDir = 'SE';
-          else if (angle >= 67.5 && angle < 112.5) newDir = 'S';
-          else if (angle >= 112.5 && angle < 157.5) newDir = 'SW';
-          else if (angle >= 157.5 && angle < 202.5) newDir = 'W';
-          else if (angle >= 202.5 && angle < 247.5) newDir = 'NW';
-          else if (angle >= 247.5 && angle < 292.5) newDir = 'N';
-          else if (angle >= 292.5 && angle < 337.5) newDir = 'NE';
-        }
-
-        // Update DOM only when direction changes
-        if (newDir !== currentDirection.current && spriteRef.current) {
-          currentDirection.current = newDir;
-          spriteRef.current.style.backgroundPosition = DIR_POSITIONS[newDir];
-
-          // 3px micro-shift toward cursor
-          if (btnRef.current) {
-            const shiftX = dist < 60 ? 0 : Math.round((dx / dist) * 3);
-            const shiftY = dist < 60 ? 0 : Math.round((dy / dist) * 3);
-            btnRef.current.style.transform = `translate3d(${shiftX}px, ${shiftY}px, 0)`;
-          }
-        }
+    // Listen to external toggle events from footer
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'cursor_buddy_enabled') {
+        setIsEnabled(e.newValue !== 'false');
       }
-      rafId.current = requestAnimationFrame(loop);
     };
-
-    rafId.current = requestAnimationFrame(loop);
+    window.addEventListener('storage', handleStorageChange);
 
     return () => {
-      window.removeEventListener('resize', updateRect);
-      window.removeEventListener('scroll', updateRect);
-      window.removeEventListener('pointermove', handlePointerMove);
       window.removeEventListener('scroll', handleScrollSpeed);
-      document.removeEventListener('mouseover', handleElementHover);
+      document.removeEventListener('mouseover', handleHoverCheck);
+      window.removeEventListener('storage', handleStorageChange);
       clearTimeout(firstVisitTimer);
       if (idleTimeout.current) clearTimeout(idleTimeout.current);
       if (emoteTimeout.current) clearTimeout(emoteTimeout.current);
-      if (rafId.current) cancelAnimationFrame(rafId.current);
     };
-  }, [isEnabled]);
+  }, [isEnabled, resetIdle, setEmote]);
 
-  // Rub / Petting Detection
-  const handlePointerOverBuddy = (e: React.PointerEvent) => {
-    const curX = e.clientX;
-    if (lastX.current !== null) {
-      const delta = curX - lastX.current;
-      if (Math.abs(delta) > 5) {
-        const dir = delta > 0 ? 1 : -1;
-        if (lastDir.current !== 0 && dir !== lastDir.current) {
-          const now = performance.now();
-          reversals.current.push(now);
-          reversals.current = reversals.current.filter((t) => now - t <= 1200);
+  // Click & Double Click reactions
+  const clickTimer = useRef<number | null>(null);
 
-          if (reversals.current.length >= 4) {
-            // Pet achieved!
-            petCount.current++;
-            try {
-              localStorage.setItem('cursor_buddy_pets', petCount.current.toString());
-            } catch {
-              // ignore
-            }
-
-            setEmote('HAPPY', 1500, true, false, '❤ Purr...');
-            reversals.current = [];
-
-            // Achievement Toasts
-            if (petCount.current === 5) {
-              setToastMessage('🏆 ACHIEVEMENT: Buddy Apprentice (5 Pets)');
-              setTimeout(() => setToastMessage(null), 3500);
-            } else if (petCount.current === 15) {
-              setToastMessage('🏆 ACHIEVEMENT: Best Friends Forever (15 Pets)');
-              setTimeout(() => setToastMessage(null), 3500);
-            }
-          }
-        }
-        lastDir.current = dir;
-      }
+  const handleClick = () => {
+    if (clickTimer.current) {
+      // Double click detected: WAVING
+      clearTimeout(clickTimer.current);
+      clickTimer.current = null;
+      setEmote('WAVING', 1500, false, false, "Hi, I'm Aditya!");
+    } else {
+      // Single click delay to distinguish double-click
+      clickTimer.current = window.setTimeout(() => {
+        clickTimer.current = null;
+        setEmote('SURPRISED', 600, false, true);
+      }, 250);
     }
-    lastX.current = curX;
   };
 
-  const handlePointerLeaveBuddy = () => {
-    lastX.current = null;
-    lastDir.current = 0;
-    reversals.current = [];
+  // Keyboard accessibility: Enter or Space triggers PETTED
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handlePet();
+    }
   };
 
   const toggleBuddy = () => {
@@ -328,66 +309,88 @@ export default function CursorBuddy() {
   };
 
   if (!isEnabled) {
-    return (
-      <div className="fixed bottom-4 right-4 z-40">
-        <button
-          type="button"
-          onClick={toggleBuddy}
-          className="px-2.5 py-1.5 bg-surface-deep text-accent-yellow border-2 border-border font-pixel text-[8px] uppercase shadow-brutal-sm hover:bg-accent-yellow hover:text-accent-ink transition-all cursor-pointer"
-          title="Turn CursorBuddy Companion On"
-        >
-          Companion: OFF
-        </button>
-      </div>
-    );
+    return null;
   }
 
   return (
     <>
-      {/* Toast Notification Container */}
+      {/* Achievement Toast */}
       {toastMessage && (
-        <div className="fixed top-8 right-8 z-50 bg-surface-deep text-accent-yellow border-4 border-border p-4 shadow-brutal font-pixel text-xs animate-slide-up">
+        <div
+          role="status"
+          aria-live="polite"
+          className="fixed top-8 right-8 z-50 bg-surface-deep text-accent-yellow border-4 border-border p-4 shadow-brutal font-pixel text-xs animate-slide-up"
+        >
           {toastMessage}
         </div>
       )}
 
-      {/* Floating Mascot Button */}
+      {/* Floating Mascot Container */}
       <div
-        className="fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 select-none hidden xs:block cursor-buddy-interactive"
-        style={{ width: '104px', height: '104px' }}
+        ref={containerRef}
+        className="cursor-buddy-wrapper fixed bottom-4 sm:bottom-6 right-4 sm:right-6 z-40 select-none hidden xs:block cursor-buddy-interactive"
+        style={{ width: '112px', height: '112px' }}
       >
-        {/* Speech Bubble */}
+        {/* Speech Bubble (Design system: cream bg, 4px border, hard shadow, pixel font) */}
         {speechText && (
-          <div
-            role="status"
-            aria-live="polite"
-            className="speech-tail absolute -top-12 right-2 bg-surface-1 border-3 border-border px-3 py-1.5 shadow-[3px_3px_0px_var(--shadow)] whitespace-nowrap font-pixel text-[9px] text-ink z-50"
-          >
+          <div role="status" aria-live="polite" className="buddy-speech-bubble">
             {speechText}
           </div>
         )}
 
-        {/* Pooled Hearts Floating Container */}
-        <div
-          ref={heartsPoolRef}
-          className="absolute inset-0 pointer-events-none overflow-visible z-50"
-        />
+        {/* 8 Pre-allocated Pooled Hearts (0 DOM creations/deletions during runtime) */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible z-50">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <div
+              key={i}
+              ref={(el) => {
+                heartPoolRefs.current[i] = el;
+              }}
+              className="buddy-heart"
+              style={{
+                left: `${25 + (i * 11) % 45}px`,
+                top: `${20 + (i * 7) % 20}px`,
+              }}
+            >
+              ❤
+            </div>
+          ))}
+        </div>
 
-        {/* Mascot Interactive Button */}
+        {/* Floating Z particles for sleep emote */}
+        <div className="absolute -top-3 left-4 pointer-events-none z-50">
+          <span
+            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '0s' }}
+          >
+            Z
+          </span>
+          <span
+            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '0.7s', left: '12px' }}
+          >
+            z
+          </span>
+          <span
+            className={`buddy-z-particle ${isSleepingState ? 'is-active' : ''}`}
+            style={{ animationDelay: '1.4s', left: '22px' }}
+          >
+            z
+          </span>
+        </div>
+
+        {/* Popping XP Orb reward */}
+        {showXpOrb && <div className="buddy-xp-orb" style={{ top: '30px', left: '40px' }} />}
+
+        {/* Mascot Interactive Button (Keyboard accessible) */}
         <button
           ref={btnRef}
           type="button"
           aria-label="Pet Aditya's buddy"
-          onClick={() => setEmote('SURPRISED', 600, false, true)}
-          onDoubleClick={() => setEmote('WAVING', 1800, false, false, "Hi, I'm Aditya!")}
-          onPointerMove={handlePointerOverBuddy}
-          onPointerLeave={handlePointerLeaveBuddy}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              setEmote('HAPPY', 1500, true, false, '❤ Purr...');
-            }
-          }}
+          onClick={handleClick}
+          onPointerMove={onBuddyPointerMove}
+          onPointerLeave={resetRubbing}
+          onKeyDown={handleKeyDown}
           className="w-full h-full relative focus:outline-none focus:ring-4 focus:ring-focus pixelated block transition-transform duration-75 p-0 bg-transparent border-0 cursor-buddy-interactive"
         >
           <div
@@ -396,17 +399,18 @@ export default function CursorBuddy() {
             style={{
               backgroundImage: 'url(/buddy/directions.png)',
               backgroundSize: '300% 300%',
-              backgroundPosition: '50% 50%',
+              backgroundPosition: DIR_POSITIONS['CENTER'],
             }}
           />
         </button>
 
-        {/* Mascot Mini Close/Off Pill */}
+        {/* Mascot Mini Close Button */}
         <button
           type="button"
           onClick={toggleBuddy}
-          className="absolute -bottom-2 -left-2 bg-surface-deep text-text-on-deep text-[7px] font-pixel px-1.5 py-0.5 border border-border shadow-[1px_1px_0px_var(--shadow)] hover:bg-accent-red hover:text-white transition-colors"
-          title="Turn off companion"
+          className="absolute -bottom-2 -left-2 bg-surface-deep text-text-on-deep text-[7px] font-pixel px-1.5 py-0.5 border border-border shadow-[1px_1px_0px_var(--shadow)] hover:bg-accent-red hover:text-white transition-colors cursor-pointer"
+          title="Turn off mascot"
+          aria-label="Turn off mascot"
         >
           [x]
         </button>

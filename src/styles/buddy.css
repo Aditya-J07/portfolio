@@ -1,0 +1,199 @@
+/* ==========================================================
+   buddy.css | CursorBuddy Mascot Animations & Sprite Layout
+   ========================================================== */
+
+/* Pixel-perfect rendering */
+.pixelated {
+  image-rendering: pixelated;
+  image-rendering: -moz-crisp-edges;
+  image-rendering: crisp-edges;
+}
+
+/* Direction 3x3 grid positions */
+.buddy-dir-NW { background-position: 0% 0%; }
+.buddy-dir-N  { background-position: 50% 0%; }
+.buddy-dir-NE { background-position: 100% 0%; }
+.buddy-dir-W  { background-position: 0% 50%; }
+.buddy-dir-CENTER { background-position: 50% 50%; }
+.buddy-dir-E  { background-position: 100% 50%; }
+.buddy-dir-SW { background-position: 0% 100%; }
+.buddy-dir-S  { background-position: 50% 100%; }
+.buddy-dir-SE { background-position: 100% 100%; }
+
+/* Emote 3x2 grid positions */
+.buddy-emote-HAPPY     { background-position: 0% 0%; }
+.buddy-emote-SURPRISED { background-position: 50% 0%; }
+.buddy-emote-SLEEPING  { background-position: 100% 0%; }
+.buddy-emote-WAVING    { background-position: 0% 100%; }
+.buddy-emote-DIZZY     { background-position: 50% 100%; }
+.buddy-emote-THUMBS_UP { background-position: 100% 100%; }
+
+/* Hop animation on click */
+@keyframes buddyHop {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-16px);
+  }
+  70% {
+    transform: translateY(2px);
+  }
+}
+
+.anim-hop {
+  animation: buddyHop 0.6s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+}
+
+/* Gentle squash/stretch on pet */
+@keyframes buddySquash {
+  0%, 100% {
+    transform: scale(1, 1);
+  }
+  30% {
+    transform: scale(1.08, 0.92);
+  }
+  60% {
+    transform: scale(0.96, 1.04);
+  }
+}
+
+.anim-squash {
+  animation: buddySquash 0.5s ease-out;
+}
+
+/* Pooled floating hearts */
+@keyframes heartFloatUp {
+  0% {
+    opacity: 0;
+    transform: translate3d(var(--tx, 0), 10px, 0) scale(0.6);
+  }
+  20% {
+    opacity: 1;
+    transform: translate3d(var(--tx, 0), 0px, 0) scale(1.1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(calc(var(--tx, 0) * 1.5), -48px, 0) scale(0.9);
+  }
+}
+
+.buddy-heart {
+  position: absolute;
+  pointer-events: none;
+  font-weight: bold;
+  user-select: none;
+  font-size: 1.15rem;
+  color: #ff5a5f;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.buddy-heart.is-active {
+  animation: heartFloatUp 1.2s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+}
+
+/* Floating Z particles for sleep */
+@keyframes zFloat {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) scale(0.7);
+  }
+  30% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(14px, -36px, 0) scale(1.2);
+  }
+}
+
+.buddy-z-particle {
+  position: absolute;
+  pointer-events: none;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 11px;
+  color: #ffc83d;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+.buddy-z-particle.is-active {
+  animation: zFloat 2.2s ease-out infinite;
+}
+
+/* Speech bubble design system styling */
+.buddy-speech-bubble {
+  position: absolute;
+  bottom: 118%;
+  right: 0;
+  background-color: var(--surface-1, #f5ecd8);
+  border: 3px solid var(--border, #0f131d);
+  padding: 6px 10px;
+  box-shadow: 3px 3px 0px var(--shadow, #0f131d);
+  white-space: nowrap;
+  font-family: 'Press Start 2P', monospace;
+  font-size: 9px;
+  color: var(--ink, #0f131d);
+  z-index: 50;
+  pointer-events: none;
+}
+
+.buddy-speech-bubble::after {
+  content: '';
+  position: absolute;
+  bottom: -7px;
+  right: 28px;
+  width: 0;
+  height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 7px solid var(--border, #0f131d);
+}
+
+/* Small XP orb burst animation */
+@keyframes xpOrbPop {
+  0% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  70% {
+    opacity: 0.9;
+    transform: translate3d(-60px, -240px, 0) scale(1.3);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(-100px, -450px, 0) scale(0.5);
+  }
+}
+
+.buddy-xp-orb {
+  position: absolute;
+  pointer-events: none;
+  width: 14px;
+  height: 14px;
+  background: #3ddc84;
+  border: 2px solid #0f131d;
+  border-radius: 9999px;
+  box-shadow: 0 0 10px #3ddc84;
+  z-index: 60;
+  animation: xpOrbPop 1s cubic-bezier(0.2, 0.8, 0.4, 1) forwards;
+}
+
+/* Hide on ultra-small screens */
+@media (max-width: 359px) {
+  .cursor-buddy-wrapper {
+    display: none !important;
+  }
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .anim-hop,
+  .anim-squash,
+  .buddy-heart.is-active,
+  .buddy-z-particle.is-active,
+  .buddy-xp-orb {
+    animation: none !important;
+  }
+}
