@@ -6,6 +6,8 @@ import XPBar from './components/XPBar';
 import Hotbar from './components/Hotbar';
 import ParallaxDecorations from './components/ParallaxDecorations';
 import SmoothScroll from './components/SmoothScroll';
+import CursorBuddy from './components/CursorBuddy';
+import GlowDotBackground from './components/GlowDotBackground';
 import Home from './pages/Home';
 import Projects from './pages/Projects';
 import About from './pages/About';
@@ -42,6 +44,9 @@ function AnimatedRoutes() {
 function AppContent() {
   return (
     <div className="relative min-h-screen bg-bg text-ink transition-colors duration-200">
+      {/* Interactive Glowing Dot Grid Background */}
+      <GlowDotBackground />
+
       {/* Top XP Bar HUD */}
       <XPBar />
 
@@ -58,6 +63,9 @@ function AppContent() {
 
       {/* Bottom Floating Hotbar Dock */}
       <Hotbar />
+
+      {/* CursorBuddy Interactive Companion Mascot */}
+      <CursorBuddy />
 
       {/* Ground Strip Footer */}
       <Footer />
